@@ -759,25 +759,39 @@ function FaqAccordion({ faqs }: { faqs: FAQ[] }) {
         return (
           <div
             key={item.id}
-            className="bg-bg border border-border rounded-xl overflow-hidden transition-colors"
+            className={`rounded-2xl overflow-hidden transition-all duration-300 relative ${
+              isOpen 
+                ? 'bg-gradient-to-b from-[#e0f7fa] to-[#b2ebf2] shadow-[0_8px_30px_rgba(0,188,212,0.2)] border border-white/80' 
+                : 'bg-gradient-to-b from-white/90 to-[#f0f9ff] border border-white/60 shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_25px_rgba(0,188,212,0.15)] hover:border-white'
+            }`}
+            style={{
+              boxShadow: isOpen ? 'inset 0 1px 0 rgba(255,255,255,1), 0 10px 25px -5px rgba(0, 150, 180, 0.2)' : 'inset 0 1px 0 rgba(255,255,255,0.8), 0 4px 10px rgba(0,0,0,0.03)'
+            }}
           >
+            {/* Glossy top reflection */}
+            <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/60 to-transparent pointer-events-none rounded-t-2xl z-0" />
+            
             <button
               onClick={() => setOpenId(isOpen ? null : item.id)}
-              className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-surface/50 transition-colors"
+              className="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer relative z-10"
             >
-              <span className="text-base font-bold text-text font-display">
+              <span className={`text-base font-bold font-display transition-colors ${isOpen ? 'text-[#005f73]' : 'text-text'}`}>
                 {item.question}
               </span>
-              <ChevronDown
-                size={18}
-                className={`text-muted transition-transform shrink-0 ${
-                  isOpen ? 'rotate-180 text-action' : ''
-                }`}
-              />
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${isOpen ? 'bg-[#0081a7] text-white shadow-[0_0_15px_rgba(0,129,167,0.5)]' : 'bg-white text-muted shadow-sm border border-white/80'}`}>
+                <ChevronDown
+                  size={16}
+                  className={`transition-transform duration-300 ${
+                    isOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </div>
             </button>
             {isOpen && (
-              <div className="px-5 pb-5 text-xs sm:text-sm text-muted leading-relaxed border-t border-border/60 pt-3">
-                {item.answer}
+              <div className="px-6 pb-6 text-xs sm:text-sm text-[#003f4f] leading-relaxed relative z-10">
+                <div className="pt-4 border-t border-white/50">
+                  {item.answer}
+                </div>
               </div>
             )}
           </div>

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { dataLayer } from '../../lib/data';
 import { SiteSettings } from '../../types';
 import { X, FileText, ShieldCheck, Mail, ArrowUpRight, Menu, MessageCircle } from 'lucide-react';
@@ -9,6 +9,22 @@ export default function PublicLayout() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [activeModal, setActiveModal] = useState<'terms' | 'privacy' | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const navigate = useNavigate();
+  const pressTimer = useRef<NodeJS.Timeout | null>(null);
+
+  const handlePointerDown = () => {
+    pressTimer.current = setTimeout(() => {
+      navigate('/admin');
+    }, 6000);
+  };
+
+  const handlePointerUp = () => {
+    if (pressTimer.current) {
+      clearTimeout(pressTimer.current);
+      pressTimer.current = null;
+    }
+  };
 
   useEffect(() => {
     dataLayer.getSettings().then(setSettings);
@@ -182,7 +198,14 @@ export default function PublicLayout() {
           </div>
 
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-bg/50">
-            <p>IAMUREL™ {new Date().getFullYear()}. Todos os direitos reservados. Sem atalhos, sem AI slop.</p>
+            <p 
+              onPointerDown={handlePointerDown} 
+              onPointerUp={handlePointerUp} 
+              onPointerLeave={handlePointerUp}
+              className="cursor-text select-none"
+            >
+              IAMUREL™ {new Date().getFullYear()}. Todos os direitos reservados. Sem atalhos, sem AI slop.
+            </p>
             
             <div className="flex items-center gap-4">
               <span>Conteúdo com direção. Design com intenção.</span>

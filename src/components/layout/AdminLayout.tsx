@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -6,9 +7,11 @@ import {
   Palette,
   Database,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  LogOut
 } from 'lucide-react';
-import { isSupabaseConfigured } from '../../lib/supabase';
+import { isSupabaseConfigured, supabase } from '../../lib/supabase';
+import { AdminLogin } from '../auth/AdminLogin';
 
 const navItems = [
   { label: 'Visão Geral', path: '/admin', icon: LayoutDashboard, end: true },
@@ -20,6 +23,34 @@ const navItems = [
 
 export default function AdminLayout() {
   const location = useLocation();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      if (supabase) {
+        const { data: { session } } = await supabase.auth.getSession();
+        setIsAuthenticated(!!session);
+      }
+      setIsCheckingAuth(false);
+    };
+    checkAuth();
+  }, []);
+
+  const handleLogout = async () => {
+    if (supabase) {
+      await supabase.auth.signOut();
+      setIsAuthenticated(false);
+    }
+  };
+
+  if (isCheckingAuth) {
+    return <div className="min-h-screen bg-bg flex items-center justify-center">Carregando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <AdminLogin onLogin={() => setIsAuthenticated(true)} />;
+  }
 
   const currentNav = navItems.find(item =>
     item.end ? location.pathname === item.path : location.pathname.startsWith(item.path)
@@ -94,7 +125,7 @@ export default function AdminLayout() {
             <span className="font-semibold text-text">{currentNav.label}</span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-6">
             <Link
               to="/"
               className="text-xs font-semibold text-muted hover:text-action flex items-center gap-1 transition-colors"
@@ -102,6 +133,14 @@ export default function AdminLayout() {
               <span>Abrir Página Pública</span>
               <ExternalLink size={12} />
             </Link>
+            
+            <button
+              onClick={handleLogout}
+              className="text-xs font-semibold text-red-500 hover:text-red-600 flex items-center gap-1 transition-colors border-l border-border pl-6"
+            >
+              <span>Sair</span>
+              <LogOut size={12} />
+            </button>
           </div>
         </header>
 

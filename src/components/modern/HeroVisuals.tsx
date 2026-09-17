@@ -28,9 +28,9 @@ export function HeroVisuals() {
     <div className="relative w-full min-h-[600px] md:min-h-0 md:aspect-[21/9] lg:aspect-[2.5/1] rounded-3xl overflow-hidden bg-surface border border-border mt-12 mb-8">
       {/* Background Grid Texture */}
       <div 
-        className="absolute inset-0 opacity-[0.08] pointer-events-none"
+        className="absolute inset-0 opacity-[0.15] pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Ccircle cx='12' cy='12' r='1' fill='currentColor'/%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Ccircle cx='12' cy='12' r='1' fill='%23000000'/%3E%3C/svg%3E")`,
           backgroundSize: '24px 24px'
         }}
       />

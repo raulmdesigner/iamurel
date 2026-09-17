@@ -25,9 +25,13 @@ export function IamurelSymbol({
       className="inline-flex items-center justify-center"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      animate={{ rotateY: isHovered ? 180 : 0 }}
-      transition={{ duration: isHovered ? 4 : 0.8, ease: "linear", repeat: isHovered ? Infinity : 0 }}
-      style={{ perspective: 1000 }}
+      animate={{ rotateY: isHovered ? 360 : 0 }}
+      transition={{ 
+        duration: isHovered ? 4 : 1, 
+        ease: isHovered ? "linear" : "easeOut", 
+        repeat: isHovered ? Infinity : 0 
+      }}
+      style={{ perspective: 1000, transformStyle: "preserve-3d" }}
     >
       <svg viewBox="0 0 1500 1500" className={`inline-block object-contain ${className}`} fill={fill} xmlns="http://www.w3.org/2000/svg" aria-label={alt}>
         <defs>
@@ -63,9 +67,13 @@ export function IamurelLogo({
       className="inline-flex items-center justify-center"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      animate={{ rotateY: isHovered ? 180 : 0 }}
-      transition={{ duration: isHovered ? 4 : 0.8, ease: "linear", repeat: isHovered ? Infinity : 0 }}
-      style={{ perspective: 1000 }}
+      animate={{ rotateY: isHovered ? 360 : 0 }}
+      transition={{ 
+        duration: isHovered ? 4 : 1, 
+        ease: isHovered ? "linear" : "easeOut", 
+        repeat: isHovered ? Infinity : 0 
+      }}
+      style={{ perspective: 1000, transformStyle: "preserve-3d" }}
     >
       <svg viewBox="0 0 1500 414" className={`inline-block object-contain ${className}`} fill={fill} xmlns="http://www.w3.org/2000/svg" aria-label={alt}>
         <defs>
