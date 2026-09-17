@@ -437,11 +437,13 @@ export default function Home() {
       </section>
 
       {/* 7. FAQ CURTA E OBJETIVA */}
-      <section id="faq" className="py-16 md:py-24 px-6 bg-surface border-b border-border">
+      <section id="faq" className="py-16 md:py-24 px-6 bg-dark border-b border-border-dark relative overflow-hidden">
+        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }} className="absolute -top-40 -left-20 w-[500px] h-[500px] bg-action/20 rounded-full blur-[120px] pointer-events-none" />
+        <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.5, 0.2] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }} className="absolute -bottom-40 -right-20 w-[600px] h-[600px] bg-trust/30 rounded-full blur-[140px] pointer-events-none" />
         <ScrollReveal>
-          <div className="max-w-3xl mx-auto space-y-10">
+          <div className="max-w-3xl mx-auto space-y-10 relative z-10">
             <div className="text-center space-y-3">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-white">
               Perguntas Frequentes
             </h2>
           </div>
@@ -759,26 +761,22 @@ function FaqAccordion({ faqs }: { faqs: FAQ[] }) {
         return (
           <div
             key={item.id}
-            className={`rounded-2xl overflow-hidden transition-all duration-300 relative ${
-              isOpen 
-                ? 'bg-gradient-to-b from-[#e0f7fa] to-[#b2ebf2] shadow-[0_8px_30px_rgba(0,188,212,0.2)] border border-white/80' 
-                : 'bg-gradient-to-b from-white/90 to-[#f0f9ff] border border-white/60 shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_25px_rgba(0,188,212,0.15)] hover:border-white'
-            }`}
+            className={`rounded-2xl overflow-hidden transition-all duration-300 relative border ${isOpen ? 'bg-white/5 border-action/30 shadow-lg' : 'bg-white/5 border-white/10 hover:border-white/30 hover:bg-white/10'}`}
             style={{
               boxShadow: isOpen ? 'inset 0 1px 0 rgba(255,255,255,1), 0 10px 25px -5px rgba(0, 150, 180, 0.2)' : 'inset 0 1px 0 rgba(255,255,255,0.8), 0 4px 10px rgba(0,0,0,0.03)'
             }}
           >
-            {/* Glossy top reflection */}
-            <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/60 to-transparent pointer-events-none rounded-t-2xl z-0" />
+            
+            
             
             <button
               onClick={() => setOpenId(isOpen ? null : item.id)}
               className="w-full p-6 text-left flex items-center justify-between gap-4 cursor-pointer relative z-10"
             >
-              <span className={`text-base font-bold font-display transition-colors ${isOpen ? 'text-[#005f73]' : 'text-text'}`}>
+              <span className={`text-base font-bold font-display transition-colors text-white`}>
                 {item.question}
               </span>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${isOpen ? 'bg-[#0081a7] text-white shadow-[0_0_15px_rgba(0,129,167,0.5)]' : 'bg-white text-muted shadow-sm border border-white/80'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${isOpen ? 'bg-action text-white shadow-[0_0_15px_rgba(255,74,28,0.5)]' : 'bg-white/10 text-white/50 border border-white/10'}`}>
                 <ChevronDown
                   size={16}
                   className={`transition-transform duration-300 ${
@@ -788,8 +786,8 @@ function FaqAccordion({ faqs }: { faqs: FAQ[] }) {
               </div>
             </button>
             {isOpen && (
-              <div className="px-6 pb-6 text-xs sm:text-sm text-[#003f4f] leading-relaxed relative z-10">
-                <div className="pt-4 border-t border-white/50">
+              <div className="px-6 pb-6 text-xs sm:text-sm text-white/70 leading-relaxed relative z-10">
+                <div className="pt-4 border-t border-white/10">
                   {item.answer}
                 </div>
               </div>

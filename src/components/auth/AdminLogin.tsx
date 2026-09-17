@@ -43,15 +43,73 @@ export function AdminLogin({ onLogin }: { onLogin: () => void }) {
     }
   };
 
+  const [setupUrl, setSetupUrl] = useState('');
+  const [setupKey, setSetupKey] = useState('');
+  const [setupError, setSetupError] = useState<string | null>(null);
+
+  const handleSetup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSetupError(null);
+    try {
+      const { reconfigureSupabase } = await import('../../lib/supabase');
+      const res = reconfigureSupabase(setupUrl, setupKey);
+      if (res.success) {
+        window.location.reload();
+      } else {
+        setSetupError(res.error || 'Erro de configuração.');
+      }
+    } catch (err) {
+      setSetupError('Erro ao carregar o módulo.');
+    }
+  };
+
   if (!isSupabaseConfigured) {
     return (
       <div className="min-h-screen bg-bg flex items-center justify-center p-6">
-        <div className="max-w-md w-full bg-surface border border-border p-8 rounded-2xl shadow-xl text-center space-y-4">
-          <AlertCircle className="w-12 h-12 text-action mx-auto" />
-          <h2 className="text-xl font-display font-bold text-text">Supabase Não Configurado</h2>
-          <p className="text-sm text-muted">
-            Configure as chaves do Supabase no AI Studio Secrets para habilitar o painel de administração.
-          </p>
+        <div className="max-w-md w-full bg-surface border border-border p-8 rounded-2xl shadow-xl space-y-6">
+          <div className="text-center space-y-4">
+            <AlertCircle className="w-12 h-12 text-action mx-auto" />
+            <h2 className="text-xl font-display font-bold text-text">Conectar ao Supabase</h2>
+            <p className="text-sm text-muted">
+              Como você está em um ambiente estático, insira as credenciais do seu projeto Supabase para habilitar o painel.
+            </p>
+          </div>
+
+          <form onSubmit={handleSetup} className="space-y-4">
+            {setupError && (
+              <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
+                {setupError}
+              </div>
+            )}
+            <div>
+              <label className="block text-xs font-bold text-text mb-1.5 uppercase tracking-wider">Project URL</label>
+              <input
+                type="url"
+                required
+                value={setupUrl}
+                onChange={(e) => setSetupUrl(e.target.value)}
+                className="w-full px-4 py-2.5 bg-bg border border-border rounded-lg text-sm focus:border-action outline-none transition-all"
+                placeholder="https://sua-url.supabase.co"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-text mb-1.5 uppercase tracking-wider">Anon / Public Key</label>
+              <input
+                type="password"
+                required
+                value={setupKey}
+                onChange={(e) => setSetupKey(e.target.value)}
+                className="w-full px-4 py-2.5 bg-bg border border-border rounded-lg text-sm focus:border-action outline-none transition-all font-mono"
+                placeholder="eyJh..."
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full py-3 px-4 bg-text hover:bg-black text-bg rounded-lg font-bold text-sm transition-all"
+            >
+              Conectar Painel
+            </button>
+          </form>
         </div>
       </div>
     );
