@@ -6,7 +6,11 @@ export const defaultAppearance: AppearanceSettings = {
   bg_tone: 'cream',
   border_style: 'minimal',
   motion_level: 'balanced',
-  font_pairing: 'editorial'
+  font_pairing: 'editorial',
+  hero_video_url: null,
+  hero_image_1_url: null,
+  hero_image_2_url: null,
+  hero_image_3_url: null,
 };
 
 export const mockSettings: SiteSettings = {

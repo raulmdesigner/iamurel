@@ -54,3 +54,27 @@ export function reconfigureSupabase(url: string, key: string): { success: boolea
 export function getActiveSupabaseConfig() {
   return getSupabaseCredentials();
 }
+
+export async function uploadMediaToSupabase(file: File, bucket: string = 'media'): Promise<{ url: string | null; error: string | null }> {
+  if (!supabase) return { url: null, error: 'Supabase não configurado' };
+  
+  try {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+    const filePath = `hero/${fileName}`;
+
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .upload(filePath, file, { cacheControl: '3600', upsert: false });
+
+    if (error) throw error;
+
+    const { data: publicUrlData } = supabase.storage
+      .from(bucket)
+      .getPublicUrl(filePath);
+
+    return { url: publicUrlData.publicUrl, error: null };
+  } catch (error: any) {
+    return { url: null, error: error.message };
+  }
+}

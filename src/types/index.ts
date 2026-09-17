@@ -23,6 +23,10 @@ export interface AppearanceSettings {
   border_style: 'sharp' | 'minimal' | 'rounded';
   motion_level: 'reduced' | 'balanced' | 'expressive';
   font_pairing: 'editorial' | 'contemporary' | 'grotesk';
+  hero_video_url?: string | null;
+  hero_image_1_url?: string | null;
+  hero_image_2_url?: string | null;
+  hero_image_3_url?: string | null;
 }
 
 export interface Section {

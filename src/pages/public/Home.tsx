@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { dataLayer } from '../../lib/data';
 import { SiteSettings, FAQ } from '../../types';
 import { IamurelLogo, IamurelSymbol } from '../../components/brand/IamurelBrand';
-import { InfiniteMarquee } from '../../components/modern/InfiniteMarquee';
+import { HeroVisuals } from '../../components/modern/HeroVisuals';
 import { RotatingWordHero } from '../../components/modern/RotatingWordHero';
-import { BeforeAfterComparison } from '../../components/modern/BeforeAfterComparison';
-import { ModernHeroPreview } from '../../components/modern/ModernHeroPreview';
+import { InfiniteMarquee } from '../../components/modern/InfiniteMarquee';
+import { ScrollReveal } from '../../components/modern/ScrollReveal';
 import {
   ArrowRight,
   Check,
@@ -75,26 +75,19 @@ export default function Home() {
 
   return (
     <div className="w-full">
-      {/* 2. HERO COM HEADLINE CURTA E ESPECÍFICA */}
+      {/* 2. HERO */}
       <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 px-6 bg-bg overflow-hidden border-b border-border">
         <div className="max-w-7xl mx-auto space-y-12">
-          <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-surface border border-border rounded-full text-xs font-semibold text-text shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-action animate-pulse"></span>
-              <span>Inteligência Artificial + Direção Humana</span>
-            </div>
-
-            <RotatingWordHero
-              prefix="Criamos conteúdo para marcas que querem parecer mais"
-              words={['profissionais', 'consistentes', 'memoráveis', 'autorais', 'desejadas']}
-              suffix="."
-            />
+          <ScrollReveal direction="up" delay={0.1}><div className="max-w-4xl mx-auto space-y-8 flex flex-col items-center text-center">
+            <RotatingWordHero />
+              
+            
 
             <p className="text-base sm:text-lg text-muted leading-relaxed max-w-2xl font-normal">
-              A IAMUREL combina inteligência artificial, direção criativa e acabamento profissional para criar marcas, posts e campanhas com mais velocidade e menos improviso.
+              A IAMUREL usa IA para acelerar a produção e direção humana para transformar contexto de negócio em peças claras, consistentes e prontas para circular.
             </p>
 
-            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+            <div className="pt-2 flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3.5">
               <a
                 href="#contato"
                 className="inline-flex items-center justify-center gap-2.5 bg-action hover:bg-action-hover text-white px-7 py-3.5 rounded-lg text-sm font-bold transition-all shadow-sm active:scale-[0.98] cursor-pointer"
@@ -107,227 +100,30 @@ export default function Home() {
                 href="#portfolio"
                 className="inline-flex items-center justify-center gap-2 bg-surface hover:bg-surface-hover border border-border text-text px-6 py-3.5 rounded-lg text-sm font-semibold transition-all cursor-pointer"
               >
-                <span>Ver trabalhos</span>
+                <span>Ver portfólio</span>
               </a>
             </div>
 
-            <div className="pt-4 flex flex-wrap items-center gap-6 text-xs text-muted">
+            <div className="pt-4 flex flex-wrap justify-center items-center gap-6 text-xs text-muted">
               <span className="flex items-center gap-1.5 font-medium text-text">
                 <Check size={15} className="text-action stroke-[3]" />
-                Retorno comercial em 24h
-              </span>
-              <span className="flex items-center gap-1.5 font-medium text-text">
-                <Check size={15} className="text-action stroke-[3]" />
-                Peças prontas em alta resolução
-              </span>
-              <span className="flex items-center gap-1.5 font-medium text-text">
-                <Check size={15} className="text-action stroke-[3]" />
-                Zero templates prontos de Canva
+                Peças pensadas para o seu negócio, não para preencher espaço no feed.
               </span>
             </div>
           </div>
 
-          {/* 3. VISUAL HERO: COMPOSIÇÃO MODERNA E DIRETA DE TRABALHOS PRONTOS */}
-          <ModernHeroPreview />
+          </ScrollReveal>
+          {/* 3. VISUAL HERO */}
+          <ScrollReveal direction="up" delay={0.3}><HeroVisuals /></ScrollReveal>
         </div>
       </section>
 
-      {/* FAIXA HORIZONTAL DE TEXTO EM MOVIMENTO (MARQUEE CONTÍNUO) */}
       <InfiniteMarquee />
 
-      {/* 4. SEÇÃO "VOCÊ NÃO PRECISA DE MAIS UM TEMPLATE" (3 DORES OBJETIVAS) */}
-      <section className="py-16 md:py-24 px-6 bg-surface border-b border-border">
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="max-w-2xl space-y-3">
-            <span className="text-xs uppercase tracking-wider text-action font-bold">
-              O Problema Real
-            </span>
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
-              Você não precisa de mais um template genérico.
-            </h2>
-            <p className="text-muted text-sm sm:text-base">
-              A maioria dos negócios não sofre por falta de posts, e sim por publicar conteúdos que não constroem autoridade nem atraem clientes de valor.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Dor 1 */}
-            <div className="p-7 bg-bg border border-border rounded-xl space-y-4 hover:border-action/50 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-red-100 text-red-700 flex items-center justify-center font-bold">
-                ✕
-              </div>
-              <h3 className="text-lg font-bold font-display text-text">
-                Marca visualmente inconsistente
-              </h3>
-              <p className="text-sm text-muted leading-relaxed">
-                Cada post parece feito por uma pessoa diferente ou baixado de um banco pronto. O cliente não reconhece a sua marca no feed e o valor do seu serviço cai.
-              </p>
-              <div className="p-3 bg-surface border border-border rounded-md text-xs text-text/80 font-medium">
-                → Sintoma: seu perfil parece amador mesmo você sendo um excelente profissional.
-              </div>
-            </div>
-
-            {/* Dor 2 */}
-            <div className="p-7 bg-bg border border-border rounded-xl space-y-4 hover:border-action/50 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-red-100 text-red-700 flex items-center justify-center font-bold">
-                ✕
-              </div>
-              <h3 className="text-lg font-bold font-display text-text">
-                Dificuldade e desgaste para produzir
-              </h3>
-              <p className="text-sm text-muted leading-relaxed">
-                Horas preciosas gastas na frente do Canva tentando encaixar textos em layouts engessados, drenando o tempo que deveria ser dedicado aos seus clientes e vendas.
-              </p>
-              <div className="p-3 bg-surface border border-border rounded-md text-xs text-text/80 font-medium">
-                → Sintoma: você publica por obrigação e para depois de duas semanas por cansaço.
-              </div>
-            </div>
-
-            {/* Dor 3 */}
-            <div className="p-7 bg-bg border border-border rounded-xl space-y-4 hover:border-action/50 transition-colors">
-              <div className="w-10 h-10 rounded-lg bg-red-100 text-red-700 flex items-center justify-center font-bold">
-                ✕
-              </div>
-              <h3 className="text-lg font-bold font-display text-text">
-                Conteúdo que não explica seu valor
-              </h3>
-              <p className="text-sm text-muted leading-relaxed">
-                Dicas óbvias e posts rasos que só atraem curiosos ou pessoas pedindo desconto, em vez de responder às reais dúvidas de quem tem dinheiro para contratar você.
-              </p>
-              <div className="p-3 bg-surface border border-border rounded-md text-xs text-text/80 font-medium">
-                → Sintoma: muito esforço de criação com quase nenhuma conversa iniciada no direct.
-              </div>
-            </div>
-          </div>
-
-          {/* COMPARAÇÃO VISUAL ANTES VS DEPOIS */}
-          <BeforeAfterComparison />
-        </div>
-      </section>
-
-      {/* 5. SEÇÃO "VEJA O QUE PODEMOS CRIAR" (4 CATEGORIAS) */}
-      <section id="servicos" className="py-16 md:py-24 px-6 bg-bg border-b border-border">
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="max-w-2xl space-y-3">
-            <span className="text-xs uppercase tracking-wider text-action font-bold">
-              Escopos Concretos
-            </span>
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
-              Veja o que podemos criar para o seu negócio.
-            </h2>
-            <p className="text-muted text-sm sm:text-base">
-              Entregas completas com conceito, texto persuasivo, direção visual e arquivos prontos para veicular em múltiplos formatos.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Categoria 1: Marca */}
-            <div className="p-7 bg-surface border border-border rounded-xl space-y-4 flex flex-col justify-between hover:border-action/40 transition-all shadow-xs">
-              <div className="space-y-3">
-                <div className="w-10 h-10 rounded-lg bg-action/10 text-action flex items-center justify-center font-bold">
-                  01
-                </div>
-                <h3 className="text-xl font-bold font-display text-text">Identidade & Marca</h3>
-                <p className="text-xs text-muted leading-relaxed">
-                  Logotipo autoral, sistema cromático, manual de uso, tipografia calibrada e assets organizados para dar prestígio à sua empresa.
-                </p>
-                <div className="pt-2 border-t border-border/80 text-xs space-y-1.5 text-text/90">
-                  <p className="font-semibold text-text">Entregáveis:</p>
-                  <p>• Manual de aplicação de marca</p>
-                  <p>• Paleta de cores & tipografia</p>
-                  <p>• Arquivos em alta resolução (PNG, Vetor e PDF)</p>
-                </div>
-              </div>
-              <a
-                href="#portfolio"
-                className="pt-4 text-xs font-bold text-action hover:underline inline-flex items-center gap-1"
-              >
-                Ver exemplos no portfólio <ArrowRight size={13} />
-              </a>
-            </div>
-
-            {/* Categoria 2: Conteúdo Contínuo */}
-            <div className="p-7 bg-surface border border-border rounded-xl space-y-4 flex flex-col justify-between hover:border-action/40 transition-all shadow-xs">
-              <div className="space-y-3">
-                <div className="w-10 h-10 rounded-lg bg-action/10 text-action flex items-center justify-center font-bold">
-                  02
-                </div>
-                <h3 className="text-xl font-bold font-display text-text">Conteúdo Contínuo</h3>
-                <p className="text-xs text-muted leading-relaxed">
-                  Carrosséis de alta retenção no formato 4:5, stories estratégicos e posts de feed desenhados para quebrar objeções comerciais.
-                </p>
-                <div className="pt-2 border-t border-border/80 text-xs space-y-1.5 text-text/90">
-                  <p className="font-semibold text-text">Entregáveis:</p>
-                  <p>• Carrosséis 4:5 otimizados</p>
-                  <p>• Roteiro de copy com gancho forte</p>
-                  <p>• Legendas comerciais incluídas</p>
-                </div>
-              </div>
-              <a
-                href="#portfolio"
-                className="pt-4 text-xs font-bold text-action hover:underline inline-flex items-center gap-1"
-              >
-                Ver exemplos no portfólio <ArrowRight size={13} />
-              </a>
-            </div>
-
-            {/* Categoria 3: Campanhas */}
-            <div className="p-7 bg-surface border border-border rounded-xl space-y-4 flex flex-col justify-between hover:border-action/40 transition-all shadow-xs">
-              <div className="space-y-3">
-                <div className="w-10 h-10 rounded-lg bg-action/10 text-action flex items-center justify-center font-bold">
-                  03
-                </div>
-                <h3 className="text-xl font-bold font-display text-text">Campanhas & Anúncios</h3>
-                <p className="text-xs text-muted leading-relaxed">
-                  Criativos estáticos e animados para tráfego pago (Meta Ads, Google), promoções sazonais e anúncios de captação de clientes.
-                </p>
-                <div className="pt-2 border-t border-border/80 text-xs space-y-1.5 text-text/90">
-                  <p className="font-semibold text-text">Entregáveis:</p>
-                  <p>• Variações em 1:1, 4:5 e 9:16</p>
-                  <p>• Testes A/B de ganchos visuais</p>
-                  <p>• Foco direto em conversão</p>
-                </div>
-              </div>
-              <a
-                href="#portfolio"
-                className="pt-4 text-xs font-bold text-action hover:underline inline-flex items-center gap-1"
-              >
-                Ver exemplos no portfólio <ArrowRight size={13} />
-              </a>
-            </div>
-
-            {/* Categoria 4: Físicos / Outdoor */}
-            <div className="p-7 bg-surface border border-border rounded-xl space-y-4 flex flex-col justify-between hover:border-action/40 transition-all shadow-xs">
-              <div className="space-y-3">
-                <div className="w-10 h-10 rounded-lg bg-action/10 text-action flex items-center justify-center font-bold">
-                  04
-                </div>
-                <h3 className="text-xl font-bold font-display text-text">Materiais Físicos</h3>
-                <p className="text-xs text-muted leading-relaxed">
-                  Design para fachadas, cartazes de ponto de venda, outdoors, cardápios, embalagens e uniformes com fechamento técnico de gráfica.
-                </p>
-                <div className="pt-2 border-t border-border/80 text-xs space-y-1.5 text-text/90">
-                  <p className="font-semibold text-text">Entregáveis:</p>
-                  <p>• Arquivos em vetor (PDF/X-1a)</p>
-                  <p>• Especificações para impressão</p>
-                  <p>• Provas digitais de aplicação</p>
-                </div>
-              </div>
-              <a
-                href="#portfolio"
-                className="pt-4 text-xs font-bold text-action hover:underline inline-flex items-center gap-1"
-              >
-                Ver exemplos no portfólio <ArrowRight size={13} />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. PORTFÓLIO COMO SEÇÃO CENTRAL DA PÁGINA (ESTUDOS CONCRETOS) */}
+      {/* 3. PORTFÓLIO (ESTUDOS CONCRETOS) */}
       <PortfolioCentralSection onSelectPlan={handleSelectPlan} />
 
-      {/* 7. COMO A IA E A DIREÇÃO HUMANA TRABALHAM JUNTAS (3 PASSOS) */}
+      {/* 4. SERVIÇOS (TRÊS CAMINHOS) */}
       <section id="como-funciona" className="py-16 md:py-24 px-6 bg-bg border-b border-border">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="max-w-2xl space-y-3">
@@ -344,7 +140,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Passo 01 */}
-            <div className="p-8 bg-surface border border-border rounded-xl space-y-5">
+            <div className="p-8 bg-surface border border-border rounded-xl space-y-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-display font-black text-action">01</span>
                 <span className="text-[11px] font-semibold uppercase px-2.5 py-1 bg-bg border border-border rounded text-text">
@@ -369,7 +165,7 @@ export default function Home() {
             </div>
 
             {/* Passo 02 */}
-            <div className="p-8 bg-surface border border-border rounded-xl space-y-5">
+            <div className="p-8 bg-surface border border-border rounded-xl space-y-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-display font-black text-action">02</span>
                 <span className="text-[11px] font-semibold uppercase px-2.5 py-1 bg-bg border border-border rounded text-text">
@@ -394,7 +190,7 @@ export default function Home() {
             </div>
 
             {/* Passo 03 */}
-            <div className="p-8 bg-surface border border-border rounded-xl space-y-5">
+            <div className="p-8 bg-surface border border-border rounded-xl space-y-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-display font-black text-action">03</span>
                 <span className="text-[11px] font-semibold uppercase px-2.5 py-1 bg-bg border border-border rounded text-text">
@@ -421,13 +217,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 8. SEÇÃO "PARA QUEM É" (EXEMPLOS REAIS DE CLIENTES) */}
+      {/* 5. SEÇÃO "PARA QUEM É" (EXEMPLOS REAIS DE CLIENTES) */}
       <section className="py-16 md:py-24 px-6 bg-surface border-b border-border">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="max-w-2xl space-y-3">
-            <span className="text-xs uppercase tracking-wider text-action font-bold">
-              Segmentos Atendidos
-            </span>
             <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
               Para quem a IAMUREL é ideal.
             </h2>
@@ -445,7 +238,7 @@ export default function Home() {
                 <h4 className="text-lg font-bold font-display text-text">Profissionais de Saúde</h4>
               </div>
               <p className="text-xs text-muted leading-relaxed">
-                Médicos, dentistas e fisioterapeutas que precisam traduzir procedimentos complexos em conteúdos educativos éticos que atraem pacientes particulares.
+                Médicos, dentistas e fisioterapeutas que precisam traduzir procedimentos em conteúdos educativos que atraem pacientes.
               </p>
             </div>
 
@@ -457,7 +250,7 @@ export default function Home() {
                 <h4 className="text-lg font-bold font-display text-text">Barbearias & Estética</h4>
               </div>
               <p className="text-xs text-muted leading-relaxed">
-                Estúdios que querem sair da guerra de preços e se posicionar como referência na cidade através de uma marca visualmente imponente e desejada.
+                Estúdios que querem se posicionar como referência através de uma marca visualmente imponente e desejada.
               </p>
             </div>
 
@@ -469,71 +262,28 @@ export default function Home() {
                 <h4 className="text-lg font-bold font-display text-text">Especialistas & Consultores</h4>
               </div>
               <p className="text-xs text-muted leading-relaxed">
-                Advogados, arquitetos e consultores que vendem serviços de alto valor e precisam de posts densos que comprovem conhecimento técnico.
+                Advogados, arquitetos e consultores que vendem serviços de alto valor e precisam comprovar conhecimento técnico.
               </p>
-            </div>
-
-            <div className="p-6 bg-bg border border-border rounded-xl space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-action/10 text-action rounded-lg">
-                  <Store size={22} />
-                </div>
-                <h4 className="text-lg font-bold font-display text-text">Pequenos Negócios Locais</h4>
-              </div>
-              <p className="text-xs text-muted leading-relaxed">
-                Cafeterias, óticas e lojas que precisam conectar o visual do espaço físico às redes sociais e anúncios de captação regional.
-              </p>
-            </div>
-
-            <div className="p-6 bg-bg border border-border rounded-xl space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-action/10 text-action rounded-lg">
-                  <TrendingUp size={22} />
-                </div>
-                <h4 className="text-lg font-bold font-display text-text">Empresas em Crescimento</h4>
-              </div>
-              <p className="text-xs text-muted leading-relaxed">
-                Negócios prontos para escalar suas vendas com anúncios assertivos, apresentações comerciais de alto padrão e materiais de apoio.
-              </p>
-            </div>
-
-            <div className="p-6 bg-bg border border-border rounded-xl space-y-3 flex flex-col justify-between">
-              <div className="space-y-2">
-                <span className="text-xs font-bold text-action uppercase tracking-wider">Seu negócio aqui</span>
-                <h4 className="text-lg font-bold font-display text-text">Não achou seu segmento?</h4>
-                <p className="text-xs text-muted">
-                  Conversamos diretamente pelo WhatsApp para entender se nosso modelo atende ao seu momento.
-                </p>
-              </div>
-              <a
-                href="#contato"
-                className="text-xs font-bold text-action hover:underline inline-flex items-center gap-1 pt-2"
-              >
-                Falar com a IAMUREL <ArrowRight size={13} />
-              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 9. TRÊS CAMINHOS COMERCIAIS SIMPLES (SEM EXCESSO DE PLANOS) */}
-      <section id="planos" className="py-16 md:py-24 px-6 bg-bg border-b border-border">
+      {/* 6. SERVIÇOS (TRÊS CAMINHOS) */}
+      <section id="servicos" className="py-16 md:py-24 px-6 bg-bg border-b border-border">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="max-w-2xl space-y-3">
-            <span className="text-xs uppercase tracking-wider text-action font-bold">
-              Opções Transparentes
-            </span>
             <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
-              Três caminhos simples para começar.
+              Serviços
             </h2>
             <p className="text-muted text-sm sm:text-base">
-              Sem contratos engessados de fidelidade abusiva. Escolha o formato que resolve a necessidade da sua marca hoje.
+              Escolha o formato que resolve a necessidade da sua marca hoje.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Opção 1: Marca */}
-            <div className="p-8 bg-surface border border-border rounded-2xl flex flex-col justify-between space-y-6">
+            <div className="p-8 bg-surface border border-border rounded-2xl flex flex-col justify-between space-y-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
               <div className="space-y-4">
                 <div>
                   <span className="text-xs font-bold text-muted uppercase">Opção Pontual</span>
@@ -631,7 +381,7 @@ export default function Home() {
             </div>
 
             {/* Opção 3: Campanhas */}
-            <div className="p-8 bg-surface border border-border rounded-2xl flex flex-col justify-between space-y-6">
+            <div className="p-8 bg-surface border border-border rounded-2xl flex flex-col justify-between space-y-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
               <div className="space-y-4">
                 <div>
                   <span className="text-xs font-bold text-muted uppercase">Campanha Específica</span>
@@ -680,13 +430,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 10. FAQ CURTA E OBJETIVA */}
+      {/* 7. FAQ CURTA E OBJETIVA */}
       <section id="faq" className="py-16 md:py-24 px-6 bg-surface border-b border-border">
         <div className="max-w-3xl mx-auto space-y-10">
           <div className="text-center space-y-3">
-            <span className="text-xs uppercase tracking-wider text-action font-bold">
-              Tire Suas Dúvidas
-            </span>
             <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
               Perguntas Frequentes
             </h2>
@@ -696,17 +443,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 11. CTA FINAL FORTE COM LOGO IAMUREL E BOTÃO LIQUID GLASS "ENTRE EM CONTATO" */}
+      {/* 8. CTA FINAL FORTE COM LOGO IAMUREL */}
       <section className="py-20 md:py-28 px-6 bg-dark text-white relative overflow-hidden border-b border-border-dark">
-        {/* Sutil brilho de ambientação sem exageros */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-action/10 rounded-full blur-3xl pointer-events-none"></div>
-
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
           <div className="inline-flex flex-col items-center">
             <IamurelLogo className="h-10 sm:h-12 justify-center" color="white" />
-            <span className="text-xs uppercase tracking-widest text-bg/60 font-semibold mt-2 block">
-              Conteúdo & Design com Direção Humana
-            </span>
           </div>
 
           <h2 className="text-2xl sm:text-4xl font-display font-bold max-w-xl mx-auto leading-tight text-white/95">
@@ -714,16 +455,15 @@ export default function Home() {
           </h2>
 
           <p className="text-sm sm:text-base text-bg/75 max-w-lg mx-auto leading-relaxed">
-            Sem reuniões demoradas. Mande uma mensagem agora e receba um diagnóstico direto do que pode melhorar no seu conteúdo.
+            Envie uma mensagem e vamos conversar sobre as necessidades do seu projeto.
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-            {/* Botão em Liquid Glass discreto escrito exatamente "Entre em contato" */}
             <a
               href="#contato"
-              className="liquid-glass-btn text-white px-9 py-4 rounded-xl text-sm font-bold tracking-wide uppercase shadow-lg transition-all active:scale-[0.98] inline-flex items-center gap-2 cursor-pointer"
+              className="bg-action hover:bg-action-hover text-white px-9 py-4 rounded-xl text-sm font-bold tracking-wide shadow-lg transition-all active:scale-[0.98] inline-flex items-center gap-2 cursor-pointer"
             >
-              <span>Entre em contato</span>
+              <span>Falar com a IAMUREL</span>
               <ArrowRight size={17} />
             </a>
 
@@ -731,7 +471,7 @@ export default function Home() {
               href={whatsappDirect}
               target="_blank"
               rel="noopener noreferrer"
-              className="liquid-glass text-white/90 hover:text-white px-7 py-4 rounded-xl text-sm font-semibold transition-all inline-flex items-center gap-2 cursor-pointer"
+              className="border border-white/20 hover:bg-white/5 text-white/90 hover:text-white px-7 py-4 rounded-xl text-sm font-semibold transition-all inline-flex items-center gap-2 cursor-pointer"
             >
               <MessageCircle size={17} className="text-action" />
               <span>Chamar no WhatsApp</span>
@@ -787,7 +527,7 @@ function PortfolioCentralSection({ onSelectPlan }: { onSelectPlan: (plan: string
         'Criativos de tráfego pago para agendamento local',
         'Banner de fachada e cartaz de ponto de venda'
       ],
-      resultObservation: 'Elevação imediata do valor percebido e atração de clientes dispostos a pagar pelo plano por assinatura.'
+      resultObservation: 'Elevação do valor percebido e atração de clientes dispostos a pagar pelo serviço premium.'
     },
     {
       id: 1,
@@ -936,7 +676,7 @@ function PortfolioCentralSection({ onSelectPlan }: { onSelectPlan: (plan: string
                       <div className="w-3/4 h-2 bg-text/50 rounded"></div>
                     </div>
                   </div>
-                  <span className="text-[10px] text-muted block">Taxa de retenção alta</span>
+                  <span className="text-[10px] text-muted block">Carrossel estruturado para facilitar a leitura</span>
                 </div>
 
                 <div className="p-4 bg-bg border border-border rounded-lg space-y-2">
@@ -955,7 +695,7 @@ function PortfolioCentralSection({ onSelectPlan }: { onSelectPlan: (plan: string
               </div>
 
               <div className="p-3.5 bg-bg border border-border rounded-lg text-xs text-muted flex items-center justify-between">
-                <span>Resultado Prático Observado:</span>
+                <span>Efeito esperado da direção visual:</span>
                 <span className="font-bold text-text">{current.resultObservation}</span>
               </div>
             </div>
@@ -973,33 +713,27 @@ function FaqAccordion({ faqs }: { faqs: FAQ[] }) {
   const defaultFaqs: FAQ[] = [
     {
       id: 'faq-1',
-      question: 'Vocês usam apenas inteligência artificial para criar?',
-      answer: 'Não. A IA é utilizada como um motor acelerador de pesquisa de temas, exploração rápida de variações e adaptação de formatos. Toda a estratégia de negócios, direção de arte, redação dos ganchos, escolha tipográfica e refinamento visual é feita por profissionais humanos experientes.',
+      question: 'Como a IA é usada?',
+      answer: 'A IA atua como motor de pesquisa e variação de formatos. Toda a estratégia, direção de arte, texto persuasivo e acabamento final continuam sendo feitos por profissionais humanos experientes.',
       order_index: 1
     },
     {
       id: 'faq-2',
-      question: 'Quais são os prazos de entrega das peças?',
-      answer: 'Para serviços pontuais ou campanhas de anúncios, as entregas acontecem normalmente entre 2 e 5 dias úteis após o briefing. Para planos de conteúdo contínuo, as peças são entregues em lotes quinzenais ou semanais para garantir antecedência e tranquilidade na sua programação.',
+      question: 'O que é entregue?',
+      answer: 'Peças 100% finalizadas em alta resolução (PNG, PDF ou vetor). Entregamos o material pronto para postar ou imprimir, sem necessidade de edições da sua parte.',
       order_index: 2
     },
     {
       id: 'faq-3',
-      question: 'Como funcionam os ajustes e revisões?',
-      answer: 'Todo projeto inclui rodadas claras de alinhamento e refinamento. Como começamos alinhando a direção antes de produzir o lote completo, mais de 90% das entregas são aprovadas de primeira, com pequenos ajustes apenas de pontuação ou detalhes pontuais.',
+      question: 'Qual é o prazo?',
+      answer: 'Projetos pontuais levam de 2 a 5 dias úteis. Projetos de conteúdo contínuo têm entregas semanais ou quinzenais acordadas no cronograma.',
       order_index: 3
     },
     {
       id: 'faq-4',
-      question: 'Vocês entregam arquivos abertos ou editáveis?',
-      answer: 'Não trabalhamos com arquivos editáveis. Nosso serviço é focado em poupar o seu tempo: entregamos todas as peças 100% finalizadas em altíssima resolução (PNG, JPG em alta qualidade e PDF pronto para gráfica), prontas para você baixar e postar imediatamente, sem precisar abrir nenhum programa de edição.',
+      question: 'Como começa o projeto?',
+      answer: 'Basta enviar uma mensagem no WhatsApp. Não precisamos de reuniões demoradas; um áudio curto explicando a sua demanda já nos permite estruturar os próximos passos.',
       order_index: 4
-    },
-    {
-      id: 'faq-5',
-      question: 'Como é feito o atendimento no dia a dia?',
-      answer: 'Sem reuniões longas e improdutivas. Nosso canal principal de alinhamento rápido é o WhatsApp. Você pode enviar áudios rápidos de 1 a 3 minutos explicando suas demandas e nós cuidamos da estruturação técnica.',
-      order_index: 5
     }
   ];
 

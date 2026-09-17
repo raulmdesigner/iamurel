@@ -1,15 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { dataLayer } from '../../lib/data';
 import { AppearanceSettings } from '../../types';
-import { Palette, Check, Save, Sparkles, RefreshCw } from 'lucide-react';
+import { Palette, Check, Save, Sparkles, RefreshCw, UploadCloud, Loader2 } from 'lucide-react';
+import { uploadMediaToSupabase, isSupabaseConfigured } from '../../lib/supabase';
 
 export default function AppearanceCMS() {
   const [appearance, setAppearance] = useState<AppearanceSettings | null>(null);
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [uploadingField, setUploadingField] = useState<string | null>(null);
 
   useEffect(() => {
     dataLayer.getAppearance().then(setAppearance);
   }, []);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>, field: keyof AppearanceSettings) {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    if (!isSupabaseConfigured) {
+      alert("Configuração do Supabase necessária no menu Configurações da Base de Dados.");
+      return;
+    }
+
+    const file = e.target.files[0];
+    setUploadingField(field);
+
+    const { url, error } = await uploadMediaToSupabase(file);
+    
+    if (error) {
+      alert(`Erro no upload: ${error}`);
+    } else if (url && appearance) {
+      setAppearance({ ...appearance, [field]: url });
+    }
+    
+    setUploadingField(null);
+  }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
@@ -26,7 +50,11 @@ export default function AppearanceCMS() {
       bg_tone: 'cream',
       border_style: 'minimal',
       motion_level: 'balanced',
-      font_pairing: 'editorial'
+      font_pairing: 'editorial',
+      hero_video_url: null,
+      hero_image_1_url: null,
+      hero_image_2_url: null,
+      hero_image_3_url: null,
     };
     setAppearance(defaultVals);
   }
@@ -166,6 +194,61 @@ export default function AppearanceCMS() {
                 <span className="font-semibold text-xs block text-text">{item.label}</span>
                 <span className="text-[11px] text-muted block mt-1">{item.desc}</span>
               </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Mídia do Hero */}
+        <div className="pt-6 border-t border-border space-y-4">
+          <div>
+            <label className="block text-sm font-bold text-text mb-1 flex items-center gap-2">
+              <UploadCloud size={16} className="text-action" />
+              Mídia da Página Inicial (Via Supabase)
+            </label>
+            <p className="text-xs text-muted mb-4">
+              Faça o upload do vídeo principal (Reel) e imagens do portfólio para compor a abertura do site.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {[
+              { id: 'hero_video_url', label: 'Vídeo Anúncio / Reel (MP4)', accept: 'video/*' },
+              { id: 'hero_image_1_url', label: 'Imagem Flutuante Central 1', accept: 'image/*' },
+              { id: 'hero_image_2_url', label: 'Imagem Flutuante Esquerda 2', accept: 'image/*' },
+              { id: 'hero_image_3_url', label: 'Imagem Flutuante Direita 3', accept: 'image/*' },
+            ].map((field) => (
+              <div key={field.id} className="p-4 border border-border rounded-lg bg-surface">
+                <span className="block text-xs font-bold text-text mb-2">{field.label}</span>
+                {appearance[field.id as keyof AppearanceSettings] ? (
+                  <div className="mb-3">
+                    {field.accept.includes('video') ? (
+                      <video src={appearance[field.id as keyof AppearanceSettings] as string} className="h-24 w-auto rounded border border-border object-cover" muted />
+                    ) : (
+                      <img src={appearance[field.id as keyof AppearanceSettings] as string} className="h-24 w-auto rounded border border-border object-cover" alt="Preview" />
+                    )}
+                  </div>
+                ) : (
+                  <div className="h-24 w-full rounded border border-dashed border-border mb-3 flex items-center justify-center bg-bg text-[10px] text-muted">
+                    Sem mídia enviada
+                  </div>
+                )}
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept={field.accept}
+                    onChange={(e) => handleFileUpload(e, field.id as keyof AppearanceSettings)}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+                    disabled={uploadingField === field.id || !isSupabaseConfigured}
+                  />
+                  <div className="flex items-center justify-center gap-2 px-3 py-2 border border-border rounded text-xs bg-bg text-text pointer-events-none">
+                    {uploadingField === field.id ? (
+                      <><Loader2 size={14} className="animate-spin text-action" /> Enviando...</>
+                    ) : (
+                      <><UploadCloud size={14} /> {appearance[field.id as keyof AppearanceSettings] ? 'Trocar Arquivo' : 'Escolher Arquivo'}</>
+                    )}
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         </div>
