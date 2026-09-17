@@ -1,28 +1,68 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Playfair Display", serif;
-  --font-body: "Plus Jakarta Sans", sans-serif;
+  --font-display: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
 
-  --color-bg: #FDFDFB;
+  --color-bg: #FBFBFA;
   --color-surface: #FFFFFF;
-  --color-text: #242422;
-  --color-muted: #7A7A75;
-  --color-action: #D95B43;
-  --color-action-hover: #C24D37;
-  --color-trust: #1A5F6A;
-  --color-border: #E8E8E3;
+  --color-surface-hover: #F4F5F2;
+  --color-dark: #091A24;
+  --color-dark-surface: #0E2431;
+  --color-dark-card: #132E3E;
+  --color-text: #14171A;
+  --color-muted: #5C6670;
+  --color-action: #FF4A1C;
+  --color-action-hover: #E53A0E;
+  --color-trust: #0F4C5C;
+  --color-border: #E4E7EA;
+  --color-border-dark: #1A3747;
 }
 
 @layer base {
+  :root {
+    --bg-color: #FBFBFA;
+    --surface-color: #FFFFFF;
+    --text-color: #14171A;
+    --action-color: #FF4A1C;
+    --dark-color: #091A24;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     font-family: var(--font-body);
     background-color: var(--color-bg);
     color: var(--color-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    font-weight: 600;
+    letter-spacing: -0.025em;
   }
+}
+
+/* Sutil liquid glass sem exagero */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.liquid-glass-btn {
+  background: linear-gradient(135deg, rgba(255, 74, 28, 0.95), rgba(229, 58, 14, 0.9));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 24px -4px rgba(255, 74, 28, 0.35);
+}
+
+.liquid-glass-btn:hover {
+  background: linear-gradient(135deg, #FF5B31, #E53A0E);
+  box-shadow: 0 12px 30px -4px rgba(255, 74, 28, 0.5);
 }

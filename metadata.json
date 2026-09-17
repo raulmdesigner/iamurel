@@ -1,6 +1,6 @@
 {
   "name": "IAMUREL",
-  "description": "Estúdio editorial de conteúdo com direção e design com intenção. Combina inteligência artificial na pesquisa com rigor e curadoria de direção humana.",
+  "description": "A IAMUREL combina inteligência artificial, direção criativa e acabamento profissional para criar marcas, posts e campanhas com mais velocidade e menos improviso.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
