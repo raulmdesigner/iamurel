@@ -17,7 +17,7 @@ export const mockSettings: SiteSettings = {
   hero_subtitle: 'Aceleramos a pesquisa e a exploração com inteligência artificial, mas mantemos o contexto, a curadoria e a lapidação visual 100% conduzidas por direção humana. Feito para marcas que se recusam a parecer genéricas.',
   primary_cta_text: 'Iniciar conversa sem compromisso',
   secondary_cta_text: 'Ver demonstrações reais',
-  contact_email: 'contato@iamurel.com',
+  contact_email: 'iamurelbrasil@gmail.com',
   contact_phone: '+55 (11) 98765-4321',
   whatsapp_number: '5511987654321',
   instagram_handle: '@iamurel.studio',
@@ -30,7 +30,7 @@ export const mockSettings: SiteSettings = {
   privacy_policy: `1. Coleta de Dados: Coletamos apenas as informações fornecidas voluntariamente através do formulário de contato (nome, e-mail, telefone/WhatsApp, nome do negócio e objetivos de comunicação).
 2. Finalidade: Os dados são utilizados unicamente para retorno comercial, envio de propostas e atendimento qualificado. Jamais vendemos, alugamos ou compartilhamos dados com terceiros.
 3. Armazenamento e Segurança: Os registros são armazenados em ambiente seguro com controle de acesso criptografado em conformidade com as diretrizes da Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018).
-4. Seus Direitos: O titular pode solicitar a qualquer momento a visualização, retificação ou exclusão permanente dos seus dados de contato enviando mensagem para contato@iamurel.com.`
+4. Seus Direitos: O titular pode solicitar a qualquer momento a visualização, retificação ou exclusão permanente dos seus dados de contato enviando mensagem para iamurelbrasil@gmail.com.`
 };
 
 export const mockServices: Service[] = [
@@ -64,7 +64,7 @@ export const mockServices: Service[] = [
     id: 'srv-03',
     title: 'Design de Peças & Carrosséis Estratégicos',
     problem_solved: 'Cada publicação parece feita por uma pessoa diferente no Canva, gerando poluição visual e baixa retenção de leitura da sua audiência.',
-    deliverables: 'Templates autorais no Figma, diagramação completa de 12 a 20 peças mensais (carrosséis estruturados e posts únicos) com curadoria estética e copy revisada.',
+    deliverables: 'Diagramação completa de 12 a 20 peças mensais em alta resolução (carrosséis estruturados e posts únicos) prontas para postar, com curadoria estética e copy persuasiva.',
     target_audience: 'Negócios que precisam de presença digital ativa sem comprometer horas da sua equipe técnica em design.',
     not_included: 'Compra de mídia (tráfego pago) e resposta a comentários ou mensagens privadas.',
     timeframe: 'Ciclos mensais de entrega',
@@ -123,7 +123,7 @@ export const mockPackages: Package[] = [
     status: 'active',
     items: [
       { id: 'i6', package_id: 'pkg-02', title: 'Tudo contido no Pacote Essencial', quantity: null, order_index: 1 },
-      { id: 'i7', package_id: 'pkg-02', title: 'Templates Editáveis para Carrosséis e Posts no Figma', quantity: '8', order_index: 2 },
+      { id: 'i7', package_id: 'pkg-02', title: 'Conjunto de Peças Prontas para Postar em Alta Resolução', quantity: '8', order_index: 2 },
       { id: 'i8', package_id: 'pkg-02', title: 'Modelos de Capa e Assinatura de E-mail Comercial', quantity: '2', order_index: 3 },
       { id: 'i9', package_id: 'pkg-02', title: 'Template de Proposta Comercial / Apresentação Institucional', quantity: '1', order_index: 4 },
       { id: 'i10', package_id: 'pkg-02', title: 'Guia de Tom de Voz e Aplicação Editorial', quantity: '1', order_index: 5 }
@@ -176,7 +176,7 @@ export const mockShowcases: Showcase[] = [
     label: 'demonstration',
     context: 'Demonstração prática de como transformar um tópico técnico em uma narrativa com ritmo, sem parecer um slide chato de PowerPoint.',
     decision: 'Quebra de padrão na capa, alternância entre frases curtas e diagramas conceituais, e fechamento com pergunta que gera comentários qualificados.',
-    deliverable: 'Carrossel 4:5 no Figma com copy validada, espaçamentos matemáticos e respiro visual.',
+    deliverable: 'Carrossel 4:5 finalizado em alta resolução com copy validada, espaçamentos matemáticos e respiro visual.',
     image_url: null,
     order_index: 1,
     type: 'carousel',
@@ -255,7 +255,7 @@ export const mockFaq: FAQ[] = [
   {
     id: 'faq-03',
     question: 'Eu já possuo uma logo existente. Vocês trabalham apenas com a parte de conteúdo e design de redes?',
-    answer: 'Sim, com frequência. Analisamos a identidade que você já possui e criamos um sistema editorial completo (templates no Figma, roteiros de postagem e calendário mensal) para valorizar e dar consistência ao que sua marca já construiu.',
+    answer: 'Sim, com frequência. Analisamos a identidade que você já possui e criamos um sistema de comunicação completo (peças finalizadas em alta resolução, roteiros de postagem e calendário mensal) para valorizar e dar consistência ao que sua marca já construiu.',
     order_index: 3
   },
   {

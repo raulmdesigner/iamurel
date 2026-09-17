@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { dataLayer } from '../../lib/data';
 import { SiteSettings, FAQ } from '../../types';
+import { IamurelLogo, IamurelSymbol } from '../../components/brand/IamurelBrand';
+import { InfiniteMarquee } from '../../components/modern/InfiniteMarquee';
+import { RotatingWordHero } from '../../components/modern/RotatingWordHero';
+import { BeforeAfterComparison } from '../../components/modern/BeforeAfterComparison';
+import { ModernHeroPreview } from '../../components/modern/ModernHeroPreview';
 import {
   ArrowRight,
   Check,
@@ -79,9 +84,11 @@ export default function Home() {
               <span>Inteligência Artificial + Direção Humana</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-text tracking-tight leading-[1.08]">
-              Conteúdo que dá forma ao valor do seu negócio.
-            </h1>
+            <RotatingWordHero
+              prefix="Criamos conteúdo para marcas que querem parecer mais"
+              words={['profissionais', 'consistentes', 'memoráveis', 'autorais', 'desejadas']}
+              suffix="."
+            />
 
             <p className="text-base sm:text-lg text-muted leading-relaxed max-w-2xl font-normal">
               A IAMUREL combina inteligência artificial, direção criativa e acabamento profissional para criar marcas, posts e campanhas com mais velocidade e menos improviso.
@@ -111,7 +118,7 @@ export default function Home() {
               </span>
               <span className="flex items-center gap-1.5 font-medium text-text">
                 <Check size={15} className="text-action stroke-[3]" />
-                Arquivos abertos no Figma
+                Peças prontas em alta resolução
               </span>
               <span className="flex items-center gap-1.5 font-medium text-text">
                 <Check size={15} className="text-action stroke-[3]" />
@@ -120,10 +127,13 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 3. VISUAL HERO: COMPOSIÇÃO REALISTA DE APLICAÇÕES DO TRABALHO */}
-          <HeroVisualComposition />
+          {/* 3. VISUAL HERO: COMPOSIÇÃO MODERNA E DIRETA DE TRABALHOS PRONTOS */}
+          <ModernHeroPreview />
         </div>
       </section>
+
+      {/* FAIXA HORIZONTAL DE TEXTO EM MOVIMENTO (MARQUEE CONTÍNUO) */}
+      <InfiniteMarquee />
 
       {/* 4. SEÇÃO "VOCÊ NÃO PRECISA DE MAIS UM TEMPLATE" (3 DORES OBJETIVAS) */}
       <section className="py-16 md:py-24 px-6 bg-surface border-b border-border">
@@ -189,6 +199,9 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          {/* COMPARAÇÃO VISUAL ANTES VS DEPOIS */}
+          <BeforeAfterComparison />
         </div>
       </section>
 
@@ -222,7 +235,7 @@ export default function Home() {
                   <p className="font-semibold text-text">Entregáveis:</p>
                   <p>• Manual de aplicação de marca</p>
                   <p>• Paleta de cores & tipografia</p>
-                  <p>• Arquivos abertos no Figma</p>
+                  <p>• Arquivos em alta resolução (PNG, Vetor e PDF)</p>
                 </div>
               </div>
               <a
@@ -375,7 +388,7 @@ export default function Home() {
                 </div>
                 <div className="p-2.5 bg-orange-50/50 border border-orange-100 rounded text-orange-950">
                   <span className="font-bold block mb-0.5">👤 O que a equipe decide:</span>
-                  Desenha no Figma, lapida o contraste, ajusta a hierarquia e elimina qualquer clichê.
+                  Define a direção visual autoral, lapida o contraste, ajusta a hierarquia e elimina qualquer clichê.
                 </div>
               </div>
             </div>
@@ -553,7 +566,7 @@ export default function Home() {
                   </li>
                   <li className="flex items-start gap-2">
                     <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Arquivos abertos e organizados no Figma</span>
+                    <span>Arquivos prontos para uso em alta resolução (PNG, Vetor e PDF)</span>
                   </li>
                 </ul>
               </div>
@@ -689,11 +702,9 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-action/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
-          <div className="inline-block">
-            <span className="text-4xl sm:text-6xl font-display font-black tracking-tight text-white block">
-              IAMUREL
-            </span>
-            <span className="text-xs uppercase tracking-widest text-bg/60 font-semibold mt-1 block">
+          <div className="inline-flex flex-col items-center">
+            <IamurelLogo className="h-10 sm:h-12 text-white justify-center" />
+            <span className="text-xs uppercase tracking-widest text-bg/60 font-semibold mt-2 block">
               Conteúdo & Design com Direção Humana
             </span>
           </div>
@@ -757,128 +768,6 @@ export default function Home() {
 }
 
 // ----------------------------------------------------------------------
-// 3. COMPOSIÇÃO VISUAL DO HERO (POSTS, CARROSSEL, CARTÃO E OUTDOOR)
-// ----------------------------------------------------------------------
-function HeroVisualComposition() {
-  return (
-    <div className="w-full bg-surface border border-border rounded-2xl p-6 sm:p-8 shadow-sm space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-border">
-        <div>
-          <span className="text-[11px] font-bold text-action uppercase tracking-wider block">
-            Aplicações Concretas
-          </span>
-          <h3 className="text-lg font-bold font-display text-text">
-            Um sistema completo de comunicação, sem peças soltas.
-          </h3>
-        </div>
-        <span className="text-xs text-muted font-medium">
-          Consistência em todos os pontos de contato
-        </span>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Peça 1: Carrossel de Instagram 4:5 */}
-        <div className="bg-bg border border-border rounded-xl p-4 flex flex-col justify-between aspect-[4/5] relative overflow-hidden group hover:border-action/60 transition-colors">
-          <div className="flex items-center justify-between text-[10px] font-bold text-muted border-b border-border pb-2">
-            <span className="text-action">INSTAGRAM • 4:5</span>
-            <span>SLIDE 01</span>
-          </div>
-
-          <div className="space-y-2 my-auto">
-            <span className="text-[9px] font-semibold text-muted uppercase">Posicionamento</span>
-            <p className="text-base font-display font-bold text-text leading-snug">
-              "Por que cobrar barato atrai clientes difíceis e drena sua empresa."
-            </p>
-            <p className="text-[11px] text-muted leading-tight">
-              Quebra de objeção no gancho inicial + respiro visual de 32px.
-            </p>
-          </div>
-
-          <div className="pt-2 border-t border-border flex items-center justify-between text-[10px] text-muted">
-            <span>DIREÇÃO IAMUREL</span>
-            <span className="text-action font-semibold">Deslize →</span>
-          </div>
-        </div>
-
-        {/* Peça 2: Story / Anúncio 9:16 */}
-        <div className="bg-dark text-white rounded-xl p-4 flex flex-col justify-between aspect-[4/5] relative overflow-hidden border border-border-dark">
-          <div className="flex items-center justify-between text-[10px] font-bold text-bg/60 border-b border-border-dark pb-2">
-            <span className="text-action">STORY / ANÚNCIO • 9:16</span>
-            <span>DIRETO AO PONTO</span>
-          </div>
-
-          <div className="space-y-2.5 my-auto text-center">
-            <span className="inline-block px-2 py-0.5 bg-action/20 text-action rounded text-[9px] font-bold uppercase">
-              Vagas Abertas
-            </span>
-            <p className="text-base font-display font-bold leading-snug text-white">
-              Atendimento com hora marcada para quem valoriza seu tempo.
-            </p>
-            <div className="inline-block bg-action text-white text-[10px] font-bold px-3 py-1.5 rounded">
-              Agendar no WhatsApp
-            </div>
-          </div>
-
-          <div className="pt-2 border-t border-border-dark text-[10px] text-bg/50 text-center">
-            Campanha de Tráfego Pago
-          </div>
-        </div>
-
-        {/* Peça 3: Cartão de Visita / Papelaria de Marca */}
-        <div className="bg-surface border border-border rounded-xl p-4 flex flex-col justify-between aspect-[4/5] shadow-inner">
-          <div className="flex items-center justify-between text-[10px] font-bold text-muted border-b border-border pb-2">
-            <span>IDENTIDADE VISUAL</span>
-            <span className="text-action font-bold">KEY VISUAL</span>
-          </div>
-
-          <div className="space-y-3 my-auto p-3 bg-bg rounded-lg border border-border">
-            <span className="text-xs font-display font-extrabold tracking-tight text-text block">
-              BLACK BEARD
-            </span>
-            <p className="text-[10px] text-muted leading-tight">
-              Tipografia geométrica + contraste escuro terroso sem clichês.
-            </p>
-            <div className="flex gap-1 pt-1">
-              <span className="w-3 h-3 rounded-full bg-[#14171A]"></span>
-              <span className="w-3 h-3 rounded-full bg-[#FF4A1C]"></span>
-              <span className="w-3 h-3 rounded-full bg-[#E4E7EA]"></span>
-            </div>
-          </div>
-
-          <div className="pt-2 border-t border-border text-[10px] text-muted flex justify-between">
-            <span>Figma Tokens</span>
-            <span>Manual Pronto</span>
-          </div>
-        </div>
-
-        {/* Peça 4: Outdoor / Material Físico de Fachada */}
-        <div className="bg-bg border border-border rounded-xl p-4 flex flex-col justify-between aspect-[4/5] relative">
-          <div className="flex items-center justify-between text-[10px] font-bold text-muted border-b border-border pb-2">
-            <span className="text-action">OUTDOOR / PDV</span>
-            <span>ALTO IMPACTO</span>
-          </div>
-
-          <div className="space-y-2 my-auto text-left">
-            <span className="text-[9px] font-bold text-muted uppercase">Leitura em 2 segundos</span>
-            <p className="text-lg font-display font-black text-text leading-tight uppercase">
-              O CAFÉ QUE VOCÊ MERECE.
-            </p>
-            <p className="text-[11px] text-muted">
-              Grão especial, moagem na hora e ambiente pensado para você pausar.
-            </p>
-          </div>
-
-          <div className="pt-2 border-t border-border flex items-center justify-between text-[10px] text-muted">
-            <span>Pronto para Gráfica</span>
-            <span className="font-semibold text-text">CMYK / Vetor</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ----------------------------------------------------------------------
 // 6. SEÇÃO DE PORTFÓLIO CENTRAL (ESTUDOS CONCRETOS)
 // ----------------------------------------------------------------------
 function PortfolioCentralSection({ onSelectPlan }: { onSelectPlan: (plan: string) => void }) {
@@ -894,7 +783,7 @@ function PortfolioCentralSection({ onSelectPlan }: { onSelectPlan: (plan: string
       direction: 'Desenvolvimento de uma identidade visual com base em azul escuro e laranja mineral, com carrosséis focados em cuidados reais e valorização do profissional.',
       pieces: [
         'Identidade visual completa com manual de marca',
-        'Série de 8 carrosséis estratégicos 4:5 no Figma',
+        'Série de 8 carrosséis estratégicos 4:5 finalizados em alta resolução',
         'Criativos de tráfego pago para agendamento local',
         'Banner de fachada e cartaz de ponto de venda'
       ],
@@ -1031,10 +920,10 @@ function PortfolioCentralSection({ onSelectPlan }: { onSelectPlan: (plan: string
             <div className="bg-surface border border-border rounded-xl p-6 shadow-xs space-y-4">
               <div className="flex items-center justify-between text-xs pb-3 border-b border-border">
                 <span className="font-bold text-text">Preview do Ecossistema</span>
-                <span className="text-[11px] text-muted">Figma 100% Organizado</span>
+                <span className="text-[11px] text-muted">Peças 100% Prontas para Postar</span>
               </div>
 
-              {/* Mockup simplificado de pranchetas no Figma */}
+              {/* Mockup simplificado de peças prontas para circulação */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="p-4 bg-bg border border-border rounded-lg space-y-2">
                   <span className="text-[10px] font-mono text-action font-bold uppercase block">
@@ -1102,8 +991,8 @@ function FaqAccordion({ faqs }: { faqs: FAQ[] }) {
     },
     {
       id: 'faq-4',
-      question: 'Os arquivos finais são 100% meus?',
-      answer: 'Sim! Entregamos os arquivos finais exportados em altíssima resolução (PNG, JPG, PDF) e fornecemos o link de acesso aos arquivos originais no Figma com total autonomia para a sua empresa.',
+      question: 'Vocês entregam arquivos abertos ou editáveis?',
+      answer: 'Não trabalhamos com arquivos editáveis. Nosso serviço é focado em poupar o seu tempo: entregamos todas as peças 100% finalizadas em altíssima resolução (PNG, JPG em alta qualidade e PDF pronto para gráfica), prontas para você baixar e postar imediatamente, sem precisar abrir nenhum programa de edição.',
       order_index: 4
     },
     {

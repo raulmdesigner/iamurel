@@ -3,6 +3,7 @@ import { Outlet, Link } from 'react-router-dom';
 import { dataLayer } from '../../lib/data';
 import { SiteSettings } from '../../types';
 import { X, FileText, ShieldCheck, Mail, ArrowUpRight, Menu, MessageCircle, Lock } from 'lucide-react';
+import { IamurelLogo } from '../brand/IamurelBrand';
 
 export default function PublicLayout() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
@@ -23,9 +24,7 @@ export default function PublicLayout() {
       <header className="w-full border-b border-border bg-surface/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
-            <span className="text-2xl sm:text-3xl font-display font-extrabold tracking-tight text-text group-hover:text-action transition-colors">
-              IAMUREL
-            </span>
+            <IamurelLogo className="h-7 sm:h-8 text-text group-hover:text-action transition-colors" />
             <span className="hidden sm:inline-block text-[11px] uppercase tracking-wider text-muted border-l border-border pl-3 font-semibold">
               Conteúdo & Identidade Visual
             </span>
@@ -119,8 +118,8 @@ export default function PublicLayout() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-border-dark/80">
             {/* Coluna Marca & Propósito */}
             <div className="md:col-span-5 space-y-4">
-              <Link to="/" className="text-3xl font-display font-black tracking-tight inline-block text-white">
-                IAMUREL
+              <Link to="/" className="inline-block text-white group">
+                <IamurelLogo className="h-8 text-white group-hover:opacity-90 transition-opacity" />
               </Link>
               <p className="text-bg/70 text-sm leading-relaxed max-w-sm">
                 Conteúdo e identidade visual para negócios que precisam parecer tão bons quanto realmente são. Velocidade de inteligência artificial com direção criativa e acabamento 100% humanos.
@@ -147,11 +146,11 @@ export default function PublicLayout() {
               <p className="text-xs uppercase tracking-wider text-bg/50 font-bold mb-3">Canais Diretos</p>
               <div className="space-y-2.5 text-sm">
                 <a
-                  href={`mailto:${settings?.contact_email || 'contato@iamurel.com'}`}
+                  href={`mailto:${settings?.contact_email || 'iamurelbrasil@gmail.com'}`}
                   className="flex items-center gap-2 text-bg/80 hover:text-action transition-colors"
                 >
                   <Mail size={16} />
-                  <span>{settings?.contact_email || 'contato@iamurel.com'}</span>
+                  <span>{settings?.contact_email || 'iamurelbrasil@gmail.com'}</span>
                 </a>
                 <a
                   href={whatsappLink}

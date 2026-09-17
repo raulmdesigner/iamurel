@@ -66,3 +66,14 @@
   background: linear-gradient(135deg, #FF5B31, #E53A0E);
   box-shadow: 0 12px 30px -4px rgba(255, 74, 28, 0.5);
 }
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  animation: marquee 25s linear infinite;
+}
+
