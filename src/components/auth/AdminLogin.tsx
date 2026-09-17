@@ -4,7 +4,7 @@ import { Lock, LogIn, AlertCircle } from 'lucide-react';
 import { IamurelSymbol } from '../brand/IamurelBrand';
 
 export function AdminLogin({ onLogin }: { onLogin: () => void }) {
-  const [email, setEmail] = useState(import.meta.env.VITE_ADMIN_EMAIL || '');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

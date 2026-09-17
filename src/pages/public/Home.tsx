@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import { dataLayer } from '../../lib/data';
 import { SiteSettings, FAQ } from '../../types';
 import { IamurelLogo, IamurelSymbol } from '../../components/brand/IamurelBrand';

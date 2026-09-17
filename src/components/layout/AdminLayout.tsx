@@ -16,9 +16,9 @@ import { AdminLogin } from '../auth/AdminLogin';
 const navItems = [
   { label: 'Visão Geral', path: '/admin', icon: LayoutDashboard, end: true },
   { label: 'Pipeline de Leads', path: '/admin/leads', icon: Users, end: false },
-  { label: 'Conteúdo & Seções', path: '/admin/conteudo', icon: LayoutTemplate, end: false },
-  { label: 'Aparência & Estilo', path: '/admin/aparencia', icon: Palette, end: false },
-  { label: 'Banco & Backups', path: '/admin/banco', icon: Database, end: false }
+  { label: 'Conteúdo & Seções', path: '/admin/content', icon: LayoutTemplate, end: false },
+  { label: 'Aparência & Estilo', path: '/admin/appearance', icon: Palette, end: false },
+  { label: 'Banco & Backups', path: '/admin/database', icon: Database, end: false }
 ];
 
 export default function AdminLayout() {
