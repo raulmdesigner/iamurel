@@ -18,11 +18,11 @@ export const mockSettings: SiteSettings = {
   primary_cta_text: 'Iniciar conversa sem compromisso',
   secondary_cta_text: 'Ver demonstrações reais',
   contact_email: 'iamurelbrasil@gmail.com',
-  contact_phone: '+55 (11) 98765-4321',
-  whatsapp_number: '5511987654321',
+  contact_phone: '+55 (48) 99687-7913',
+  whatsapp_number: '5548996877913',
   instagram_handle: '@iamurel.studio',
   linkedin_url: 'https://linkedin.com/company/iamurel',
-  company_info: 'IAMUREL Direção Criativa & Design. São Paulo — Brasil.',
+  company_info: 'IAMUREL, Agência de conteúdo AI-First. Santa Catarina - Brasil.',
   terms_of_use: `1. Objeto e Escopo: A IAMUREL presta serviços profissionais de consultoria editorial, design gráfico, identidade visual e direção de conteúdo. Todos os trabalhos entregues respeitam os escopos contratados formalmente entre as partes.
 2. Direitos de Propriedade Intelectual: Após a quitação integral dos serviços, todos os direitos patrimoniais de uso dos arquivos finais aprovados são transferidos para o cliente contratante.
 3. Rodadas de Refinamento: Cada serviço ou pacote inclui um número pré-definido de rodadas de revisão estruturada. Solicitações adicionais de alteração fora do escopo inicial serão orçadas mediante aprovação prévia.

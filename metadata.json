@@ -1,6 +1,6 @@
 {
   "name": "IAMUREL",
-  "description": "A IAMUREL combina inteligência artificial, direção criativa e acabamento profissional para criar marcas, posts e campanhas com mais velocidade e menos improviso.",
+  "description": "IAMUREL, Agência de conteúdo AI-First. Santa Catarina - Brasil. Conteúdo com direção e design com intenção.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

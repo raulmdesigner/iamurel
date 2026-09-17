@@ -703,7 +703,7 @@ export default function Home() {
 
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
           <div className="inline-flex flex-col items-center">
-            <IamurelLogo className="h-10 sm:h-12 text-white justify-center" />
+            <IamurelLogo className="h-10 sm:h-12 justify-center" color="white" />
             <span className="text-xs uppercase tracking-widest text-bg/60 font-semibold mt-2 block">
               Conteúdo & Design com Direção Humana
             </span>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { dataLayer } from '../../lib/data';
 import { SiteSettings } from '../../types';
-import { X, FileText, ShieldCheck, Mail, ArrowUpRight, Menu, MessageCircle, Lock } from 'lucide-react';
+import { X, FileText, ShieldCheck, Mail, ArrowUpRight, Menu, MessageCircle } from 'lucide-react';
 import { IamurelLogo } from '../brand/IamurelBrand';
 
 export default function PublicLayout() {
@@ -119,7 +119,7 @@ export default function PublicLayout() {
             {/* Coluna Marca & Propósito */}
             <div className="md:col-span-5 space-y-4">
               <Link to="/" className="inline-block text-white group">
-                <IamurelLogo className="h-8 text-white group-hover:opacity-90 transition-opacity" />
+                <IamurelLogo className="h-8 group-hover:opacity-90 transition-opacity" color="white" />
               </Link>
               <p className="text-bg/70 text-sm leading-relaxed max-w-sm">
                 Conteúdo e identidade visual para negócios que precisam parecer tão bons quanto realmente são. Velocidade de inteligência artificial com direção criativa e acabamento 100% humanos.
@@ -186,16 +186,6 @@ export default function PublicLayout() {
             
             <div className="flex items-center gap-4">
               <span>Conteúdo com direção. Design com intenção.</span>
-              <span className="text-border-dark">•</span>
-              {/* Atalho seguro e limpo para o Painel Admin */}
-              <Link
-                to="/admin"
-                className="inline-flex items-center gap-1.5 text-bg/40 hover:text-action transition-colors"
-                title="Acessar Gestão da Agência"
-              >
-                <Lock size={12} />
-                <span>Área Interna</span>
-              </Link>
             </div>
           </div>
         </div>

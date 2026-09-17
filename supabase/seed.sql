@@ -21,7 +21,7 @@ INSERT INTO iamurel_site_settings (
   'A IAMUREL combina inteligência artificial, direção criativa e design gráfico para transformar ideias soltas em uma presença de marca mais clara, consistente e pronta para circular.',
   'Falar sobre um projeto',
   'Ver como funciona',
-  'contato@iamurel.com'
+  'iamurelbrasil@gmail.com'
 ) ON CONFLICT (id) DO UPDATE SET
   hero_title = EXCLUDED.hero_title,
   hero_subtitle = EXCLUDED.hero_subtitle,
