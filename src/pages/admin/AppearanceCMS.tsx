@@ -232,7 +232,18 @@ export default function AppearanceCMS() {
                     Sem mídia enviada
                   </div>
                 )}
-                <div className="relative">
+
+                <div className="relative mt-2">
+                  <input
+                    type="url"
+                    placeholder="URL direta (se não for upload)"
+                    value={appearance[field.id as keyof AppearanceSettings] as string || ''}
+                    onChange={(e) => setAppearance({ ...appearance, [field.id]: e.target.value })}
+                    className="w-full px-3 py-1.5 border border-border rounded text-xs bg-bg focus:border-action outline-none"
+                  />
+                </div>
+
+                <div className="relative mt-2">
                   <input
                     type="file"
                     accept={field.accept}

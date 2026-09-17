@@ -27,6 +27,10 @@ export interface AppearanceSettings {
   hero_image_1_url?: string | null;
   hero_image_2_url?: string | null;
   hero_image_3_url?: string | null;
+  enable_3d?: boolean;
+  enable_text_banner?: boolean;
+  enable_faq?: boolean;
+  enable_showcase?: boolean;
 }
 
 export interface Section {
@@ -72,6 +76,7 @@ export interface PackageItem {
   package_id: string;
   title: string;
   quantity: string | null;
+  is_included?: boolean;
   order_index: number;
 }
 

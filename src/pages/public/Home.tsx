@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { dataLayer } from '../../lib/data';
-import { SiteSettings, FAQ } from '../../types';
+import { SiteSettings, FAQ, Package, Showcase, AppearanceSettings } from '../../types';
 import { IamurelLogo, IamurelSymbol } from '../../components/brand/IamurelBrand';
 import { HeroVisuals } from '../../components/modern/HeroVisuals';
 import { RotatingWordHero } from '../../components/modern/RotatingWordHero';
@@ -33,18 +33,27 @@ import {
 export default function Home() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [faqs, setFaqs] = useState<FAQ[]>([]);
+  const [appearance, setAppearance] = useState<AppearanceSettings | null>(null);
+  const [packages, setPackages] = useState<Package[]>([]);
+  const [cases, setCases] = useState<Showcase[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedNeed, setSelectedNeed] = useState<string>('');
 
   useEffect(() => {
     async function loadData() {
       try {
-        const [st, fq] = await Promise.all([
+        const [st, fq, pkgs, app, cses] = await Promise.all([
           dataLayer.getSettings(),
-          dataLayer.getFaq()
+          dataLayer.getFaq(),
+          dataLayer.getPackages(),
+          dataLayer.getAppearance(),
+          dataLayer.getShowcases()
         ]);
         setSettings(st);
         setFaqs(fq);
+        setPackages(pkgs);
+        setAppearance(app);
+        setCases(cses);
       } finally {
         setLoading(false);
       }
@@ -119,7 +128,7 @@ export default function Home() {
         </div>
       </section>
 
-      <InfiniteMarquee />
+      {appearance?.enable_text_banner !== false && <InfiniteMarquee />}
 
       {/* 3. PORTFÓLIO (ESTUDOS CONCRETOS) */}
       <PortfolioCentralSection onSelectPlan={handleSelectPlan} />
@@ -140,140 +149,80 @@ export default function Home() {
             </p>
           </div>
 
+          
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Passo 01 */}
-            <div className="p-8 bg-surface border border-border rounded-xl space-y-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-display font-black text-action">01</span>
-                <span className="text-[11px] font-semibold uppercase px-2.5 py-1 bg-bg border border-border rounded text-text">
-                  5 min no WhatsApp
-                </span>
-              </div>
-              <h3 className="text-xl font-bold font-display text-text">Entender o Negócio</h3>
-              <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                Você envia um áudio simples explicando seu público, seus serviços e quem você quer atrair.
+            <div className="space-y-4">
+              <span className="text-4xl font-display font-light text-muted/30">01</span>
+              <h3 className="text-xl font-bold font-display text-text">Pesquisa & Diagnóstico</h3>
+              <p className="text-sm text-muted">
+                Antes de qualquer layout, entendemos o mercado, os concorrentes e o objetivo do material.
               </p>
-
-              <div className="pt-3 space-y-2 border-t border-border text-xs">
-                <div className="p-2.5 bg-blue-50/50 border border-blue-100 rounded text-blue-950">
-                  <span className="font-bold block mb-0.5">⚡ Onde a IA acelera:</span>
-                  Mapeia concorrência, termos mais buscados e ângulos de abordagem em minutos.
-                </div>
-                <div className="p-2.5 bg-orange-50/50 border border-orange-100 rounded text-orange-950">
-                  <span className="font-bold block mb-0.5">👤 O que a equipe decide:</span>
-                  Filtra o que é realmente relevante e define o gancho comercial da sua marca.
-                </div>
-              </div>
             </div>
-
-            {/* Passo 02 */}
-            <div className="p-8 bg-surface border border-border rounded-xl space-y-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-display font-black text-action">02</span>
-                <span className="text-[11px] font-semibold uppercase px-2.5 py-1 bg-bg border border-border rounded text-text">
-                  Design Autoral
-                </span>
-              </div>
-              <h3 className="text-xl font-bold font-display text-text">Definir a Direção</h3>
-              <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                Estruturamos os textos, a paleta visual, a tipografia e o ritmo visual de leitura.
+            <div className="space-y-4">
+              <span className="text-4xl font-display font-light text-muted/30">02</span>
+              <h3 className="text-xl font-bold font-display text-text">Direção & Geração IA</h3>
+              <p className="text-sm text-muted">
+                Usamos ferramentas de IA para gerar múltiplos caminhos visuais e variações de copy rapidamente.
               </p>
-
-              <div className="pt-3 space-y-2 border-t border-border text-xs">
-                <div className="p-2.5 bg-blue-50/50 border border-blue-100 rounded text-blue-950">
-                  <span className="font-bold block mb-0.5">⚡ Onde a IA acelera:</span>
-                  Gera opções de variações e sintetiza referências técnicas rapidamente.
-                </div>
-                <div className="p-2.5 bg-orange-50/50 border border-orange-100 rounded text-orange-950">
-                  <span className="font-bold block mb-0.5">👤 O que a equipe decide:</span>
-                  Define a direção visual autoral, lapida o contraste, ajusta a hierarquia e elimina qualquer clichê.
-                </div>
-              </div>
             </div>
-
-            {/* Passo 03 */}
-            <div className="p-8 bg-surface border border-border rounded-xl space-y-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-              <div className="flex items-center justify-between">
-                <span className="text-2xl font-display font-black text-action">03</span>
-                <span className="text-[11px] font-semibold uppercase px-2.5 py-1 bg-bg border border-border rounded text-text">
-                  Pronto para Postar
-                </span>
-              </div>
-              <h3 className="text-xl font-bold font-display text-text">Produzir e Adaptar</h3>
-              <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                Você recebe as peças finalizadas em alta resolução com sugestão de legenda pronta.
+            <div className="space-y-4">
+              <span className="text-4xl font-display font-light text-muted/30">03</span>
+              <h3 className="text-xl font-bold font-display text-text">Lapidação & Entrega</h3>
+              <p className="text-sm text-muted">
+                O diretor de arte refina, aplica a identidade da sua marca e finaliza os arquivos para uso imediato.
               </p>
-
-              <div className="pt-3 space-y-2 border-t border-border text-xs">
-                <div className="p-2.5 bg-blue-50/50 border border-blue-100 rounded text-blue-950">
-                  <span className="font-bold block mb-0.5">⚡ Onde a IA acelera:</span>
-                  Desdobra os formatos (feed 4:5, stories 9:16 e anúncios) sem retrabalho manual lento.
-                </div>
-                <div className="p-2.5 bg-orange-50/50 border border-orange-100 rounded text-orange-950">
-                  <span className="font-bold block mb-0.5">👤 O que a equipe decide:</span>
-                  Revisão minuciosa de cada detalhe, exportação e entrega dos arquivos abertos.
-                </div>
-              </div>
             </div>
           </div>
+
         </div>
         </ScrollReveal>
       </section>
-
       {/* 5. SEÇÃO "PARA QUEM É" (EXEMPLOS REAIS DE CLIENTES) */}
       <section className="py-16 md:py-24 px-6 bg-surface border-b border-border">
         <ScrollReveal>
-          <div className="max-w-7xl mx-auto space-y-12">
-            <div className="max-w-2xl space-y-3">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
-              Para quem a IAMUREL é ideal.
-            </h2>
-            <p className="text-muted text-sm sm:text-base">
-              Feito sob medida para negócios que precisam comunicar com excelência sem o custo de uma equipe interna.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="p-6 bg-bg border border-border rounded-xl space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-action/10 text-action rounded-lg">
-                  <Stethoscope size={22} />
-                </div>
-                <h4 className="text-lg font-bold font-display text-text">Profissionais de Saúde</h4>
-              </div>
-              <p className="text-xs text-muted leading-relaxed">
-                Médicos, dentistas e fisioterapeutas que precisam traduzir procedimentos em conteúdos educativos que atraem pacientes.
-              </p>
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-6">
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-text leading-tight">
+                Para marcas que querem fugir do "mais do mesmo".
+              </h2>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-action shrink-0 mt-0.5" />
+                  <p className="text-sm text-muted">Empresas que precisam renovar a marca mas têm urgência.</p>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-action shrink-0 mt-0.5" />
+                  <p className="text-sm text-muted">Especialistas e infoprodutores buscando autoridade visual.</p>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-action shrink-0 mt-0.5" />
+                  <p className="text-sm text-muted">Negócios locais querendo profissionalizar a comunicação no Instagram.</p>
+                </li>
+              </ul>
             </div>
-
-            <div className="p-6 bg-bg border border-border rounded-xl space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-action/10 text-action rounded-lg">
-                  <Scissors size={22} />
+            <div className="relative">
+              <div className="aspect-square bg-bg rounded-2xl border border-border overflow-hidden relative shadow-lg">
+                <div className="absolute inset-0 bg-gradient-to-tr from-action/5 to-transparent z-10 pointer-events-none" />
+                {/* Placeholder para uma imagem de bastidores ou resultado */}
+                <div className="absolute inset-0 flex items-center justify-center text-muted flex-col gap-2 bg-surface/50 backdrop-blur-sm">
+                  <Smartphone className="w-8 h-8 opacity-20" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-30">Direção Criativa</span>
                 </div>
-                <h4 className="text-lg font-bold font-display text-text">Barbearias & Estética</h4>
               </div>
-              <p className="text-xs text-muted leading-relaxed">
-                Estúdios que querem se posicionar como referência através de uma marca visualmente imponente e desejada.
-              </p>
-            </div>
-
-            <div className="p-6 bg-bg border border-border rounded-xl space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-action/10 text-action rounded-lg">
-                  <Briefcase size={22} />
+              <div className="absolute -bottom-6 -left-6 bg-bg border border-border p-4 rounded-xl shadow-xl flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-action/10 flex items-center justify-center text-action font-bold text-xl">
+                  +3
                 </div>
-                <h4 className="text-lg font-bold font-display text-text">Especialistas & Consultores</h4>
+                <div>
+                  <p className="text-xs font-bold text-text">Dias úteis</p>
+                  <p className="text-[10px] text-muted">Prazo médio de entregas mensais</p>
+                </div>
               </div>
-              <p className="text-xs text-muted leading-relaxed">
-                Advogados, arquitetos e consultores que vendem serviços de alto valor e precisam comprovar conhecimento técnico.
-              </p>
             </div>
           </div>
-        </div>
         </ScrollReveal>
       </section>
-
       {/* 6. SERVIÇOS (TRÊS CAMINHOS) */}
       <section id="pacotes" className="py-16 md:py-24 px-6 bg-bg border-b border-border">
         <ScrollReveal>
@@ -287,156 +236,64 @@ export default function Home() {
             </p>
           </div>
 
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Opção 1: Marca */}
-            <div className="p-8 bg-surface border border-border rounded-2xl flex flex-col justify-between space-y-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
+            {packages.filter(p => p.status === 'active').sort((a, b) => a.order_index - b.order_index).map((pkg) => (
+            <div key={pkg.id} className={`p-8 bg-surface border-2 ${pkg.is_highlighted ? 'border-action shadow-md relative' : 'border-border transition-all duration-300 hover:shadow-xl hover:-translate-y-1'} rounded-2xl flex flex-col justify-between space-y-6 group`}>
+              {pkg.is_highlighted && (
+                <div className="absolute -top-3 left-8 bg-action text-white px-3 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider">
+                  Mais Solicitado
+                </div>
+              )}
               <div className="space-y-4">
                 <div>
-                  <span className="text-xs font-bold text-muted uppercase">Opção Pontual</span>
+                  <span className={`text-xs font-bold uppercase ${pkg.is_highlighted ? 'text-action' : 'text-muted'}`}>{pkg.commercial_role}</span>
                   <h3 className="text-2xl font-bold font-display text-text mt-1">
-                    Criar ou Reposicionar Minha Marca
+                    {pkg.level}
                   </h3>
                   <p className="text-xs text-muted mt-2">
-                    Para quem vai lançar um novo negócio ou precisa renovar uma identidade visual que ficou para trás.
+                    {pkg.description}
                   </p>
                 </div>
-
                 <div className="py-3 border-y border-border">
                   <span className="text-[11px] text-muted block uppercase">Investimento</span>
-                  <p className="text-2xl font-bold font-display text-text">A partir de R$ 1.800</p>
-                  <span className="text-[11px] text-muted">ou sob medida conforme o escopo</span>
-                </div>
-
-                <ul className="space-y-2 text-xs text-text/90">
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Logotipo autoral e variações de cor</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Paleta de cores e tipografia de marca</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Manual de aplicação em PDF</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Arquivos prontos para uso em alta resolução (PNG, Vetor e PDF)</span>
-                  </li>
-                </ul>
-              </div>
-
-              <button
-                onClick={() => handleSelectPlan('Criar ou Reposicionar Minha Marca')}
-                className="w-full py-3 bg-bg border border-border hover:border-text text-text font-bold text-xs rounded-lg transition-colors cursor-pointer"
-              >
-                Falar sobre este projeto
-              </button>
-            </div>
-
-            {/* Opção 2: Conteúdo Contínuo (Destaque) */}
-            <div className="p-8 bg-surface border-2 border-action rounded-2xl flex flex-col justify-between space-y-6 shadow-md relative">
-              <div className="absolute -top-3 left-8 bg-action text-white px-3 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider">
-                Mais Solicitado
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <span className="text-xs font-bold text-action uppercase">Acompanhamento Mensal</span>
-                  <h3 className="text-2xl font-bold font-display text-text mt-1">
-                    Produzir Conteúdo com Consistência
-                  </h3>
-                  <p className="text-xs text-muted mt-2">
-                    Para empresas que precisam de frequência, autoridade no feed e peças estratégicas semanais.
+                  <p className="text-2xl font-bold font-display text-text">
+                    {pkg.price_type === 'hidden' ? 'Consulte-nos' : 
+                     pkg.price_type === 'starting_at' ? `A partir de R$ ${pkg.price?.toLocaleString('pt-BR')}` :
+                     pkg.price_type === 'fixed' ? `R$ ${pkg.price?.toLocaleString('pt-BR')}` :
+                     'Sob consulta'}
                   </p>
+                  <span className="text-[11px] text-muted">{pkg.timeframe}</span>
                 </div>
-
-                <div className="py-3 border-y border-border">
-                  <span className="text-[11px] text-muted block uppercase">Investimento</span>
-                  <p className="text-2xl font-bold font-display text-text">A partir de R$ 1.400 /mês</p>
-                  <span className="text-[11px] text-muted">sem carência ou fidelidade forçada</span>
-                </div>
-
                 <ul className="space-y-2 text-xs text-text/90">
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>8 a 12 peças estratégicas mensais (carrosséis e posts)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Roteiros com ganchos de alta retenção</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Legendas comerciais prontas para postar</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Entrega quinzenal ou semanal com agilidade</span>
-                  </li>
+                  {pkg.items?.sort((a, b) => a.order_index - b.order_index).map(item => (
+                    <li key={item.id} className={`flex items-start gap-2 ${item.is_included === false ? 'opacity-50 line-through' : ''}`}>
+                      {item.is_included === false ? (
+                        <XCircle size={14} className="text-muted shrink-0 mt-0.5" />
+                      ) : (
+                        <Check size={14} className="text-action shrink-0 mt-0.5" />
+                      )}
+                      <span>{item.quantity ? `${item.quantity} ` : ''}{item.title}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
-
               <button
-                onClick={() => handleSelectPlan('Produzir Conteúdo com Consistência')}
-                className="w-full py-3 bg-action hover:bg-action-hover text-white font-bold text-xs rounded-lg transition-colors shadow-sm cursor-pointer"
+                onClick={() => handleSelectPlan(pkg.level)}
+                className={`w-full py-3 font-bold text-xs rounded-lg transition-colors cursor-pointer ${pkg.is_highlighted ? 'bg-action hover:bg-action-hover text-white shadow-sm' : 'bg-bg border border-border hover:border-text text-text'}`}
               >
-                Falar sobre conteúdo contínuo
+                Falar sobre este pacote
               </button>
             </div>
-
-            {/* Opção 3: Campanhas */}
-            <div className="p-8 bg-surface border border-border rounded-2xl flex flex-col justify-between space-y-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
-              <div className="space-y-4">
-                <div>
-                  <span className="text-xs font-bold text-muted uppercase">Campanha Específica</span>
-                  <h3 className="text-2xl font-bold font-display text-text mt-1">
-                    Lançar uma Campanha
-                  </h3>
-                  <p className="text-xs text-muted mt-2">
-                    Para negócios que vão rodar tráfego pago, lançar um produto, oferta sazonal ou evento especial.
-                  </p>
-                </div>
-
-                <div className="py-3 border-y border-border">
-                  <span className="text-[11px] text-muted block uppercase">Investimento</span>
-                  <p className="text-2xl font-bold font-display text-text">A partir de R$ 980</p>
-                  <span className="text-[11px] text-muted">pacote fechado por campanha</span>
-                </div>
-
-                <ul className="space-y-2 text-xs text-text/90">
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Conjunto de criativos em múltiplos formatos (1:1, 4:5, 9:16)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Testes visuais de gancho e chamada para ação</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Peça de apoio para WhatsApp ou página</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check size={14} className="text-action shrink-0 mt-0.5" />
-                    <span>Entrega rápida em até 3 dias úteis</span>
-                  </li>
-                </ul>
-              </div>
-
-              <button
-                onClick={() => handleSelectPlan('Lançar uma Campanha')}
-                className="w-full py-3 bg-bg border border-border hover:border-text text-text font-bold text-xs rounded-lg transition-colors cursor-pointer"
-              >
-                Falar sobre campanha
-              </button>
-            </div>
+            ))}
           </div>
+
         </div>
         </ScrollReveal>
       </section>
 
+      {appearance?.enable_faq !== false && (
+      <div className="faq-wrapper">
       {/* 7. FAQ CURTA E OBJETIVA */}
       <section id="faq" className="py-16 md:py-24 px-6 bg-dark border-b border-border-dark relative overflow-hidden">
         <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }} className="absolute -top-40 -left-20 w-[500px] h-[500px] bg-action/20 rounded-full blur-[120px] pointer-events-none" />
@@ -454,6 +311,8 @@ export default function Home() {
         </ScrollReveal>
       </section>
 
+      </div>
+      )}
       {/* 8. CTA FINAL FORTE COM LOGO IAMUREL */}
       <section className="py-20 md:py-28 px-6 bg-dark text-white relative overflow-hidden border-b border-border-dark">
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">

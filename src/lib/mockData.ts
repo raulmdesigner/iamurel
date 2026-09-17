@@ -11,6 +11,10 @@ export const defaultAppearance: AppearanceSettings = {
   hero_image_1_url: null,
   hero_image_2_url: null,
   hero_image_3_url: null,
+  enable_3d: true,
+  enable_text_banner: true,
+  enable_faq: true,
+  enable_showcase: true,
 };
 
 export const mockSettings: SiteSettings = {
