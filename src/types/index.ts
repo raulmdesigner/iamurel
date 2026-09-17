@@ -7,6 +7,22 @@ export interface SiteSettings {
   primary_cta_text: string;
   secondary_cta_text: string;
   contact_email: string;
+  contact_phone?: string;
+  whatsapp_number?: string;
+  instagram_handle?: string;
+  linkedin_url?: string;
+  company_info?: string;
+  terms_of_use?: string;
+  privacy_policy?: string;
+}
+
+export interface AppearanceSettings {
+  primary_color: string;
+  action_color: string;
+  bg_tone: 'cream' | 'neutral_white' | 'pure_minimal';
+  border_style: 'sharp' | 'minimal' | 'rounded';
+  motion_level: 'reduced' | 'balanced' | 'expressive';
+  font_pairing: 'editorial' | 'contemporary' | 'grotesk';
 }
 
 export interface Section {
@@ -34,7 +50,7 @@ export interface Service {
 
 export interface Package {
   id: string;
-  level: 'Essencial' | 'Recomendado' | 'Profissional' | 'Ultra';
+  level: 'Essencial' | 'Recomendado' | 'Profissional' | 'Ultra' | string;
   commercial_role: string;
   description: string;
   price: number | null;
@@ -64,6 +80,12 @@ export interface Showcase {
   deliverable: string;
   image_url: string | null;
   order_index: number;
+  type?: 'carousel' | 'identity' | 'script';
+  slides?: Array<{ title: string; body: string; note: string }>;
+  specimens?: {
+    colors: Array<{ name: string; hex: string; role: string }>;
+    fonts: Array<{ name: string; style: string }>;
+  };
 }
 
 export interface FAQ {
@@ -98,6 +120,7 @@ export interface Lead {
   assigned_to: string | null;
   tags: string[];
   created_at: string;
+  notes?: LeadNote[];
 }
 
 export interface LeadNote {
@@ -116,3 +139,4 @@ export interface Task {
   status: 'pending' | 'completed';
   created_at: string;
 }
+

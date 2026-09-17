@@ -1,6 +1,6 @@
 {
   "name": "IAMUREL",
-  "description": "Empresa AI-First de criação de conteúdo, design gráfico e direção criativa.",
+  "description": "Estúdio editorial de conteúdo com direção e design com intenção. Combina inteligência artificial na pesquisa com rigor e curadoria de direção humana.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

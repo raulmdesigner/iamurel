@@ -1,60 +1,111 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Users, LayoutTemplate, Package, Settings, LogOut } from 'lucide-react';
-import clsx from 'clsx';
+import {
+  LayoutDashboard,
+  Users,
+  LayoutTemplate,
+  Palette,
+  Database,
+  ExternalLink,
+  ChevronRight
+} from 'lucide-react';
+import { isSupabaseConfigured } from '../../lib/supabase';
 
 const navItems = [
-  { label: 'Dashboard', path: '/admin', icon: LayoutDashboard, end: true },
-  { label: 'Leads CRM', path: '/admin/leads', icon: Users, end: false },
-  { label: 'Serviços CMS', path: '/admin/services', icon: LayoutTemplate, end: false },
-  { label: 'Pacotes', path: '/admin/packages', icon: Package, end: false },
-  { label: 'Configurações', path: '/admin/settings', icon: Settings, end: false },
+  { label: 'Visão Geral', path: '/admin', icon: LayoutDashboard, end: true },
+  { label: 'Pipeline de Leads', path: '/admin/leads', icon: Users, end: false },
+  { label: 'Conteúdo & Seções', path: '/admin/conteudo', icon: LayoutTemplate, end: false },
+  { label: 'Aparência & Estilo', path: '/admin/aparencia', icon: Palette, end: false },
+  { label: 'Banco & Backups', path: '/admin/banco', icon: Database, end: false }
 ];
 
 export default function AdminLayout() {
   const location = useLocation();
 
+  const currentNav = navItems.find(item =>
+    item.end ? location.pathname === item.path : location.pathname.startsWith(item.path)
+  ) || navItems[0];
+
   return (
     <div className="min-h-screen bg-bg flex flex-col md:flex-row font-body text-text">
       {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-surface border-r border-border flex flex-col md:min-h-screen">
-        <div className="h-20 flex items-center px-6 border-b border-border">
-          <span className="text-xl font-display font-bold tracking-tight">IAMUREL Admin</span>
+      <aside className="w-full md:w-64 bg-surface border-r border-border flex flex-col md:min-h-screen shrink-0">
+        <div className="h-20 flex items-center justify-between px-6 border-b border-border">
+          <Link to="/admin" className="flex items-center gap-2">
+            <span className="text-xl font-display font-bold tracking-tight text-text">IAMUREL</span>
+            <span className="text-[10px] uppercase font-mono tracking-wider font-semibold px-2 py-0.5 bg-bg border border-border rounded text-action">
+              Gestão
+            </span>
+          </Link>
         </div>
-        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
-            const isActive = item.end ? location.pathname === item.path : location.pathname.startsWith(item.path);
+
+        <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+          {navItems.map(item => {
+            const isActive = item.end
+              ? location.pathname === item.path
+              : location.pathname.startsWith(item.path);
             const Icon = item.icon;
             return (
               <Link
                 key={item.path}
                 to={item.path}
-                className={clsx(
-                  'flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors',
-                  isActive 
-                    ? 'bg-action/10 text-action' 
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded text-xs font-semibold transition-colors ${
+                  isActive
+                    ? 'bg-text text-bg shadow-xs'
                     : 'text-muted hover:bg-bg hover:text-text'
-                )}
+                }`}
               >
-                <Icon size={18} />
-                {item.label}
+                <Icon size={16} />
+                <span>{item.label}</span>
               </Link>
             );
           })}
         </nav>
-        <div className="p-4 border-t border-border">
-          <button className="flex w-full items-center gap-3 px-3 py-2.5 text-sm font-medium text-muted hover:text-action transition-colors">
-            <LogOut size={18} />
-            Sair
-          </button>
+
+        {/* Footer da Sidebar com Acesso ao Site Público */}
+        <div className="p-4 border-t border-border space-y-3">
+          <div className="p-3 bg-bg border border-border rounded text-[11px] space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="text-muted font-mono uppercase text-[9px]">Sincronização</span>
+              <span className={`w-2 h-2 rounded-full ${isSupabaseConfigured ? 'bg-emerald-500' : 'bg-blue-500'}`} />
+            </div>
+            <p className="text-text font-medium truncate">
+              {isSupabaseConfigured ? 'Supabase Nuvem' : 'Armazenamento Local'}
+            </p>
+          </div>
+
+          <Link
+            to="/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-between w-full px-3 py-2 text-xs font-semibold text-muted hover:text-action transition-colors rounded border border-transparent hover:border-border"
+          >
+            <span>Ver Site Público</span>
+            <ExternalLink size={14} />
+          </Link>
         </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-h-screen overflow-hidden">
-        <header className="h-20 bg-surface border-b border-border flex items-center px-8 shrink-0">
-          <h1 className="text-lg font-medium text-text">Visão Geral</h1>
+        <header className="h-20 bg-surface border-b border-border flex items-center justify-between px-8 shrink-0">
+          <div className="flex items-center gap-2 text-xs text-muted">
+            <span>IAMUREL</span>
+            <ChevronRight size={14} />
+            <span className="font-semibold text-text">{currentNav.label}</span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Link
+              to="/"
+              className="text-xs font-semibold text-muted hover:text-action flex items-center gap-1 transition-colors"
+            >
+              <span>Abrir Página Pública</span>
+              <ExternalLink size={12} />
+            </Link>
+          </div>
         </header>
-        <div className="flex-1 overflow-y-auto p-8">
+
+        <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-bg/50">
           <Outlet />
         </div>
       </main>
