@@ -18,14 +18,15 @@ export function IamurelSymbol({
   alt?: string;
 }) {
   const fill = color === 'white' ? '#FFFFFF' : (color === 'dark' ? '#091A24' : 'currentColor');
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   
   return (
     <motion.div
-      className="inline-flex items-center justify-center cursor-pointer"
-      onClick={() => setIsFlipped(!isFlipped)}
-      animate={{ rotateY: isFlipped ? 360 : 0 }}
-      transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
+      className="inline-flex items-center justify-center"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      animate={{ rotateY: isHovered ? 180 : 0 }}
+      transition={{ duration: isHovered ? 4 : 0.8, ease: "linear", repeat: isHovered ? Infinity : 0 }}
       style={{ perspective: 1000 }}
     >
       <svg viewBox="0 0 1500 1500" className={`inline-block object-contain ${className}`} fill={fill} xmlns="http://www.w3.org/2000/svg" aria-label={alt}>
@@ -55,14 +56,15 @@ export function IamurelLogo({
   }
   
   const fill = color === 'white' ? '#FFFFFF' : (color === 'dark' ? '#091A24' : 'currentColor');
-  const [isFlipped, setIsFlipped] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
-      className="inline-flex items-center justify-center cursor-pointer"
-      onClick={() => setIsFlipped(!isFlipped)}
-      animate={{ rotateY: isFlipped ? 360 : 0 }}
-      transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
+      className="inline-flex items-center justify-center"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      animate={{ rotateY: isHovered ? 180 : 0 }}
+      transition={{ duration: isHovered ? 4 : 0.8, ease: "linear", repeat: isHovered ? Infinity : 0 }}
       style={{ perspective: 1000 }}
     >
       <svg viewBox="0 0 1500 414" className={`inline-block object-contain ${className}`} fill={fill} xmlns="http://www.w3.org/2000/svg" aria-label={alt}>

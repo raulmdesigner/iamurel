@@ -125,8 +125,9 @@ export default function Home() {
 
       {/* 4. SERVIÇOS (TRÊS CAMINHOS) */}
       <section id="como-funciona" className="py-16 md:py-24 px-6 bg-bg border-b border-border">
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="max-w-2xl space-y-3">
+        <ScrollReveal>
+          <div className="max-w-7xl mx-auto space-y-12">
+            <div className="max-w-2xl space-y-3">
             <span className="text-xs uppercase tracking-wider text-action font-bold">
               Método Transparente
             </span>
@@ -215,12 +216,14 @@ export default function Home() {
             </div>
           </div>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* 5. SEÇÃO "PARA QUEM É" (EXEMPLOS REAIS DE CLIENTES) */}
       <section className="py-16 md:py-24 px-6 bg-surface border-b border-border">
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="max-w-2xl space-y-3">
+        <ScrollReveal>
+          <div className="max-w-7xl mx-auto space-y-12">
+            <div className="max-w-2xl space-y-3">
             <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
               Para quem a IAMUREL é ideal.
             </h2>
@@ -267,14 +270,16 @@ export default function Home() {
             </div>
           </div>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* 6. SERVIÇOS (TRÊS CAMINHOS) */}
-      <section id="servicos" className="py-16 md:py-24 px-6 bg-bg border-b border-border">
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="max-w-2xl space-y-3">
+      <section id="pacotes" className="py-16 md:py-24 px-6 bg-bg border-b border-border">
+        <ScrollReveal>
+          <div className="max-w-7xl mx-auto space-y-12">
+            <div className="max-w-2xl space-y-3">
             <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
-              Serviços
+              Serviços e Pacotes
             </h2>
             <p className="text-muted text-sm sm:text-base">
               Escolha o formato que resolve a necessidade da sua marca hoje.
@@ -428,12 +433,14 @@ export default function Home() {
             </div>
           </div>
         </div>
+        </ScrollReveal>
       </section>
 
       {/* 7. FAQ CURTA E OBJETIVA */}
       <section id="faq" className="py-16 md:py-24 px-6 bg-surface border-b border-border">
-        <div className="max-w-3xl mx-auto space-y-10">
-          <div className="text-center space-y-3">
+        <ScrollReveal>
+          <div className="max-w-3xl mx-auto space-y-10">
+            <div className="text-center space-y-3">
             <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
               Perguntas Frequentes
             </h2>
@@ -441,6 +448,7 @@ export default function Home() {
 
           <FaqAccordion faqs={faqs} />
         </div>
+        </ScrollReveal>
       </section>
 
       {/* 8. CTA FINAL FORTE COM LOGO IAMUREL */}
@@ -482,8 +490,9 @@ export default function Home() {
 
       {/* FORMULÁRIO DE CONTATO DIRETO E OBJETIVO */}
       <section id="contato" className="py-16 md:py-24 px-6 bg-bg">
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-surface border border-border rounded-2xl p-8 sm:p-12 shadow-sm space-y-8">
+        <ScrollReveal>
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-surface border border-border rounded-2xl p-8 sm:p-12 shadow-sm space-y-8">
             <div className="space-y-2 text-center sm:text-left">
               <span className="text-xs uppercase tracking-wider text-action font-bold">
                 Retorno em até 24h
@@ -502,6 +511,7 @@ export default function Home() {
             />
           </div>
         </div>
+        </ScrollReveal>
       </section>
     </div>
   );
@@ -565,8 +575,9 @@ function PortfolioCentralSection({ onSelectPlan }: { onSelectPlan: (plan: string
 
   return (
     <section id="portfolio" className="py-16 md:py-24 px-6 bg-surface border-b border-border">
-      <div className="max-w-7xl mx-auto space-y-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <ScrollReveal>
+        <div className="max-w-7xl mx-auto space-y-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <span className="text-xs uppercase tracking-wider text-action font-bold">
               Portfólio por Aplicação
@@ -702,6 +713,7 @@ function PortfolioCentralSection({ onSelectPlan }: { onSelectPlan: (plan: string
           </div>
         </div>
       </div>
+      </ScrollReveal>
     </section>
   );
 }
@@ -919,6 +931,9 @@ function QuickContactForm({
             key={selectedNeed}
             className="w-full px-3.5 py-2.5 bg-bg border border-border rounded-lg text-xs text-text focus:border-action focus:ring-1 focus:ring-action outline-none transition-all cursor-pointer"
           >
+            {selectedNeed && !['Produzir Conteúdo com Consistência', 'Criar ou Reposicionar Minha Marca', 'Lançar uma Campanha', 'Materiais Físicos e Outdoor', 'Diagnóstico Geral'].includes(selectedNeed) && (
+              <option value={selectedNeed}>{selectedNeed}</option>
+            )}
             <option value="Produzir Conteúdo com Consistência">Produzir Conteúdo com Consistência (Plano Mensal)</option>
             <option value="Criar ou Reposicionar Minha Marca">Criar ou Reposicionar Minha Marca</option>
             <option value="Lançar uma Campanha">Lançar uma Campanha de Anúncios</option>

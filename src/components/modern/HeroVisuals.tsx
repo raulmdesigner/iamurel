@@ -25,12 +25,12 @@ export function HeroVisuals() {
   }, [isVideoPlaying]);
 
   return (
-    <div className="relative w-full aspect-[4/3] md:aspect-[21/9] lg:aspect-[2.5/1] rounded-3xl overflow-hidden bg-surface border border-border mt-12 mb-8">
+    <div className="relative w-full min-h-[600px] md:min-h-0 md:aspect-[21/9] lg:aspect-[2.5/1] rounded-3xl overflow-hidden bg-surface border border-border mt-12 mb-8">
       {/* Background Grid Texture */}
       <div 
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        className="absolute inset-0 opacity-[0.08] pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Ccircle cx='12' cy='12' r='1' fill='%23000'/%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3Ccircle cx='12' cy='12' r='1' fill='currentColor'/%3E%3C/svg%3E")`,
           backgroundSize: '24px 24px'
         }}
       />
@@ -40,14 +40,14 @@ export function HeroVisuals() {
         <span className="font-serif italic font-black text-[30rem] leading-none">&</span>
       </div>
 
-      <div className="absolute inset-0 p-4 md:p-8 flex flex-col md:flex-row gap-4 md:gap-8 items-center justify-center md:justify-between">
+      <div className="absolute inset-0 p-4 pt-12 md:p-12 flex flex-col md:flex-row gap-6 md:gap-4 items-center justify-center overflow-hidden">
         
-        {/* Left: Video Pill */}
+        {/* Left: Video Frame */}
         <motion.div 
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, type: "spring", bounce: 0.4 }}
-          className="relative w-48 md:w-64 aspect-[9/16] rounded-full overflow-hidden bg-dark shadow-2xl flex-shrink-0 group border-4 border-surface"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2, type: "spring", bounce: 0.3 }}
+          className="relative w-40 md:w-72 aspect-[9/16] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden bg-dark shadow-2xl flex-shrink-0 group border border-border/50 z-20"
         >
           <div className="absolute inset-0 bg-gradient-to-b from-dark to-dark-hover flex items-center justify-center">
             {appearance?.hero_video_url ? (
@@ -61,8 +61,8 @@ export function HeroVisuals() {
                />
             ) : (
               <div className="w-full h-full flex flex-col items-center justify-center gap-4 text-white/50 px-6 text-center">
-                <IamurelSymbol className="w-8 h-8 opacity-20" color="white" />
-                <span className="text-xs uppercase tracking-widest font-bold">Video Place<br/>holder</span>
+                <IamurelSymbol className="w-10 h-10 opacity-20" color="white" />
+                <span className="text-xs uppercase tracking-widest font-bold">Vídeo Aqui</span>
               </div>
             )}
             
@@ -70,59 +70,71 @@ export function HeroVisuals() {
               onClick={() => setIsVideoPlaying(!isVideoPlaying)}
               className={`absolute inset-0 flex items-center justify-center transition-colors z-10 ${isVideoPlaying ? 'bg-transparent hover:bg-black/10' : 'bg-black/20 hover:bg-black/10'}`}
             >
-              <div className={`w-12 h-12 rounded-full backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-all ${isVideoPlaying ? 'opacity-0 hover:opacity-100 bg-black/40' : 'bg-white/10 hover:scale-110'}`}>
+              <div className={`w-14 h-14 rounded-full backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-all ${isVideoPlaying ? 'opacity-0 hover:opacity-100 bg-black/40' : 'bg-white/10 hover:scale-110 shadow-lg'}`}>
                 {isVideoPlaying ? (
-                  <Pause className="w-5 h-5" fill="currentColor" />
+                  <Pause className="w-6 h-6" fill="currentColor" />
                 ) : (
-                  <Play className="w-5 h-5 ml-1" fill="currentColor" />
+                  <Play className="w-6 h-6 ml-1" fill="currentColor" />
                 )}
               </div>
             </button>
           </div>
         </motion.div>
 
+        {/* Center: Premium Typographic Seal */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.6, type: "spring", bounce: 0.4 }}
+          className="flex flex-shrink-0 z-30 mx-2 -my-8 md:my-0"
+        >
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-border/50 bg-surface/80 backdrop-blur-md shadow-2xl flex items-center justify-center relative overflow-hidden group cursor-pointer">
+             <IamurelSymbol className="w-6 h-6 md:w-8 md:h-8 text-action group-hover:scale-110 transition-transform duration-500" />
+          </div>
+        </motion.div>
+
         {/* Right: Real Work Image Composition */}
-        <div className="relative flex-1 w-full h-full flex items-center justify-center md:justify-end pt-12 md:pt-0">
+        <div className="relative w-full max-w-xs md:max-w-md h-[250px] md:h-[400px] flex items-center justify-center">
           
           {/* Main Image */}
           <motion.div 
-            initial={{ opacity: 0, y: 30, rotate: -4 }}
+            initial={{ opacity: 0, y: 50, rotate: -4 }}
             animate={{ opacity: 1, y: 0, rotate: -2 }}
-            transition={{ duration: 0.8, delay: 0.4, type: "spring", bounce: 0.3 }}
-            className="absolute z-20 w-48 md:w-72 aspect-[4/5] bg-dark rounded-xl shadow-2xl overflow-hidden border-2 border-surface flex items-center justify-center"
+            transition={{ duration: 1, delay: 0.4, type: "spring", bounce: 0.3 }}
+            className="absolute z-20 w-32 md:w-64 aspect-[4/5] bg-dark rounded-xl md:rounded-[1.5rem] shadow-2xl overflow-hidden border border-border/50 flex items-center justify-center"
           >
              {appearance?.hero_image_1_url ? (
                <img src={appearance.hero_image_1_url} alt="Hero 1" className="w-full h-full object-cover" />
              ) : (
-               <span className="text-xs uppercase font-bold text-white/30">IMG Supabase 1</span>
+               <span className="text-[10px] md:text-xs uppercase font-bold text-white/30">Upload 1</span>
              )}
           </motion.div>
 
           {/* Secondary Image Background Right */}
           <motion.div 
-            initial={{ opacity: 0, x: 30, rotate: 8 }}
+            initial={{ opacity: 0, x: 50, rotate: 8 }}
             animate={{ opacity: 1, x: 0, rotate: 6 }}
-            transition={{ duration: 0.8, delay: 0.5, type: "spring", bounce: 0.3 }}
-            className="absolute z-10 w-40 md:w-60 aspect-[4/5] bg-bg rounded-xl shadow-xl overflow-hidden border border-border flex items-center justify-center ml-24 md:ml-40 mt-8"
+            transition={{ duration: 1, delay: 0.5, type: "spring", bounce: 0.3 }}
+            className="absolute z-10 w-28 md:w-56 aspect-[4/5] bg-bg rounded-xl md:rounded-[1.5rem] shadow-xl overflow-hidden border border-border/50 flex items-center justify-center ml-20 md:ml-40 mt-8 md:mt-12"
           >
             {appearance?.hero_image_2_url ? (
                <img src={appearance.hero_image_2_url} alt="Hero 2" className="w-full h-full object-cover" />
              ) : (
-               <span className="text-xs uppercase font-bold text-text/30">IMG Supabase 2</span>
+               <span className="text-[10px] md:text-xs uppercase font-bold text-text/30">Upload 2</span>
              )}
           </motion.div>
 
           {/* Secondary Image Background Left */}
           <motion.div 
-            initial={{ opacity: 0, x: -30, rotate: -12 }}
+            initial={{ opacity: 0, x: -50, rotate: -12 }}
             animate={{ opacity: 1, x: 0, rotate: -8 }}
-            transition={{ duration: 0.8, delay: 0.6, type: "spring", bounce: 0.3 }}
-            className="absolute z-10 w-40 md:w-56 aspect-square bg-surface-hover rounded-xl shadow-lg overflow-hidden border border-border flex items-center justify-center mr-32 md:mr-48 -mt-16"
+            transition={{ duration: 1, delay: 0.6, type: "spring", bounce: 0.3 }}
+            className="absolute z-10 w-24 md:w-52 aspect-square bg-surface-hover rounded-xl md:rounded-[1.5rem] shadow-lg overflow-hidden border border-border/50 flex items-center justify-center mr-24 md:mr-48 -mt-12 md:-mt-20"
           >
             {appearance?.hero_image_3_url ? (
                <img src={appearance.hero_image_3_url} alt="Hero 3" className="w-full h-full object-cover" />
              ) : (
-               <span className="text-xs uppercase font-bold text-muted/50">IMG Supabase 3</span>
+               <span className="text-[10px] md:text-xs uppercase font-bold text-muted/50">Upload 3</span>
              )}
           </motion.div>
 

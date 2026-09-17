@@ -30,11 +30,11 @@ export default function PublicLayout() {
             </span>
           </Link>
 
-          {/* Links Principais: Serviços, Portfólio, Como funciona */}
+          {/* Links Principais: Serviços, Portfólio, Como funciona, Pacotes */}
           <nav className="hidden md:flex items-center gap-7 text-xs uppercase tracking-wider font-semibold text-text/80">
-            <a href="#servicos" className="hover:text-action transition-colors">Serviços</a>
-            <a href="#portfolio" className="hover:text-action transition-colors">Portfólio</a>
             <a href="#como-funciona" className="hover:text-action transition-colors">Como funciona</a>
+            <a href="#portfolio" className="hover:text-action transition-colors">Portfólio</a>
+            <a href="#pacotes" className="hover:text-action transition-colors">Pacotes & Serviços</a>
           </nav>
 
           {/* Botão Primário Único */}
@@ -182,7 +182,7 @@ export default function PublicLayout() {
           </div>
 
           <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-bg/50">
-            <p>© {new Date().getFullYear()} IAMUREL. Todos os direitos reservados. Sem atalhos, sem AI slop.</p>
+            <p>IAMUREL™ {new Date().getFullYear()}. Todos os direitos reservados. Sem atalhos, sem AI slop.</p>
             
             <div className="flex items-center gap-4">
               <span>Conteúdo com direção. Design com intenção.</span>
