@@ -63,8 +63,9 @@ export default function PublicLayout() {
 
           {/* Links Principais: Serviços, Portfólio, Como funciona, Pacotes */}
           <nav className="hidden md:flex items-center gap-7 text-xs uppercase tracking-wider font-semibold text-text/80">
-            <a href="#como-funciona" className="hover:text-action transition-colors">Como funciona</a>
+            <a href="#como-comecar" className="hover:text-action transition-colors">Como Começar</a>
             <a href="#portfolio" className="hover:text-action transition-colors">Portfólio</a>
+            <a href="#como-funciona" className="hover:text-action transition-colors">Método</a>
             <a href="#pacotes" className="hover:text-action transition-colors">Pacotes & Serviços</a>
           </nav>
 
@@ -92,11 +93,11 @@ export default function PublicLayout() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-border bg-surface px-6 py-5 space-y-4 text-sm font-semibold shadow-xl">
             <a
-              href="#como-funciona"
+              href="#como-comecar"
               onClick={() => setMobileMenuOpen(false)}
               className="block text-text hover:text-action py-1"
             >
-              Serviços
+              Como Começar
             </a>
             <a
               href="#portfolio"
@@ -110,7 +111,14 @@ export default function PublicLayout() {
               onClick={() => setMobileMenuOpen(false)}
               className="block text-text hover:text-action py-1"
             >
-              Como funciona
+              Método
+            </a>
+            <a
+              href="#pacotes"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-text hover:text-action py-1"
+            >
+              Pacotes & Serviços
             </a>
             <div className="pt-3 border-t border-border">
               <a

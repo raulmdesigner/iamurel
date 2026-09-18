@@ -11,6 +11,12 @@ import { HeroVisuals } from '../../components/modern/HeroVisuals';
 import { RotatingWordHero } from '../../components/modern/RotatingWordHero';
 import { InfiniteMarquee } from '../../components/modern/InfiniteMarquee';
 import { ScrollReveal } from '../../components/modern/ScrollReveal';
+import { ThreeRoutes } from '../../components/modern/ThreeRoutes';
+import { FitCheck } from '../../components/modern/FitCheck';
+import { MonthlyContentTable } from '../../components/modern/MonthlyContentTable';
+import { PostContactJourney } from '../../components/modern/PostContactJourney';
+import { PortfolioSection } from '../../components/modern/PortfolioSection';
+import { PackagesSection } from '../../components/modern/PackagesSection';
 import {
   ArrowRight,
   Check,
@@ -31,7 +37,8 @@ import {
   Eye,
   CheckCircle2,
   XCircle,
-  Clock
+  Clock,
+  UserCheck
 } from 'lucide-react';
 
 export default function Home() {
@@ -101,46 +108,55 @@ export default function Home() {
       {/* 2. HERO */}
       <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 px-6 bg-bg overflow-hidden border-b border-border">
         <div className="max-w-7xl mx-auto space-y-12">
-          <ScrollReveal direction="up" delay={0.1}><div className="max-w-4xl mx-auto space-y-8 flex flex-col items-center text-center">
-            <RotatingWordHero
-              prefix={
-                settings?.hero_title && settings.hero_title !== 'Conteúdo com direção. Design com intenção.'
-                  ? settings.hero_title
-                  : 'Criamos conteúdo para marcas que querem se tornar'
-              }
-            />
-              
-            
+          <ScrollReveal direction="up" delay={0.1}>
+            <div className="max-w-4xl mx-auto space-y-8 flex flex-col items-center text-center">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface border border-border shadow-xs">
+                <span className="w-2 h-2 rounded-full bg-action animate-pulse"></span>
+                <span className="text-[11px] font-mono uppercase tracking-widest text-text/80 font-bold">
+                  Estúdio Criativo de Conteúdo & Design
+                </span>
+              </div>
 
-            <p className="text-base sm:text-lg text-muted leading-relaxed max-w-2xl font-normal">
-              {settings?.hero_subtitle}
-            </p>
+              <RotatingWordHero
+                prefix={
+                  settings?.hero_title && settings.hero_title !== 'Conteúdo com direção. Design com intenção.'
+                    ? settings.hero_title
+                    : 'Criamos conteúdo para marcas que querem se tornar'
+                }
+              />
 
-            <div className="pt-2 flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3.5">
-              <a
-                href="#contato"
-                className="inline-flex items-center justify-center gap-2.5 bg-action hover:bg-action-hover text-white px-7 py-3.5 rounded-lg text-sm font-bold transition-all shadow-sm active:scale-[0.98] cursor-pointer"
-              >
-                <span>{settings?.primary_cta_text}</span>
-                <ArrowRight size={17} />
-              </a>
+              <p className="text-base sm:text-lg lg:text-xl text-muted leading-relaxed max-w-2xl font-normal">
+                {settings?.hero_subtitle || 'Design autoral e estratégia sob medida para marcas que se recusam a parecer genéricas no digital.'}
+              </p>
 
-              <a
-                href="#portfolio"
-                className="inline-flex items-center justify-center gap-2 bg-surface hover:bg-surface-hover border border-border text-text px-6 py-3.5 rounded-lg text-sm font-semibold transition-all cursor-pointer"
-              >
-                <span>{settings?.secondary_cta_text}</span>
-              </a>
+              <div className="pt-2 flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3.5 w-full sm:w-auto">
+                <a
+                  href="#contato"
+                  className="inline-flex items-center justify-center gap-2.5 bg-action hover:bg-action-hover text-white px-8 py-4 rounded-xl text-sm font-extrabold uppercase tracking-wider transition-all shadow-md active:scale-[0.98] cursor-pointer"
+                >
+                  <span>{settings?.primary_cta_text || 'Solicitar Diagnóstico Visual'}</span>
+                  <ArrowRight size={17} />
+                </a>
+
+                <a
+                  href="#portfolio"
+                  className="inline-flex items-center justify-center gap-2 bg-surface hover:bg-surface-hover border border-border/80 text-text px-7 py-4 rounded-xl text-sm font-bold transition-all cursor-pointer shadow-xs"
+                >
+                  <span>{settings?.secondary_cta_text || 'Ver Estudos de Caso'}</span>
+                </a>
+              </div>
+
+              <div className="pt-4 flex flex-wrap justify-center items-center gap-6 sm:gap-8 text-xs text-muted">
+                <span className="flex items-center gap-2 font-medium text-text">
+                  <Check size={16} className="text-action stroke-[3]" />
+                  Direção criativa humana com agilidade assistida por IA
+                </span>
+                <span className="flex items-center gap-2 font-medium text-text">
+                  <Check size={16} className="text-action stroke-[3]" />
+                  Entregas finalizadas prontas para publicação imediata
+                </span>
+              </div>
             </div>
-
-            <div className="pt-4 flex flex-wrap justify-center items-center gap-6 text-xs text-muted">
-              <span className="flex items-center gap-1.5 font-medium text-text">
-                <Check size={15} className="text-action stroke-[3]" />
-                Peças pensadas para o seu negócio, não para preencher espaço no feed.
-              </span>
-            </div>
-          </div>
-
           </ScrollReveal>
           {/* 3. VISUAL HERO */}
           <ScrollReveal direction="up" delay={0.3}><HeroVisuals /></ScrollReveal>
@@ -149,8 +165,13 @@ export default function Home() {
 
       {appearance?.enable_text_banner !== false && <InfiniteMarquee />}
 
+      {/* ROTAS CLARAS DE ENTRADA (DIAGNÓSTICO MANUS) */}
+      {appearance?.enable_three_routes !== false && settings && (
+        <ThreeRoutes settings={settings} onSelectRoute={handleSelectPlan} />
+      )}
+
       {/* 3. PORTFÓLIO (ESTUDOS CONCRETOS) */}
-      {appearance?.enable_showcase !== false && <PortfolioCentralSection onSelectPlan={handleSelectPlan} />}
+      {appearance?.enable_showcase !== false && <PortfolioSection onSelectPlan={handleSelectPlan} />}
 
       {/* 4. SERVIÇOS (TRÊS CAMINHOS) */}
       {appearance?.enable_services !== false && (
@@ -172,14 +193,41 @@ export default function Home() {
           
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {services.filter(service => service.status === 'active').map((service, index) => <article key={service.id} className="space-y-4">
-              <span className="text-4xl font-display text-muted/30">{String(index + 1).padStart(2, '0')}</span>
-              <h3 className="text-xl font-bold">{service.title}</h3>
-              <p className="text-sm text-muted">{service.problem_solved}</p>
-              <p className="text-sm">{service.deliverables}</p>
-              {service.timeframe && <p className="text-xs text-muted">Prazo: {service.timeframe}</p>}
-              {service.investment_range && <p className="text-sm font-bold">{service.investment_range}</p>}
-            </article>)}
+            {services.filter(service => service.status === 'active').map((service, index) => (
+              <article key={service.id} className="p-8 rounded-2xl bg-surface border border-border/80 hover:border-action/40 transition-all space-y-5 flex flex-col justify-between shadow-xs">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-3xl font-display font-black text-action/30">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted px-2.5 py-1 rounded bg-bg border border-border">
+                      Etapa Metodológica
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold font-display text-text">{service.title}</h3>
+                  <p className="text-xs sm:text-sm text-muted leading-relaxed">{service.problem_solved}</p>
+                  
+                  <div className="pt-3 border-t border-border/80 space-y-1.5">
+                    <span className="text-[10px] font-mono uppercase text-muted font-bold block">Entregável:</span>
+                    <p className="text-xs text-text/90 font-medium">{service.deliverables}</p>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-border flex items-center justify-between text-xs">
+                  {service.timeframe && (
+                    <span className="text-muted flex items-center gap-1">
+                      <Clock size={12} className="text-action" />
+                      {service.timeframe}
+                    </span>
+                  )}
+                  {service.investment_range && (
+                    <span className="font-bold text-text font-mono ml-auto">
+                      {service.investment_range}
+                    </span>
+                  )}
+                </div>
+              </article>
+            ))}
           </div>
 
         </div>
@@ -188,44 +236,93 @@ export default function Home() {
       )}
       {/* 5. SEÇÃO "PARA QUEM É" (EXEMPLOS REAIS DE CLIENTES) */}
       {appearance?.enable_clients !== false && (
-      <section className="py-16 md:py-24 px-6 bg-surface border-b border-border">
+      <section className="py-20 md:py-28 px-6 bg-surface border-b border-border">
         <ScrollReveal>
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-6">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-text leading-tight">
-                Para marcas que querem fugir do "mais do mesmo".
-              </h2>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-action shrink-0 mt-0.5" />
-                  <p className="text-sm text-muted">Empresas que precisam renovar a marca mas têm urgência.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-action shrink-0 mt-0.5" />
-                  <p className="text-sm text-muted">Especialistas e infoprodutores buscando autoridade visual.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-action shrink-0 mt-0.5" />
-                  <p className="text-sm text-muted">Negócios locais querendo profissionalizar a comunicação no Instagram.</p>
-                </li>
-              </ul>
-            </div>
-            <div className="relative">
-              <div className="aspect-square bg-bg rounded-2xl border border-border overflow-hidden relative shadow-lg">
-                <div className="absolute inset-0 bg-gradient-to-tr from-action/5 to-transparent z-10 pointer-events-none" />
-                {/* Placeholder para uma imagem de bastidores ou resultado */}
-                <div className="absolute inset-0 flex items-center justify-center text-muted flex-col gap-2 bg-surface/50 backdrop-blur-sm">
-                  <Smartphone className="w-8 h-8 opacity-20" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest opacity-30">Direção Criativa</span>
+            <div className="space-y-8">
+              <div className="space-y-3">
+                <span className="text-xs uppercase tracking-widest text-action font-extrabold flex items-center gap-2">
+                  <UserCheck size={16} />
+                  Público & Perfis Atendidos
+                </span>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-text leading-tight">
+                  Para marcas que querem fugir do "mais do mesmo".
+                </h2>
+                <p className="text-muted text-sm sm:text-base leading-relaxed">
+                  Trabalhamos com marcas que reconhecem que uma presença visual desleixada custa caro em termos de credibilidade e ticket médio.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="p-5 rounded-2xl bg-bg border border-border flex items-start gap-4 shadow-xs">
+                  <div className="w-10 h-10 rounded-xl bg-action/10 text-action flex items-center justify-center shrink-0 mt-0.5">
+                    <CheckCircle2 size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm sm:text-base font-bold text-text">Empresas e Negócios Locais</h4>
+                    <p className="text-xs sm:text-sm text-muted mt-1 leading-relaxed">
+                      Que precisam renovar a marca ou profissionalizar os posts no Instagram com agilidade sem burocracia de agências gigantescas.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-bg border border-border flex items-start gap-4 shadow-xs">
+                  <div className="w-10 h-10 rounded-xl bg-action/10 text-action flex items-center justify-center shrink-0 mt-0.5">
+                    <CheckCircle2 size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm sm:text-base font-bold text-text">Especialistas & Profissionais Liberais</h4>
+                    <p className="text-xs sm:text-sm text-muted mt-1 leading-relaxed">
+                      Médicos, consultores e líderes que buscam autoridade imediata, carrosséis de alto impacto e peças com acabamento de revista.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-bg border border-border flex items-start gap-4 shadow-xs">
+                  <div className="w-10 h-10 rounded-xl bg-action/10 text-action flex items-center justify-center shrink-0 mt-0.5">
+                    <CheckCircle2 size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm sm:text-base font-bold text-text">Marcas em Lançamento ou Rebranding</h4>
+                    <p className="text-xs sm:text-sm text-muted mt-1 leading-relaxed">
+                      Que necessitam de manual de marca, identidade visual sólida e assets digitais completos prontos para veicular no mercado.
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-bg border border-border p-4 rounded-xl shadow-xl flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-action/10 flex items-center justify-center text-action font-bold text-xl">
+            </div>
+
+            <div className="relative">
+              <div className="aspect-[4/3] sm:aspect-square bg-dark rounded-3xl border border-border-dark overflow-hidden relative shadow-2xl p-8 sm:p-12 flex flex-col justify-between text-white">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-action font-extrabold bg-white/10 px-3 py-1 rounded-full backdrop-blur-md">
+                    Acabamento Autoral
+                  </span>
+                  <div className="w-8 h-8 rounded-full bg-action/20 text-action flex items-center justify-center">
+                    <Sparkles size={16} />
+                  </div>
+                </div>
+
+                <div className="space-y-3 my-auto py-6">
+                  <span className="text-xs font-mono text-white/60 uppercase tracking-widest">Compromisso IAMUREL</span>
+                  <p className="text-2xl sm:text-3xl font-display font-extrabold leading-tight text-white/95">
+                    "Cada postagem deve reforçar o porquê o seu negócio merece ser escolhido."
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/70">
+                  <span>Padrão 1080×1350 & 1080×1920</span>
+                  <span className="font-mono text-action font-bold">100% Vetor & Alta Resolução</span>
+                </div>
+              </div>
+
+              <div className="absolute -bottom-6 -left-6 bg-bg border border-border p-5 rounded-2xl shadow-xl flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-action/10 flex items-center justify-center text-action font-black text-xl">
                   +3
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-text">Dias úteis</p>
-                  <p className="text-[10px] text-muted">Prazo médio de entregas mensais</p>
+                  <p className="text-xs font-bold text-text">Dias Úteis de Entrega</p>
+                  <p className="text-[11px] text-muted">Média de ciclo de peças com aprovação ágil</p>
                 </div>
               </div>
             </div>
@@ -233,75 +330,19 @@ export default function Home() {
         </ScrollReveal>
       </section>
       )}
-      {/* 6. SERVIÇOS (TRÊS CAMINHOS) */}
+      {/* FIT CHECK: PARA QUEM É E PARA QUEM NÃO É (DIAGNÓSTICO MANUS) */}
+      {appearance?.enable_fit_check !== false && settings && (
+        <FitCheck settings={settings} />
+      )}
+
+      {/* DETALHAMENTO DA OPERAÇÃO DE CONTEÚDO MENSAL (DIAGNÓSTICO MANUS) */}
+      {appearance?.enable_monthly_table !== false && settings && (
+        <MonthlyContentTable settings={settings} onSelectPlan={handleSelectPlan} />
+      )}
+
+      {/* 6. SERVIÇOS E PACOTES ESTRUTURADOS */}
       {appearance?.enable_packages !== false && (
-      <section id="pacotes" className="py-16 md:py-24 px-6 bg-bg border-b border-border">
-        <ScrollReveal>
-          <div className="max-w-7xl mx-auto space-y-12">
-            <div className="max-w-2xl space-y-3">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
-              Serviços e Pacotes
-            </h2>
-            <p className="text-muted text-sm sm:text-base">
-              Escolha o formato que resolve a necessidade da sua marca hoje.
-            </p>
-          </div>
-
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {packages.filter(p => p.status === 'active').sort((a, b) => a.order_index - b.order_index).map((pkg) => (
-            <div key={pkg.id} className={`p-8 bg-surface border-2 ${pkg.is_highlighted ? 'border-action shadow-md relative' : 'border-border transition-all duration-300 hover:shadow-xl hover:-translate-y-1'} rounded-2xl flex flex-col justify-between space-y-6 group`}>
-              {pkg.is_highlighted && (
-                <div className="absolute -top-3 left-8 bg-action text-white px-3 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider">
-                  Mais Solicitado
-                </div>
-              )}
-              <div className="space-y-4">
-                <div>
-                  <span className={`text-xs font-bold uppercase ${pkg.is_highlighted ? 'text-action' : 'text-muted'}`}>{pkg.commercial_role}</span>
-                  <h3 className="text-2xl font-bold font-display text-text mt-1">
-                    {pkg.level}
-                  </h3>
-                  <p className="text-xs text-muted mt-2">
-                    {pkg.description}
-                  </p>
-                </div>
-                <div className="py-3 border-y border-border">
-                  <span className="text-[11px] text-muted block uppercase">Investimento</span>
-                  <p className="text-2xl font-bold font-display text-text">
-                    {pkg.price_type === 'hidden' ? 'Consulte-nos' : 
-                     pkg.price_type === 'starting_at' ? `A partir de R$ ${pkg.price?.toLocaleString('pt-BR')}` :
-                     pkg.price_type === 'fixed' ? `R$ ${pkg.price?.toLocaleString('pt-BR')}` :
-                     'Sob consulta'}
-                  </p>
-                  <span className="text-[11px] text-muted">{pkg.timeframe}</span>
-                </div>
-                <ul className="space-y-2 text-xs text-text/90">
-                  {pkg.items?.map(item => (
-                    <li key={item.id} className={`flex items-start gap-2 ${item.is_included === false ? 'opacity-50 line-through' : ''}`}>
-                      {item.is_included === false ? (
-                        <XCircle size={14} className="text-muted shrink-0 mt-0.5" />
-                      ) : (
-                        <Check size={14} className="text-action shrink-0 mt-0.5" />
-                      )}
-                      <span>{item.quantity ? `${item.quantity} ` : ''}{item.title}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <button
-                onClick={() => handleSelectPlan(pkg.level)}
-                className={`w-full py-3 font-bold text-xs rounded-lg transition-colors cursor-pointer ${pkg.is_highlighted ? 'bg-action hover:bg-action-hover text-white shadow-sm' : 'bg-bg border border-border hover:border-text text-text'}`}
-              >
-                Falar sobre este pacote
-              </button>
-            </div>
-            ))}
-          </div>
-
-        </div>
-        </ScrollReveal>
-      </section>
+        <PackagesSection packages={packages} onSelectPlan={handleSelectPlan} />
       )}
 
       {appearance?.enable_faq !== false && (
@@ -364,6 +405,11 @@ export default function Home() {
       </section>
       )}
 
+      {/* JORNADA PÓS-CONTATO: O QUE ACONTECE APÓS ENVIAR (DIAGNÓSTICO MANUS) */}
+      {appearance?.enable_journey_steps !== false && settings && (
+        <PostContactJourney settings={settings} />
+      )}
+
       {/* FORMULÁRIO DE CONTATO DIRETO E OBJETIVO */}
       {appearance?.enable_contact_form !== false && (
       <section id="contato" className="py-16 md:py-24 px-6 bg-bg">
@@ -392,207 +438,6 @@ export default function Home() {
       </section>
       )}
     </div>
-  );
-}
-
-// ----------------------------------------------------------------------
-// 6. SEÇÃO DE PORTFÓLIO CENTRAL (ESTUDOS CONCRETOS)
-// ----------------------------------------------------------------------
-function PortfolioCentralSection({ onSelectPlan }: { onSelectPlan: (plan: string) => void }) {
-  const [activeCase, setActiveCase] = useState<number>(0);
-
-  const cases = [
-    {
-      id: 0,
-      badge: 'Estudo Conceitual • Barbearia & Estética',
-      title: 'Black Beard Studio',
-      segment: 'Barbearia Premium & Experiência Masculina',
-      problem: 'O estúdio oferecia um serviço impecável, mas seu Instagram parecia de uma barbearia comum de bairro. Os clientes insistiam em pechinchar.',
-      direction: 'Desenvolvimento de uma identidade visual com base em azul escuro e laranja mineral, com carrosséis focados em cuidados reais e valorização do profissional.',
-      pieces: [
-        'Identidade visual completa com manual de marca',
-        'Série de 8 carrosséis estratégicos 4:5 finalizados em alta resolução',
-        'Criativos de tráfego pago para agendamento local',
-        'Banner de fachada e cartaz de ponto de venda'
-      ],
-      resultObservation: 'Elevação do valor percebido e atração de clientes dispostos a pagar pelo serviço premium.'
-    },
-    {
-      id: 1,
-      badge: 'Estudo Conceitual • Saúde & Clínica',
-      title: 'Dra. Juliana Reis',
-      segment: 'Dermatologia & Procedimentos Estéticos',
-      problem: 'Posts técnicos cheios de termos médicos que ninguém lia ou comentava, além de artes genéricas de banco de imagens que não transmitiam autoridade.',
-      direction: 'Linguagem visual limpa, fotografias reais com tratamento cromático uniforme e ganchos em carrossel que respondem às maiores inseguranças dos pacientes.',
-      pieces: [
-        'Guia tipográfico e paleta suave de contraste alto',
-        'Carrosséis educativos sobre cuidados com a pele',
-        'Templates de stories interativos de perguntas e respostas',
-        'Anúncios de captação ética com foco em consulta particular'
-      ],
-      resultObservation: 'Pacientes passaram a chegar na clínica já conhecendo o método e prontos para iniciar o tratamento.'
-    },
-    {
-      id: 2,
-      badge: 'Estudo Conceitual • Gastronomia Local',
-      title: 'Grão & Origem',
-      segment: 'Cafeteria Artesanal & Torrefação',
-      problem: 'Concorrência forte de franquias convencionais e dificuldade em fazer o público entender a diferença de preço de um café especial.',
-      direction: 'Comunicação focada na sensorialidade, com cartazes impressos de alto impacto, cardápio diagramado e posts que contam a história de cada produtor.',
-      pieces: [
-        'Cardápio físico e digital de fácil leitura',
-        'Embalagens de café em grãos com selo autoral',
-        'Campanha de lançamento de inverno nas redes sociais',
-        'Outdoor de rua com chamada rápida e memorável'
-      ],
-      resultObservation: 'Aumento do ticket médio com venda de cafés para levar e consolidação como ponto de encontro na cidade.'
-    }
-  ];
-
-  const current = cases[activeCase];
-
-  return (
-    <section id="portfolio" className="py-16 md:py-24 px-6 bg-surface border-b border-border">
-      <ScrollReveal>
-        <div className="max-w-7xl mx-auto space-y-12">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-3 max-w-2xl">
-            <span className="text-xs uppercase tracking-wider text-action font-bold">
-              Portfólio por Aplicação
-            </span>
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-text">
-              Veja a qualidade da entrega na prática.
-            </h2>
-            <p className="text-muted text-sm sm:text-base">
-              Demonstrações autorais claramente identificadas, mostrando como o problema é analisado, a direção é definida e as peças são entregues.
-            </p>
-          </div>
-
-          {/* Seletores dos Casos */}
-          <div className="flex bg-bg p-1.5 rounded-xl border border-border gap-1.5 overflow-x-auto shrink-0">
-            {cases.map((c, idx) => (
-              <button
-                key={c.id}
-                onClick={() => setActiveCase(idx)}
-                className={`px-4 py-2.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                  activeCase === idx
-                    ? 'bg-action text-white shadow-xs'
-                    : 'text-muted hover:text-text'
-                }`}
-              >
-                {c.title}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Card Detalhado do Caso Selecionado */}
-        <div className="bg-bg border border-border rounded-2xl p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          {/* Lado Esquerdo: Diagnóstico e Decisões */}
-          <div className="lg:col-span-6 space-y-6">
-            <div className="inline-block px-3 py-1 bg-surface border border-border rounded-full text-[11px] font-bold text-action uppercase">
-              {current.badge}
-            </div>
-
-            <div>
-              <h3 className="text-2xl sm:text-3xl font-display font-bold text-text">
-                {current.title}
-              </h3>
-              <p className="text-xs text-muted font-semibold mt-1">
-                Segmento: {current.segment}
-              </p>
-            </div>
-
-            <div className="space-y-3 text-xs sm:text-sm">
-              <div className="p-4 bg-surface border border-border rounded-lg space-y-1">
-                <span className="font-bold text-red-600 block uppercase text-[10px]">
-                  O Desafio Anterior:
-                </span>
-                <p className="text-text/90 leading-relaxed">{current.problem}</p>
-              </div>
-
-              <div className="p-4 bg-surface border border-border rounded-lg space-y-1">
-                <span className="font-bold text-action block uppercase text-[10px]">
-                  A Direção Adotada:
-                </span>
-                <p className="text-text/90 leading-relaxed">{current.direction}</p>
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <span className="text-xs font-bold text-text uppercase block">
-                Peças Produzidas no Projeto:
-              </span>
-              <ul className="space-y-1.5 text-xs text-text/80">
-                {current.pieces.map((p, i) => (
-                  <li key={i} className="flex items-center gap-2">
-                    <Check size={14} className="text-action shrink-0" />
-                    <span>{p}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="pt-2">
-              <button
-                onClick={() => onSelectPlan(`Interesse em projeto similar ao: ${current.title}`)}
-                className="inline-flex items-center gap-2 text-xs font-bold text-action hover:underline cursor-pointer"
-              >
-                <span>Quero um resultado parecido para o meu negócio</span>
-                <ArrowRight size={14} />
-              </button>
-            </div>
-          </div>
-
-          {/* Lado Direito: Representação das Peças Reais */}
-          <div className="lg:col-span-6 space-y-4">
-            <div className="bg-surface border border-border rounded-xl p-6 shadow-xs space-y-4">
-              <div className="flex items-center justify-between text-xs pb-3 border-b border-border">
-                <span className="font-bold text-text">Preview do Ecossistema</span>
-                <span className="text-[11px] text-muted">Peças 100% Prontas para Postar</span>
-              </div>
-
-              {/* Mockup simplificado de peças prontas para circulação */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-4 bg-bg border border-border rounded-lg space-y-2">
-                  <span className="text-[10px] font-mono text-action font-bold uppercase block">
-                    Post Carrossel
-                  </span>
-                  <div className="h-20 bg-surface border border-border/80 rounded p-2 flex flex-col justify-between">
-                    <div className="w-12 h-1.5 bg-action rounded"></div>
-                    <div className="space-y-1">
-                      <div className="w-full h-2 bg-text/80 rounded"></div>
-                      <div className="w-3/4 h-2 bg-text/50 rounded"></div>
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-muted block">Carrossel estruturado para facilitar a leitura</span>
-                </div>
-
-                <div className="p-4 bg-bg border border-border rounded-lg space-y-2">
-                  <span className="text-[10px] font-mono text-action font-bold uppercase block">
-                    Story / Vídeo
-                  </span>
-                  <div className="h-20 bg-dark rounded p-2 flex flex-col justify-between text-white">
-                    <div className="w-8 h-1 bg-action rounded"></div>
-                    <div className="space-y-1">
-                      <div className="w-full h-1.5 bg-white/70 rounded"></div>
-                      <div className="w-2/3 h-1.5 bg-white/40 rounded"></div>
-                    </div>
-                  </div>
-                  <span className="text-[10px] text-muted block">Formato Vertical 9:16</span>
-                </div>
-              </div>
-
-              <div className="p-3.5 bg-bg border border-border rounded-lg text-xs text-muted flex items-center justify-between">
-                <span>Efeito esperado da direção visual:</span>
-                <span className="font-bold text-text">{current.resultObservation}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      </ScrollReveal>
-    </section>
   );
 }
 

@@ -6,7 +6,7 @@ import { SiteSettings, Service, Package, FAQ } from '../../types';
 import { Save, Plus, Trash2, Check, AlertCircle, Edit3 } from 'lucide-react';
 
 export default function ContentCMS() {
-  const [activeTab, setActiveTab] = useState<'geral' | 'servicos' | 'pacotes' | 'faq' | 'legal'>('geral');
+  const [activeTab, setActiveTab] = useState<'geral' | 'rotas' | 'qualificacao' | 'mensal' | 'poscontato' | 'servicos' | 'pacotes' | 'faq' | 'legal'>('geral');
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [services, setServices] = useState<Service[]>([]);
   const [packages, setPackages] = useState<Package[]>([]);
@@ -84,11 +84,15 @@ export default function ContentCMS() {
       {/* Menu de Abas */}
       <div className="flex flex-wrap gap-2 border-b border-border pb-3">
         {[
-          { id: 'geral', label: 'Textos da Abertura (Hero)' },
-          { id: 'servicos', label: 'Especialidades & Escopos' },
+          { id: 'geral', label: 'Abertura (Hero)' },
+          { id: 'rotas', label: '3 Rotas de Entrada' },
+          { id: 'qualificacao', label: 'Critério de Fit' },
+          { id: 'mensal', label: 'Conteúdo Mensal' },
+          { id: 'poscontato', label: 'Jornada Pós-Contato' },
+          { id: 'servicos', label: 'Especialidades' },
           { id: 'pacotes', label: 'Pacotes & Preços' },
           { id: 'faq', label: 'Perguntas Frequentes' },
-          { id: 'legal', label: 'Termos & Privacidade (LGPD)' }
+          { id: 'legal', label: 'Termos & LGPD' }
         ].map(tab => (
           <button
             key={tab.id}
@@ -186,12 +190,424 @@ export default function ContentCMS() {
 
           <div className="flex justify-end pt-4 border-t border-border">
             <button
-    type="submit" disabled={saving}
-    className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
-  >
-    {savedSuccess ? <Check size={16} /> : <Save size={16} />}
-    <span>{savedSuccess ? 'Salvo!' : 'Salvar Textos da Abertura'}</span>
-  </button>
+              type="submit" disabled={saving}
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+            >
+              {savedSuccess ? <Check size={16} /> : <Save size={16} />}
+              <span>{savedSuccess ? 'Salvo!' : 'Salvar Textos da Abertura'}</span>
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* ABA: 3 ROTAS DE ENTRADA (MANUS) */}
+      {activeTab === 'rotas' && settings && (
+        <form onSubmit={handleSaveSettings} className="space-y-6 bg-surface p-8 rounded-lg border border-border">
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-bold font-display text-text">Guia de 3 Rotas de Entrada</h3>
+              <p className="text-xs text-muted">Ajuda o visitante indeciso a identificar qual formato atende o momento atual da marca dele.</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-semibold text-text uppercase tracking-wider block mb-1">
+                  Título da Seção de Rotas
+                </label>
+                <input
+                  type="text"
+                  value={settings.routes_title || ''}
+                  onChange={e => setSettings({ ...settings, routes_title: e.target.value })}
+                  className="w-full px-4 py-2 bg-bg border border-border rounded text-sm focus:outline-none focus:border-action"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-text uppercase tracking-wider block mb-1">
+                  Subtítulo Explicativo
+                </label>
+                <input
+                  type="text"
+                  value={settings.routes_subtitle || ''}
+                  onChange={e => setSettings({ ...settings, routes_subtitle: e.target.value })}
+                  className="w-full px-4 py-2 bg-bg border border-border rounded text-sm focus:outline-none focus:border-action"
+                />
+              </div>
+            </div>
+
+            {/* Rota 1 */}
+            <div className="p-4 bg-bg border border-border rounded-lg space-y-3">
+              <span className="text-xs font-bold text-action uppercase tracking-wider">Rota 1 (Visual e Identidade)</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  placeholder="Título da Rota 1"
+                  value={settings.route_1_title || ''}
+                  onChange={e => setSettings({ ...settings, route_1_title: e.target.value })}
+                  className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs"
+                />
+                <input
+                  type="text"
+                  placeholder="Texto do Botão (CTA)"
+                  value={settings.route_1_cta || ''}
+                  onChange={e => setSettings({ ...settings, route_1_cta: e.target.value })}
+                  className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs"
+                />
+              </div>
+              <textarea
+                rows={2}
+                placeholder="Descrição / Para quem é essa rota..."
+                value={settings.route_1_desc || ''}
+                onChange={e => setSettings({ ...settings, route_1_desc: e.target.value })}
+                className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs resize-none"
+              />
+            </div>
+
+            {/* Rota 2 */}
+            <div className="p-4 bg-bg border border-border rounded-lg space-y-3">
+              <span className="text-xs font-bold text-action uppercase tracking-wider">Rota 2 (Rotina Mensal Contínua)</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  placeholder="Título da Rota 2"
+                  value={settings.route_2_title || ''}
+                  onChange={e => setSettings({ ...settings, route_2_title: e.target.value })}
+                  className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs"
+                />
+                <input
+                  type="text"
+                  placeholder="Texto do Botão (CTA)"
+                  value={settings.route_2_cta || ''}
+                  onChange={e => setSettings({ ...settings, route_2_cta: e.target.value })}
+                  className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs"
+                />
+              </div>
+              <textarea
+                rows={2}
+                placeholder="Descrição / Para quem é essa rota..."
+                value={settings.route_2_desc || ''}
+                onChange={e => setSettings({ ...settings, route_2_desc: e.target.value })}
+                className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs resize-none"
+              />
+            </div>
+
+            {/* Rota 3 */}
+            <div className="p-4 bg-bg border border-border rounded-lg space-y-3">
+              <span className="text-xs font-bold text-action uppercase tracking-wider">Rota 3 (Lançamento ou Campanha)</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  placeholder="Título da Rota 3"
+                  value={settings.route_3_title || ''}
+                  onChange={e => setSettings({ ...settings, route_3_title: e.target.value })}
+                  className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs"
+                />
+                <input
+                  type="text"
+                  placeholder="Texto do Botão (CTA)"
+                  value={settings.route_3_cta || ''}
+                  onChange={e => setSettings({ ...settings, route_3_cta: e.target.value })}
+                  className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs"
+                />
+              </div>
+              <textarea
+                rows={2}
+                placeholder="Descrição / Para quem é essa rota..."
+                value={settings.route_3_desc || ''}
+                onChange={e => setSettings({ ...settings, route_3_desc: e.target.value })}
+                className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs resize-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-4 border-t border-border">
+            <button
+              type="submit" disabled={saving}
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+            >
+              {savedSuccess ? <Check size={16} /> : <Save size={16} />}
+              <span>Salvar 3 Rotas de Entrada</span>
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* ABA: CRITÉRIO DE FIT (PARA QUEM É / NÃO É) */}
+      {activeTab === 'qualificacao' && settings && (
+        <form onSubmit={handleSaveSettings} className="space-y-6 bg-surface p-8 rounded-lg border border-border">
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-bold font-display text-text">Critério de Fit & Qualificação Prévia</h3>
+              <p className="text-xs text-muted">Deixe nítido quais clientes têm sinergia e quais perfis não se encaixam no formato de estúdio autoral.</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-semibold text-text uppercase tracking-wider block mb-1">
+                  Título da Seção
+                </label>
+                <input
+                  type="text"
+                  value={settings.fit_title || ''}
+                  onChange={e => setSettings({ ...settings, fit_title: e.target.value })}
+                  className="w-full px-4 py-2 bg-bg border border-border rounded text-sm focus:outline-none focus:border-action"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-text uppercase tracking-wider block mb-1">
+                  Subtítulo Explicativo
+                </label>
+                <input
+                  type="text"
+                  value={settings.fit_subtitle || ''}
+                  onChange={e => setSettings({ ...settings, fit_subtitle: e.target.value })}
+                  className="w-full px-4 py-2 bg-bg border border-border rounded text-sm focus:outline-none focus:border-action"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-4 bg-bg border border-border rounded-lg space-y-2">
+                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                  Para quem é este serviço (um item por linha)
+                </span>
+                <textarea
+                  rows={8}
+                  value={settings.fit_included || ''}
+                  onChange={e => setSettings({ ...settings, fit_included: e.target.value })}
+                  placeholder="Empresas e profissionais que buscam posicionamento autoral&#10;Negócios que entendem o valor de estética cuidadosa..."
+                  className="w-full p-3 bg-surface border border-border rounded text-xs leading-relaxed focus:outline-none focus:border-action font-mono"
+                />
+              </div>
+
+              <div className="p-4 bg-bg border border-border rounded-lg space-y-2">
+                <span className="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider">
+                  Para quem NÃO é este serviço (um item por linha)
+                </span>
+                <textarea
+                  rows={8}
+                  value={settings.fit_excluded || ''}
+                  onChange={e => setSettings({ ...settings, fit_excluded: e.target.value })}
+                  placeholder="Quem busca volume desenfreado de 30 posts genéricos por mês&#10;Quem quer apenas arte rápida de R$ 20 sem estratégia..."
+                  className="w-full p-3 bg-surface border border-border rounded text-xs leading-relaxed focus:outline-none focus:border-action font-mono"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-4 border-t border-border">
+            <button
+              type="submit" disabled={saving}
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+            >
+              {savedSuccess ? <Check size={16} /> : <Save size={16} />}
+              <span>Salvar Critério de Fit</span>
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* ABA: OPERAÇÃO DE CONTEÚDO MENSAL */}
+      {activeTab === 'mensal' && settings && (
+        <form onSubmit={handleSaveSettings} className="space-y-6 bg-surface p-8 rounded-lg border border-border">
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-bold font-display text-text">Operação de Conteúdo Mensal & Tabela de Escopo</h3>
+              <p className="text-xs text-muted">Transparência cirúrgica sobre entregáveis, não-inclusos, prazos e regras de revisão.</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-semibold text-text uppercase tracking-wider block mb-1">
+                  Título da Tabela
+                </label>
+                <input
+                  type="text"
+                  value={settings.monthly_title || ''}
+                  onChange={e => setSettings({ ...settings, monthly_title: e.target.value })}
+                  className="w-full px-4 py-2 bg-bg border border-border rounded text-sm focus:outline-none focus:border-action"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-text uppercase tracking-wider block mb-1">
+                  Subtítulo / Descrição
+                </label>
+                <input
+                  type="text"
+                  value={settings.monthly_subtitle || ''}
+                  onChange={e => setSettings({ ...settings, monthly_subtitle: e.target.value })}
+                  className="w-full px-4 py-2 bg-bg border border-border rounded text-sm focus:outline-none focus:border-action"
+                />
+              </div>
+            </div>
+
+            <div className="p-4 bg-bg border border-border rounded-lg space-y-2">
+              <label className="text-xs font-semibold text-text uppercase tracking-wider block">
+                Âncora de Preço / Investimento Base
+              </label>
+              <input
+                type="text"
+                value={settings.monthly_price_anchor || ''}
+                onChange={e => setSettings({ ...settings, monthly_price_anchor: e.target.value })}
+                placeholder="Ex: A partir de R$ 1.800/mês para esteira contínua"
+                className="w-full px-4 py-2 bg-surface border border-border rounded text-sm focus:outline-none focus:border-action"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block">
+                  Entregas Inclusas (um item por linha)
+                </label>
+                <textarea
+                  rows={8}
+                  value={settings.monthly_deliverables || ''}
+                  onChange={e => setSettings({ ...settings, monthly_deliverables: e.target.value })}
+                  className="w-full p-3 bg-bg border border-border rounded text-xs font-mono leading-relaxed resize-none focus:outline-none focus:border-action"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider block">
+                  O Que NÃO Está Incluso (um item por linha)
+                </label>
+                <textarea
+                  rows={8}
+                  value={settings.monthly_not_included || ''}
+                  onChange={e => setSettings({ ...settings, monthly_not_included: e.target.value })}
+                  className="w-full p-3 bg-bg border border-border rounded text-xs font-mono leading-relaxed resize-none focus:outline-none focus:border-action"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-bold text-action uppercase tracking-wider block">
+                  Prazos & Regras de Revisão (um item por linha)
+                </label>
+                <textarea
+                  rows={8}
+                  value={settings.monthly_revisions || ''}
+                  onChange={e => setSettings({ ...settings, monthly_revisions: e.target.value })}
+                  className="w-full p-3 bg-bg border border-border rounded text-xs font-mono leading-relaxed resize-none focus:outline-none focus:border-action"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-4 border-t border-border">
+            <button
+              type="submit" disabled={saving}
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+            >
+              {savedSuccess ? <Check size={16} /> : <Save size={16} />}
+              <span>Salvar Operação Mensal</span>
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* ABA: JORNADA PÓS-CONTATO (1-2-3) */}
+      {activeTab === 'poscontato' && settings && (
+        <form onSubmit={handleSaveSettings} className="space-y-6 bg-surface p-8 rounded-lg border border-border">
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-bold font-display text-text">Jornada Pós-Contato (O Que Acontece a Seguir)</h3>
+              <p className="text-xs text-muted">Alivia o medo do cliente sobre o tempo de resposta, etapas da conversa e como a proposta é apresentada.</p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-semibold text-text uppercase tracking-wider block mb-1">
+                  Título da Seção
+                </label>
+                <input
+                  type="text"
+                  value={settings.journey_title || ''}
+                  onChange={e => setSettings({ ...settings, journey_title: e.target.value })}
+                  className="w-full px-4 py-2 bg-bg border border-border rounded text-sm focus:outline-none focus:border-action"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-text uppercase tracking-wider block mb-1">
+                  Subtítulo Explicativo
+                </label>
+                <input
+                  type="text"
+                  value={settings.journey_subtitle || ''}
+                  onChange={e => setSettings({ ...settings, journey_subtitle: e.target.value })}
+                  className="w-full px-4 py-2 bg-bg border border-border rounded text-sm focus:outline-none focus:border-action"
+                />
+              </div>
+            </div>
+
+            {/* Passo 1 */}
+            <div className="p-4 bg-bg border border-border rounded-lg space-y-2">
+              <span className="text-xs font-bold text-action uppercase tracking-wider">Passo 1</span>
+              <input
+                type="text"
+                placeholder="Título do Passo 1"
+                value={settings.journey_step_1_title || ''}
+                onChange={e => setSettings({ ...settings, journey_step_1_title: e.target.value })}
+                className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs"
+              />
+              <textarea
+                rows={2}
+                placeholder="Descrição do Passo 1..."
+                value={settings.journey_step_1_desc || ''}
+                onChange={e => setSettings({ ...settings, journey_step_1_desc: e.target.value })}
+                className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs resize-none"
+              />
+            </div>
+
+            {/* Passo 2 */}
+            <div className="p-4 bg-bg border border-border rounded-lg space-y-2">
+              <span className="text-xs font-bold text-action uppercase tracking-wider">Passo 2</span>
+              <input
+                type="text"
+                placeholder="Título do Passo 2"
+                value={settings.journey_step_2_title || ''}
+                onChange={e => setSettings({ ...settings, journey_step_2_title: e.target.value })}
+                className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs"
+              />
+              <textarea
+                rows={2}
+                placeholder="Descrição do Passo 2..."
+                value={settings.journey_step_2_desc || ''}
+                onChange={e => setSettings({ ...settings, journey_step_2_desc: e.target.value })}
+                className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs resize-none"
+              />
+            </div>
+
+            {/* Passo 3 */}
+            <div className="p-4 bg-bg border border-border rounded-lg space-y-2">
+              <span className="text-xs font-bold text-action uppercase tracking-wider">Passo 3</span>
+              <input
+                type="text"
+                placeholder="Título do Passo 3"
+                value={settings.journey_step_3_title || ''}
+                onChange={e => setSettings({ ...settings, journey_step_3_title: e.target.value })}
+                className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs"
+              />
+              <textarea
+                rows={2}
+                placeholder="Descrição do Passo 3..."
+                value={settings.journey_step_3_desc || ''}
+                onChange={e => setSettings({ ...settings, journey_step_3_desc: e.target.value })}
+                className="w-full px-3 py-1.5 bg-surface border border-border rounded text-xs resize-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-4 border-t border-border">
+            <button
+              type="submit" disabled={saving}
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+            >
+              {savedSuccess ? <Check size={16} /> : <Save size={16} />}
+              <span>Salvar Jornada Pós-Contato</span>
+            </button>
           </div>
         </form>
       )}

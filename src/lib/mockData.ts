@@ -15,14 +15,23 @@ export const defaultAppearance: AppearanceSettings = {
   enable_text_banner: true,
   enable_faq: true,
   enable_showcase: true,
+  enable_services: true,
+  enable_clients: true,
+  enable_packages: true,
+  enable_contact_form: true,
+  enable_three_routes: true,
+  enable_fit_check: true,
+  enable_monthly_table: true,
+  enable_journey_steps: true,
+  enable_showcase_disclaimer: true,
 };
 
 export const mockSettings: SiteSettings = {
   id: '00000000-0000-0000-0000-000000000001',
   name: 'IAMUREL',
   description: 'A IAMUREL combina inteligência artificial, direção criativa e design gráfico para transformar ideias soltas em uma presença de marca clara, consistente e com autoridade real.',
-  hero_title: 'Conteúdo com direção. Design com intenção.',
-  hero_subtitle: 'Aceleramos a pesquisa e a exploração com inteligência artificial, mas mantemos o contexto, a curadoria e a lapidação visual 100% conduzidas por direção humana. Feito para marcas que se recusam a parecer genéricas.',
+  hero_title: 'Identidade e conteúdo para marcas que precisam se comunicar com autoridade.',
+  hero_subtitle: 'Aceleramos a pesquisa e a exploração com inteligência artificial, mas mantemos o contexto, a estratégia e o acabamento visual 100% conduzidos por direção humana. Feito para marcas que se recusam a parecer genéricas.',
   primary_cta_text: 'Iniciar conversa sem compromisso',
   secondary_cta_text: 'Ver demonstrações reais',
   contact_email: 'iamurelbrasil@gmail.com',
@@ -38,7 +47,40 @@ export const mockSettings: SiteSettings = {
   privacy_policy: `1. Coleta de Dados: Coletamos apenas as informações fornecidas voluntariamente através do formulário de contato (nome, e-mail, telefone/WhatsApp, nome do negócio e objetivos de comunicação).
 2. Finalidade: Os dados são utilizados unicamente para retorno comercial, envio de propostas e atendimento qualificado. Jamais vendemos, alugamos ou compartilhamos dados com terceiros.
 3. Armazenamento e Segurança: Os registros são armazenados em ambiente seguro com controle de acesso criptografado em conformidade com as diretrizes da Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018).
-4. Seus Direitos: O titular pode solicitar a qualquer momento a visualização, retificação ou exclusão permanente dos seus dados de contato enviando mensagem para iamurelbrasil@gmail.com.`
+4. Seus Direitos: O titular pode solicitar a qualquer momento a visualização, retificação ou exclusão permanente dos seus dados de contato enviando mensagem para iamurelbrasil@gmail.com.`,
+  // Rotas de Entrada Padrão
+  routes_title: 'Qual é o momento atual da sua marca?',
+  routes_subtitle: 'Não force a sua empresa em um molde genérico. Escolha a rota exata que resolve o seu gargalo hoje:',
+  route_1_title: '1. Identidade Visual & Base de Marca',
+  route_1_desc: 'Para empresas sem base sólida, que parecem amadoras no feed e precisam reposicionar a percepção de valor antes de investir em tráfego.',
+  route_1_cta: 'Quero criar ou renovar minha marca',
+  route_2_title: '2. Conteúdo Mensal & Constância',
+  route_2_desc: 'Para quem já tem marca validada e precisa de frequência editorial, carrosséis estratégicos, roteiros e peças prontas todo mês.',
+  route_2_cta: 'Quero avaliar o plano mensal',
+  route_3_title: '3. Campanhas & Lançamentos',
+  route_3_desc: 'Para quem tem uma oferta, produto, evento ou coleção específica e precisa de narrativa, key visuals, páginas e anúncios de alta conversão.',
+  route_3_cta: 'Quero estruturar uma campanha',
+  // Qualificação / Fit
+  fit_title: 'A IAMUREL é o parceiro certo para o seu negócio?',
+  fit_subtitle: 'Acreditamos em transparência radical antes de qualquer contratação comercial.',
+  fit_included: 'Negócios com produto ou serviço validado e clientes reais\nQuem valoriza acabamento visual autoral e se recusa a usar templates de Canva\nMarcas que entendem que design eleva o valor percebido e permite cobrar mais\nEmpresas que conseguem participar do alinhamento inicial e aprovações',
+  fit_excluded: 'Quem procura "artes avulsas de R$ 15" para preencher feed sem estratégia\nQuem espera que posts e logos façam milagre de vendas sem um produto bom\nQuem quer delegar 100% sem enviar informações básicas sobre o negócio\nProjetos de pirâmide, promessas irreais de enriquecimento rápido ou cópias',
+  // Jornada Pós-Contato
+  journey_title: 'O que acontece após você enviar o formulário?',
+  journey_subtitle: 'Sem surpresas, sem ligações chatas de telemarketing. Um processo previsível de diagnóstico:',
+  journey_step_1_title: '1. Confirmação & Análise',
+  journey_step_1_desc: 'Recebemos suas respostas no CRM e analisamos seu perfil atual, segmento e principais concorrentes.',
+  journey_step_2_title: '2. Diagnóstico em até 24h',
+  journey_step_2_desc: 'Retornamos pelo WhatsApp comercial com apontamentos sinceros sobre o que a sua marca precisa de fato.',
+  journey_step_3_title: '3. Recomendação de Rota',
+  journey_step_3_desc: 'Apresentamos a proposta com escopo fechado, prazos e investimento. Você só contrata se fizer sentido.',
+  // Conteúdo Mensal Detalhado
+  monthly_title: 'Operação de Conteúdo Mensal',
+  monthly_subtitle: 'Produção editorial contínua com direção criativa humana e velocidade de inteligência artificial.',
+  monthly_price_anchor: 'Sob consulta com diagnóstico prévio',
+  monthly_deliverables: '12 a 20 peças finais mensais (carrosséis estruturados 4:5 e peças estáticas)\nCopywriting persuasivo e redação completa de todas as legendas\nDireção de pautas, ganchos magnéticos e roteiros para Reels/Vídeos\nOrganização de pastas na nuvem com arquivos finais em alta resolução',
+  monthly_not_included: 'Gravação e filmagem presencial no local do cliente\nInvestimento financeiro nas plataformas de anúncios (Meta Ads / Google Ads)\nRespostas a comentários e direct messages (gestão de SAC/comunidade)',
+  monthly_revisions: 'Até 2 rodadas estruturadas de ajustes por lote quinzenal',
 };
 
 export const mockServices: Service[] = [

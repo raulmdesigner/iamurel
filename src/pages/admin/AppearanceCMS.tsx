@@ -282,10 +282,15 @@ export default function AppearanceCMS() {
             {[
               { id: 'enable_3d', label: 'Efeito 3D Scroll', desc: 'Animações de entrada 3D' },
               { id: 'enable_text_banner', label: 'Faixa de Texto', desc: 'Banner rotativo' },
+              { id: 'enable_three_routes', label: '3 Rotas de Entrada', desc: 'Guia de contratação (Diagnóstico Manus)' },
               { id: 'enable_showcase', label: 'Portfólio/Casos', desc: 'Demonstrações' },
+              { id: 'enable_showcase_disclaimer', label: 'Aviso de Estudo Conceitual', desc: 'Transparência editorial nos casos' },
               { id: 'enable_services', label: 'Como Funciona', desc: 'Metodologia e serviços' },
-              { id: 'enable_clients', label: 'Para Quem É', desc: 'Exemplos reais' },
+              { id: 'enable_clients', label: 'Exemplos de Clientes', desc: 'Exemplos de aplicação' },
+              { id: 'enable_fit_check', label: 'Critério de Fit (Para quem é / não é)', desc: 'Qualificação prévia de clientes' },
+              { id: 'enable_monthly_table', label: 'Tabela de Conteúdo Mensal', desc: 'Detalhamento completo de escopo' },
               { id: 'enable_packages', label: 'Pacotes/Preços', desc: 'Sua esteira de serviços' },
+              { id: 'enable_journey_steps', label: 'Jornada Pós-Contato (1-2-3)', desc: 'O que acontece após enviar contato' },
               { id: 'enable_faq', label: 'Perguntas (FAQ)', desc: 'Dúvidas frequentes' },
               { id: 'enable_contact_form', label: 'Contato Final', desc: 'Rodapé de contato' },
             ].map((toggle) => (

@@ -14,6 +14,39 @@ export interface SiteSettings {
   company_info?: string;
   terms_of_use?: string;
   privacy_policy?: string;
+  // Customização de Rotas de Entrada (Diagnóstico Manus)
+  routes_title?: string;
+  routes_subtitle?: string;
+  route_1_title?: string;
+  route_1_desc?: string;
+  route_1_cta?: string;
+  route_2_title?: string;
+  route_2_desc?: string;
+  route_2_cta?: string;
+  route_3_title?: string;
+  route_3_desc?: string;
+  route_3_cta?: string;
+  // Customização de Fit / Qualificação
+  fit_title?: string;
+  fit_subtitle?: string;
+  fit_included?: string;
+  fit_excluded?: string;
+  // Customização da Jornada Pós-Contato
+  journey_title?: string;
+  journey_subtitle?: string;
+  journey_step_1_title?: string;
+  journey_step_1_desc?: string;
+  journey_step_2_title?: string;
+  journey_step_2_desc?: string;
+  journey_step_3_title?: string;
+  journey_step_3_desc?: string;
+  // Customização da Tabela de Conteúdo Mensal
+  monthly_title?: string;
+  monthly_subtitle?: string;
+  monthly_price_anchor?: string;
+  monthly_deliverables?: string;
+  monthly_not_included?: string;
+  monthly_revisions?: string;
 }
 
 export interface AppearanceSettings {
@@ -35,6 +68,12 @@ export interface AppearanceSettings {
   enable_clients?: boolean;
   enable_packages?: boolean;
   enable_contact_form?: boolean;
+  // Novos toggles modulares (Diagnóstico Manus)
+  enable_three_routes?: boolean;
+  enable_fit_check?: boolean;
+  enable_monthly_table?: boolean;
+  enable_journey_steps?: boolean;
+  enable_showcase_disclaimer?: boolean;
 }
 
 export interface Section {
