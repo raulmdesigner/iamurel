@@ -1,0 +1,241 @@
+diff --git a/tmp/iamurel-codex/src/components/modern/RotatingWordHero.tsx b/src/components/modern/RotatingWordHero.tsx
+index 3012e2e..fff4bd9 100644
+--- a/tmp/iamurel-codex/src/components/modern/RotatingWordHero.tsx
++++ b/src/components/modern/RotatingWordHero.tsx
+@@ -1,5 +1,5 @@
+ import React, { useState, useEffect } from 'react';
+-import { motion, AnimatePresence } from 'motion/react';
++import { motion } from 'motion/react';
+ 
+ interface RotatingWordProps {
+   prefix?: string;
+@@ -17,13 +17,15 @@ const defaultWords = [
+ ];
+ 
+ export function RotatingWordHero({
+-  prefix = 'Criamos conteúdo para marcas que querem se tornar',
++  prefix,
+   words = defaultWords,
+   suffix = '.',
+   interval = 3000
+ }: RotatingWordProps) {
+   const [index, setIndex] = useState(0);
+ 
++  const heroPrefix = prefix?.trim() || 'Criamos conteúdo para marcas que querem se tornar';
++
+   useEffect(() => {
+     const timer = setInterval(() => {
+       setIndex((prev) => (prev + 1) % words.length);
+@@ -33,8 +35,8 @@ export function RotatingWordHero({
+   }, [words.length, interval]);
+ 
+   return (
+-    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-text tracking-tight leading-[1.1] md:text-center">
+-      {prefix}{' '}
++    <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-text tracking-tight leading-[1.15] md:text-center">
++      {heroPrefix}{' '}
+       <span className="inline-grid align-bottom">
+         {words.map((word, i) => (
+           <motion.span
+@@ -46,7 +48,7 @@ export function RotatingWordHero({
+               filter: i === index ? 'blur(0px)' : 'blur(4px)',
+             }}
+             transition={{ duration: 0.4, ease: "easeOut" }}
+-            className={`col-start-1 row-start-1 text-[#FF4A1C] font-serif italic pr-1 ${
++            className={`col-start-1 row-start-1 text-action italic pr-1 ${
+               i === index ? 'pointer-events-auto' : 'pointer-events-none'
+             }`}
+             aria-hidden={i !== index}
+diff --git a/tmp/iamurel-codex/src/lib/appearance.tsx b/src/lib/appearance.tsx
+index e3f24f1..4f893b7 100644
+--- a/tmp/iamurel-codex/src/lib/appearance.tsx
++++ b/src/lib/appearance.tsx
+@@ -9,7 +9,11 @@ export function applyAppearance(appearance: AppearanceSettings) {
+   style.setProperty('--color-action-hover', appearance.action_color);
+   style.setProperty('--color-text', appearance.primary_color);
+   style.setProperty('--color-bg', { cream: '#F7F4EE', neutral_white: '#FBFBFA', pure_minimal: '#FFFFFF' }[appearance.bg_tone]);
+-  style.setProperty('--font-display', { editorial: 'Georgia, serif', contemporary: 'Outfit, sans-serif', grotesk: 'Arial, sans-serif' }[appearance.font_pairing]);
++  style.setProperty('--font-display', {
++    editorial: '"Playfair Display", Georgia, serif',
++    contemporary: '"Outfit", "Plus Jakarta Sans", sans-serif',
++    grotesk: '"Space Grotesk", monospace, sans-serif'
++  }[appearance.font_pairing] || '"Outfit", sans-serif');
+   document.documentElement.dataset.iamurelBorders = appearance.border_style;
+   document.documentElement.dataset.iamurelMotion = appearance.motion_level;
+ }
+diff --git a/tmp/iamurel-codex/src/lib/data.ts b/src/lib/data.ts
+index db8ea19..9b7f1da 100644
+--- a/tmp/iamurel-codex/src/lib/data.ts
++++ b/src/lib/data.ts
+@@ -68,6 +68,34 @@ export const dataLayer = {
+       status: 'novo', priority: 'medium', service_interest: input.service_interest || null,
+       package_interest: input.package_interest || null, tags: [],
+     }));
++
++    // Notificação imediata para o Gmail da IAMUREL
++    try {
++      await fetch("https://formsubmit.co/ajax/iamurelbrasil@gmail.com", {
++        method: "POST",
++        headers: {
++          'Content-Type': 'application/json',
++          'Accept': 'application/json'
++        },
++        body: JSON.stringify({
++          _subject: `Novo Lead no Site: ${input.name.trim()}`,
++          Nome: input.name.trim(),
++          Email: input.email?.trim() || 'Não informado',
++          Telefone: input.phone.trim(),
++          Empresa: input.business_name || 'Não informada',
++          Necessidade: input.need || 'Não especificada',
++          Objetivo: input.objective || 'Não especificado',
++          Prazo: input.timeframe || 'Não especificado',
++          CanalPreferido: input.preferred_channel || 'whatsapp',
++          Mensagem: input.message || 'Sem mensagem adicional',
++          InteresseServico: input.service_interest || 'Geral',
++          InteressePacote: input.package_interest || 'Geral',
++          DataEnvio: new Date().toLocaleString('pt-BR')
++        })
++      });
++    } catch (emailErr) {
++      console.warn("Falha ao despachar notificação para Gmail:", emailErr);
++    }
+   }),
+   updateLeadStatus: async (id: string, status: Lead['status']): Promise<boolean> => {
+     await checked(client().from('iamurel_leads').update({ status, last_contact_at: new Date().toISOString() }).eq('id', id).select('id').single());
+diff --git a/tmp/iamurel-codex/src/pages/admin/ContentCMS.tsx b/src/pages/admin/ContentCMS.tsx
+index 9acdfa4..459e0e0 100644
+--- a/tmp/iamurel-codex/src/pages/admin/ContentCMS.tsx
++++ b/src/pages/admin/ContentCMS.tsx
+@@ -374,39 +374,91 @@ export default function ContentCMS() {
+         <div className="space-y-6">
+           <div className="flex justify-between items-center">
+             <p className="text-sm text-muted">Gerencie os planos comerciais, quantidades e itens inclusos.</p>
+-            <button type="button" className="px-4 py-2 bg-action text-white rounded text-xs font-bold" onClick={() => setPackages([...packages, {
+-              id: crypto.randomUUID(), level: 'Novo pacote', commercial_role: '', description: '',
+-              price: null, price_type: 'on_request', revisions: '', timeframe: '', is_highlighted: false,
+-              order_index: packages.length, status: 'archived', items: [],
+-            }])}>Adicionar pacote</button>
++            <button
++              type="button"
++              className="inline-flex items-center gap-1.5 px-4 py-2 bg-text text-bg rounded text-xs font-semibold hover:bg-text/90 transition-colors cursor-pointer"
++              onClick={() => setPackages([...packages, {
++                id: crypto.randomUUID(),
++                level: 'Novo Pacote',
++                commercial_role: 'Escopo sob demanda',
++                description: '',
++                price: null,
++                price_type: 'on_request',
++                revisions: '2 rodadas',
++                timeframe: '5 a 7 dias úteis',
++                is_highlighted: false,
++                order_index: packages.length,
++                status: 'active',
++                items: [],
++              }])}
++            >
++              <Plus size={16} />
++              <span>Adicionar Pacote</span>
++            </button>
+           </div>
+ 
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+             {packages.map((pkg, idx) => (
+               <div key={pkg.id} className="p-6 bg-surface border border-border rounded-lg space-y-4">
+-                <div className="flex items-center justify-between">
+-                  <input
+-                    type="text"
+-                    value={pkg.level}
+-                    onChange={e => {
+-                      const updated = [...packages];
+-                      updated[idx].level = e.target.value;
+-                      setPackages(updated);
+-                    }}
+-                    className="font-bold text-xl font-display bg-transparent border-b border-transparent focus:border-action focus:outline-none"
+-                  />
+-                  <label className="flex items-center gap-1 text-xs font-semibold text-action cursor-pointer">
++                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-border">
++                  <div className="flex-1">
+                     <input
+-                      type="checkbox"
+-                      checked={pkg.is_highlighted}
++                      type="text"
++                      value={pkg.level}
+                       onChange={e => {
+                         const updated = [...packages];
+-                        updated[idx].is_highlighted = e.target.checked;
++                        updated[idx].level = e.target.value;
+                         setPackages(updated);
+                       }}
++                      className="font-bold text-xl font-display bg-transparent border-b border-transparent hover:border-border focus:border-action focus:outline-none w-full"
++                      placeholder="Nome do Pacote"
+                     />
+-                    <span>Destacar (Recomendado)</span>
+-                  </label>
++                  </div>
++                  <div className="flex items-center gap-2.5 flex-wrap">
++                    <select
++                      value={pkg.status || 'active'}
++                      onChange={e => {
++                        const updated = [...packages];
++                        updated[idx].status = e.target.value as any;
++                        setPackages(updated);
++                      }}
++                      className={`text-xs px-2.5 py-1 rounded font-semibold border ${
++                        (pkg.status || 'active') === 'active'
++                          ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
++                          : 'bg-amber-50 text-amber-800 border-amber-300'
++                      }`}
++                    >
++                      <option value="active">Publicado (Ativo)</option>
++                      <option value="archived">Oculto (Rascunho)</option>
++                    </select>
++
++                    <label className="flex items-center gap-1 text-xs font-semibold text-action cursor-pointer select-none">
++                      <input
++                        type="checkbox"
++                        checked={pkg.is_highlighted}
++                        onChange={e => {
++                          const updated = [...packages];
++                          updated[idx].is_highlighted = e.target.checked;
++                          setPackages(updated);
++                        }}
++                        className="accent-action"
++                      />
++                      <span>Destacar</span>
++                    </label>
++
++                    <button
++                      type="button"
++                      onClick={() => {
++                        if (window.confirm(`Deseja realmente excluir o pacote "${pkg.level}"? Essa ação é confirmada ao salvar.`)) {
++                          setPackages(packages.filter((_, i) => i !== idx));
++                        }
++                      }}
++                      className="text-muted hover:text-red-600 transition-colors p-1.5 rounded hover:bg-red-50 cursor-pointer"
++                      title="Excluir pacote"
++                    >
++                      <Trash2 size={16} />
++                    </button>
++                  </div>
+                 </div>
+ 
+                 <div className="space-y-2 text-xs">
+diff --git a/tmp/iamurel-codex/src/pages/public/Home.tsx b/src/pages/public/Home.tsx
+index ce805c6..ecd27fd 100644
+--- a/tmp/iamurel-codex/src/pages/public/Home.tsx
++++ b/src/pages/public/Home.tsx
+@@ -94,7 +94,13 @@ export default function Home() {
+       <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 px-6 bg-bg overflow-hidden border-b border-border">
+         <div className="max-w-7xl mx-auto space-y-12">
+           <ScrollReveal direction="up" delay={0.1}><div className="max-w-4xl mx-auto space-y-8 flex flex-col items-center text-center">
+-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-text tracking-tight leading-tight">{settings?.hero_title}</h1>
++            <RotatingWordHero
++              prefix={
++                settings?.hero_title && settings.hero_title !== 'Conteúdo com direção. Design com intenção.'
++                  ? settings.hero_title
++                  : 'Criamos conteúdo para marcas que querem se tornar'
++              }
++            />
+               
+             
+ 

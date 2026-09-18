@@ -1,80 +1,39 @@
 /// <reference types="vite/client" />
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
-
-function getSupabaseCredentials() {
-  const envUrl = import.meta.env.VITE_SUPABASE_URL || '';
-  const envKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-  
-  if (typeof window !== 'undefined') {
-    const localUrl = localStorage.getItem('iamurel_supabase_url');
-    const localKey = localStorage.getItem('iamurel_supabase_key');
-    if (localUrl && localKey && localUrl.startsWith('http')) {
-      return { url: localUrl, key: localKey, source: 'localStorage' as const };
-    }
+import { createClient } from '@supabase/supabase-js';
+const url = (import.meta.env.VITE_SUPABASE_URL || '').trim();
+const key = (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim();
+export let configurationError = '';
+export const supabase = (() => {
+  if (!url || !key) {
+    configurationError = 'Configure VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY no .env e gere o site novamente.';
+    return null;
   }
-
-  if (envUrl && envKey && !envUrl.includes('your-project-id')) {
-    return { url: envUrl, key: envKey, source: 'env' as const };
-  }
-
-  return { url: '', key: '', source: 'none' as const };
-}
-
-const credentials = getSupabaseCredentials();
-
-export const isSupabaseConfigured = Boolean(credentials.url && credentials.key);
-
-export let supabase: SupabaseClient | null = isSupabaseConfigured
-  ? createClient(credentials.url, credentials.key)
-  : null;
-
-export function reconfigureSupabase(url: string, key: string): { success: boolean; error?: string } {
   try {
-    if (!url || !key) {
-      localStorage.removeItem('iamurel_supabase_url');
-      localStorage.removeItem('iamurel_supabase_key');
-      supabase = null;
-      return { success: true };
-    }
-    
-    if (!url.startsWith('https://')) {
-      return { success: false, error: 'A URL do Supabase deve começar com https://' };
-    }
-
-    const testClient = createClient(url, key);
-    supabase = testClient;
-    localStorage.setItem('iamurel_supabase_url', url);
-    localStorage.setItem('iamurel_supabase_key', key);
-    return { success: true };
-  } catch (err: any) {
-    return { success: false, error: err.message || 'Falha ao conectar cliente Supabase' };
+    if (key.startsWith('sb_secret_')) throw new Error('Use somente a chave pública do Supabase.');
+    if (key.startsWith('eyJ') && JSON.parse(atob(key.split('.')[1])).role !== 'anon') throw new Error('Use a chave anon ou publishable, nunca service_role.');
+    return createClient(url, key, {
+      auth: { storageKey: 'iamurel-auth', persistSession: true, autoRefreshToken: true },
+      global: { fetch: (input, init) => fetch(input, {
+        ...init, signal: init?.signal ? AbortSignal.any([init.signal, AbortSignal.timeout(15000)]) : AbortSignal.timeout(15000),
+      }) },
+    });
+  } catch (error) {
+    configurationError = error instanceof Error ? error.message : 'Configuração do Supabase inválida.';
+    return null;
   }
-}
+})();
+export const isSupabaseConfigured = Boolean(supabase);
+export function getActiveSupabaseConfig() { return { url, key, source: isSupabaseConfigured ? 'env' : 'none' }; }
 
-export function getActiveSupabaseConfig() {
-  return getSupabaseCredentials();
-}
-
-export async function uploadMediaToSupabase(file: File, bucket: string = 'media'): Promise<{ url: string | null; error: string | null }> {
-  if (!supabase) return { url: null, error: 'Supabase não configurado' };
-  
+export async function uploadMediaToSupabase(file: File, bucket = 'media'): Promise<{ url: string | null; error: string | null }> {
+  if (!supabase) return { url: null, error: configurationError };
   try {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
-    const filePath = `hero/${fileName}`;
-
-    const { data, error } = await supabase.storage
-      .from(bucket)
-      .upload(filePath, file, { cacheControl: '3600', upsert: false });
-
+    if (!/^(image|video)\//.test(file.type)) throw new Error('Escolha uma imagem ou vídeo.');
+    if (file.size > 50 * 1024 * 1024) throw new Error('O arquivo deve ter no máximo 50 MB.');
+    const extension = file.name.split('.').pop()?.replace(/[^a-z0-9]/gi, '') || 'bin';
+    const path = 'iamurel/' + crypto.randomUUID() + '.' + extension;
+    const { error } = await supabase.storage.from(bucket).upload(path, file, { upsert: false });
     if (error) throw error;
-
-    const { data: publicUrlData } = supabase.storage
-      .from(bucket)
-      .getPublicUrl(filePath);
-
-    return { url: publicUrlData.publicUrl, error: null };
-  } catch (error: any) {
-    return { url: null, error: error.message };
-  }
+    return { url: supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl, error: null };
+  } catch (error: any) { return { url: null, error: error.message }; }
 }
