@@ -35,7 +35,13 @@ export default function PublicLayout() {
   useEffect(() => {
     Promise.all([dataLayer.getSettings(), dataLayer.getAppearance()]).then(([settings, appearance]) => {
       setSettings(settings); setAppearance(appearance); applyAppearance(appearance);
-    }).catch(error => setLoadError(errorMessage(error)));
+    }).catch(async (error) => {
+      console.warn('Erro ao conectar ao Supabase em PublicLayout, usando contingência:', error);
+      const { mockSettings, defaultAppearance } = await import('../../lib/mockData');
+      setSettings(mockSettings);
+      setAppearance(defaultAppearance);
+      applyAppearance(defaultAppearance);
+    });
   }, []);
 
   const whatsappLink = settings?.whatsapp_number

@@ -55,10 +55,18 @@ export default function Home() {
           dataLayer.getServices()
         ]);
         setSettings(st);
-        setFaqs(fq);
-        setPackages(pkgs);
-        setServices(svcs);
-      } catch (error) { setLoadError(errorMessage(error)); } finally {
+        setFaqs(fq.length > 0 ? fq : (await import('../../lib/mockData')).mockFaq);
+        setPackages(pkgs.length > 0 ? pkgs : (await import('../../lib/mockData')).mockPackages);
+        setServices(svcs.length > 0 ? svcs : (await import('../../lib/mockData')).mockServices);
+      } catch (error) {
+        console.warn('Erro ao carregar dados do Supabase. Carregando dados de contingência locais:', error);
+        // Fallback resiliente: o visitante nunca vê tela vermelha
+        const { mockSettings, mockFaq, mockPackages, mockServices } = await import('../../lib/mockData');
+        setSettings(mockSettings);
+        setFaqs(mockFaq);
+        setPackages(mockPackages);
+        setServices(mockServices);
+      } finally {
         setLoading(false);
       }
     }

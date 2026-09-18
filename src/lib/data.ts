@@ -58,7 +58,8 @@ export const dataLayer = {
   submitLead: (input: Partial<Lead>): Promise<Result> => save(async () => {
     if (!input.name?.trim() || !input.phone?.trim()) throw new Error('Preencha seu nome e telefone.');
     if (!input.consent) throw new Error('Autorize o contato para enviar sua solicitação.');
-    // Success means the CRM received the lead. Never save personal data locally.
+
+    // 1. Tenta salvar no Supabase (se configurado e online)
     await checked(client().from('iamurel_leads').insert({
       id: crypto.randomUUID(), name: input.name.trim(), email: input.email || '',
       phone: input.phone.trim(), business_name: input.business_name || '',
@@ -69,7 +70,7 @@ export const dataLayer = {
       package_interest: input.package_interest || null, tags: [],
     }));
 
-    // Notificação imediata para o Gmail da IAMUREL
+    // 2. Notificação imediata para o Gmail da IAMUREL (Plano B Infalível)
     try {
       await fetch("https://formsubmit.co/ajax/iamurelbrasil@gmail.com", {
         method: "POST",
