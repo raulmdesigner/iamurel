@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { isSupabaseConfigured, supabase } from '../../lib/supabase';
 import { AdminLogin } from '../auth/AdminLogin';
+import { withTimeout, errorMessage } from '../../lib/errors';
 
 const navItems = [
   { label: 'Visão Geral', path: '/admin', icon: LayoutDashboard, end: true },
@@ -26,20 +27,49 @@ export default function AdminLayout() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
+  const [authError, setAuthError] = useState('');
+
   useEffect(() => {
-    const checkAuth = async () => {
-      if (supabase) {
-        const { data: { session } } = await supabase.auth.getSession();
-        setIsAuthenticated(!!session);
+    if (!supabase) { setIsCheckingAuth(false); return; }
+    let active = true;
+    let revision = 0;
+    const applySession = async (session: unknown) => {
+      const request = ++revision;
+      try {
+        if (!session) {
+          if (active) setIsAuthenticated(false);
+          return;
+        }
+        const { data, error } = await withTimeout(supabase!.rpc('iamurel_is_admin'));
+        if (error) throw new Error('A configuração de acesso do IAMUREL precisa ser atualizada no Supabase. Execute a migração fornecida.');
+        if (!data) throw new Error('Este usuário não tem permissão de administrador do IAMUREL.');
+        if (active && request === revision) { setIsAuthenticated(true); setAuthError(''); }
+      } catch (error) {
+        if (active && request === revision) { setIsAuthenticated(false); setAuthError(errorMessage(error)); }
+      } finally {
+        if (active && request === revision) setIsCheckingAuth(false);
       }
-      setIsCheckingAuth(false);
     };
-    checkAuth();
+    // Defer database calls outside the auth callback to avoid the auth lock.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setTimeout(() => { if (active) void applySession(session); }, 0);
+    });
+    const timer = setTimeout(() => {
+      if (active) { setIsCheckingAuth(false); setAuthError('Não foi possível verificar a sessão. Tente entrar novamente.'); }
+    }, 16000);
+    withTimeout(supabase.auth.getSession()).then(({ data, error }) => {
+      if (error) throw error;
+      return applySession(data.session);
+    }).catch(error => {
+      if (active) { setAuthError(errorMessage(error)); setIsCheckingAuth(false); }
+    }).finally(() => clearTimeout(timer));
+    return () => { active = false; clearTimeout(timer); subscription.unsubscribe(); };
   }, []);
 
   const handleLogout = async () => {
     if (supabase) {
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut({ scope: 'local' });
+      if (error) { alert(error.message); return; }
       setIsAuthenticated(false);
     }
   };
@@ -49,7 +79,7 @@ export default function AdminLayout() {
   }
 
   if (!isAuthenticated) {
-    return <AdminLogin onLogin={() => setIsAuthenticated(true)} />;
+    return <AdminLogin sessionError={authError} onLogin={() => setAuthError('')} />;
   }
 
   const currentNav = navItems.find(item =>
@@ -151,3 +181,4 @@ export default function AdminLayout() {
     </div>
   );
 }
+

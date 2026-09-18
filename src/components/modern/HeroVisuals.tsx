@@ -1,3 +1,4 @@
+import { useAppearance } from '../../lib/appearance';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
 import { IamurelSymbol } from '../brand/IamurelBrand';
@@ -7,12 +8,10 @@ import { AppearanceSettings } from '../../types';
 
 export function HeroVisuals() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [appearance, setAppearance] = useState<AppearanceSettings | null>(null);
+  const appearance = useAppearance();
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    dataLayer.getAppearance().then(setAppearance);
-  }, []);
+
 
   useEffect(() => {
     if (videoRef.current) {
@@ -143,3 +142,4 @@ export function HeroVisuals() {
     </div>
   );
 }
+

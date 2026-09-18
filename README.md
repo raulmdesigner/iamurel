@@ -1,4 +1,6 @@
-# 🚀 Dossiê Técnico e Relatório Completo de Desenvolvimento: IAMUREL Studio
+# IAMUREL Studio
+
+> Para instalar, corrigir o banco existente e publicar a versão atual, siga [Correção e publicação](docs/CORRECAO-E-PUBLICACAO.md). O relatório abaixo é histórico e não descreve a autenticação e persistência atuais.
 
 Este não é um simples resumo. Este é o **documento técnico oficial e detalhado** da arquitetura, engenharia, desafios e soluções adotadas durante a construção do ecossistema digital da **IAMUREL Studio**. 
 

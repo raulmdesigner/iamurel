@@ -1,15 +1,16 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
-import {defineConfig} from 'vite';
+import { fileURLToPath } from 'node:url';
+import {defineConfig, loadEnv} from 'vite';
 
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), 'VITE_');
   return {
-    base: process.env.VITE_BASE_PATH || (process.env.NODE_ENV === 'production' ? '/iamurel/' : '/'),
+    base: process.env.VITE_BASE_PATH || env.VITE_BASE_PATH || (mode === 'production' ? '/iamurel/' : '/'),
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src'),
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
     server: {

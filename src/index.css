@@ -77,3 +77,15 @@
   animation: marquee 25s linear infinite;
 }
 
+
+
+html[data-iamurel-borders="sharp"] [class*="rounded"] { border-radius: 0; }
+html[data-iamurel-borders="rounded"] [class*="rounded"] { border-radius: 1.25rem; }
+html[data-iamurel-motion="reduced"] { scroll-behavior: auto; }
+html[data-iamurel-motion="reduced"] *, html[data-iamurel-motion="reduced"] *::before, html[data-iamurel-motion="reduced"] *::after {
+  animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .animate-marquee { animation: none; }
+}
