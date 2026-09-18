@@ -182,39 +182,274 @@ export default function DatabaseSettings() {
       </form>
 
       
+      
       {/* Helper para Banco de Dados e Storage */}
       <div className="p-8 bg-surface border border-border rounded-lg space-y-6">
         <div className="flex items-center gap-2 pb-4 border-b border-border">
           <Database size={18} className="text-action" />
-          <h3 className="text-base font-bold text-text font-display">Resolução de Problemas (SQL / Storage)</h3>
+          <h3 className="text-base font-bold text-text font-display">Resolução de Problemas & Script SQL Oficial</h3>
         </div>
         
         <p className="text-xs text-muted leading-relaxed">
-          Se você estiver enfrentando o erro <strong>"Bucket not found"</strong> ao fazer upload de imagens no painel de Aparência, significa que a pasta de armazenamento <code>media</code> não foi criada ou não possui as permissões públicas necessárias no Supabase.
+          Se as alterações não estiverem salvando no painel (como Whatsapp, Email ou novos itens) ou se você ver o erro <strong>"Bucket not found"</strong>, é porque as tabelas do seu Supabase ainda não foram criadas. Copie o código abaixo, abra o <strong>SQL Editor</strong> no painel do Supabase, cole tudo e clique em "Run".
         </p>
 
-        <div className="bg-bg border border-border rounded p-4">
-          <p className="text-xs font-bold text-text mb-2">Execute o seguinte comando no SQL Editor do seu painel do Supabase:</p>
-          <pre className="text-[10px] sm:text-xs text-muted overflow-x-auto p-4 bg-black/5 rounded">
-{`-- 1. Cria o bucket público 'media'
+        <div className="bg-bg border border-border rounded p-4 relative group">
+          <button 
+            onClick={() => {
+              const code = `-- IAMUREL SUPABASE INITIALIZATION SCRIPT
+
+-- 1. Tabela de Configurações do Site
+CREATE TABLE IF NOT EXISTS iamurel_site_settings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT,
+  description TEXT,
+  hero_title TEXT,
+  hero_subtitle TEXT,
+  primary_cta_text TEXT,
+  secondary_cta_text TEXT,
+  contact_email TEXT,
+  contact_phone TEXT,
+  whatsapp_number TEXT,
+  instagram_handle TEXT,
+  linkedin_url TEXT,
+  company_info TEXT,
+  terms_of_use TEXT,
+  privacy_policy TEXT,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
+);
+
+-- 2. Tabela de Serviços (Especialidades)
+CREATE TABLE IF NOT EXISTS iamurel_services (
+  id TEXT PRIMARY KEY,
+  title TEXT,
+  problem_solved TEXT,
+  deliverables TEXT,
+  target_audience TEXT,
+  not_included TEXT,
+  timeframe TEXT,
+  investment_range TEXT,
+  image_url TEXT,
+  order_index INTEGER,
+  status TEXT
+);
+
+-- 3. Tabela de Pacotes (Planos)
+CREATE TABLE IF NOT EXISTS iamurel_packages (
+  id TEXT PRIMARY KEY,
+  level TEXT,
+  commercial_role TEXT,
+  description TEXT,
+  price NUMERIC,
+  price_type TEXT,
+  timeframe TEXT,
+  revisions TEXT,
+  is_highlighted BOOLEAN,
+  order_index INTEGER,
+  status TEXT,
+  items JSONB
+);
+
+-- 4. Tabela de Aparência (Customizações)
+CREATE TABLE IF NOT EXISTS iamurel_appearance (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  primary_color TEXT,
+  action_color TEXT,
+  bg_tone TEXT,
+  border_style TEXT,
+  motion_level TEXT,
+  font_pairing TEXT,
+  hero_video_url TEXT,
+  hero_image_1_url TEXT,
+  hero_image_2_url TEXT,
+  hero_image_3_url TEXT,
+  enable_3d BOOLEAN,
+  enable_text_banner BOOLEAN,
+  enable_faq BOOLEAN,
+  enable_showcase BOOLEAN,
+  enable_services BOOLEAN,
+  enable_clients BOOLEAN,
+  enable_packages BOOLEAN,
+  enable_contact_form BOOLEAN,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
+);
+
+-- 5. Bucket de Mídia
 INSERT INTO storage.buckets (id, name, public) 
 VALUES ('media', 'media', true)
 ON CONFLICT (id) DO NOTHING;
 
--- 2. Permite que qualquer pessoa veja os arquivos (Leitura Pública)
 CREATE POLICY "Public Access" 
 ON storage.objects FOR SELECT 
 USING ( bucket_id = 'media' );
 
--- 3. Permite uploads para o bucket
 CREATE POLICY "Public Uploads" 
 ON storage.objects FOR INSERT 
-WITH CHECK ( bucket_id = 'media' );`}
+WITH CHECK ( bucket_id = 'media' );
+
+
+-- 6. Tabela de FAQ
+CREATE TABLE IF NOT EXISTS iamurel_faq (
+  id TEXT PRIMARY KEY,
+  question TEXT,
+  answer TEXT,
+  order_index INTEGER
+);
+
+-- 7. Tabela de Portfólio (Showcase)
+CREATE TABLE IF NOT EXISTS iamurel_showcase (
+  id TEXT PRIMARY KEY,
+  title TEXT,
+  description TEXT,
+  image_url TEXT,
+  type TEXT,
+  order_index INTEGER
+);
+
+-- 8. Tabela de Leads
+CREATE TABLE IF NOT EXISTS iamurel_leads (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT,
+  contact_info TEXT,
+  service_interest TEXT,
+  message TEXT,
+  status TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
+);
+`;
+              navigator.clipboard.writeText(code);
+              alert('Código SQL copiado para a área de transferência!');
+            }}
+            className="absolute top-4 right-4 bg-action text-white px-3 py-1 rounded text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+          >
+            COPIAR SQL
+          </button>
+          <p className="text-xs font-bold text-text mb-2">Execute o comando abaixo no SQL Editor do Supabase:</p>
+          <pre className="text-[10px] sm:text-xs text-muted overflow-x-auto p-4 bg-black/5 rounded max-h-96">
+{`-- IAMUREL SUPABASE INITIALIZATION SCRIPT
+
+-- 1. Tabela de Configurações do Site
+CREATE TABLE IF NOT EXISTS iamurel_site_settings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT,
+  description TEXT,
+  hero_title TEXT,
+  hero_subtitle TEXT,
+  primary_cta_text TEXT,
+  secondary_cta_text TEXT,
+  contact_email TEXT,
+  contact_phone TEXT,
+  whatsapp_number TEXT,
+  instagram_handle TEXT,
+  linkedin_url TEXT,
+  company_info TEXT,
+  terms_of_use TEXT,
+  privacy_policy TEXT,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
+);
+
+-- 2. Tabela de Serviços (Especialidades)
+CREATE TABLE IF NOT EXISTS iamurel_services (
+  id TEXT PRIMARY KEY,
+  title TEXT,
+  problem_solved TEXT,
+  deliverables TEXT,
+  target_audience TEXT,
+  not_included TEXT,
+  timeframe TEXT,
+  investment_range TEXT,
+  image_url TEXT,
+  order_index INTEGER,
+  status TEXT
+);
+
+-- 3. Tabela de Pacotes (Planos)
+CREATE TABLE IF NOT EXISTS iamurel_packages (
+  id TEXT PRIMARY KEY,
+  level TEXT,
+  commercial_role TEXT,
+  description TEXT,
+  price NUMERIC,
+  price_type TEXT,
+  timeframe TEXT,
+  revisions TEXT,
+  is_highlighted BOOLEAN,
+  order_index INTEGER,
+  status TEXT,
+  items JSONB
+);
+
+-- 4. Tabela de Aparência (Customizações)
+CREATE TABLE IF NOT EXISTS iamurel_appearance (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  primary_color TEXT,
+  action_color TEXT,
+  bg_tone TEXT,
+  border_style TEXT,
+  motion_level TEXT,
+  font_pairing TEXT,
+  hero_video_url TEXT,
+  hero_image_1_url TEXT,
+  hero_image_2_url TEXT,
+  hero_image_3_url TEXT,
+  enable_3d BOOLEAN,
+  enable_text_banner BOOLEAN,
+  enable_faq BOOLEAN,
+  enable_showcase BOOLEAN,
+  enable_services BOOLEAN,
+  enable_clients BOOLEAN,
+  enable_packages BOOLEAN,
+  enable_contact_form BOOLEAN,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
+);
+
+-- 5. Bucket de Mídia
+INSERT INTO storage.buckets (id, name, public) 
+VALUES ('media', 'media', true)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE POLICY "Public Access" 
+ON storage.objects FOR SELECT 
+USING ( bucket_id = 'media' );
+
+CREATE POLICY "Public Uploads" 
+ON storage.objects FOR INSERT 
+WITH CHECK ( bucket_id = 'media' );
+
+
+-- 6. Tabela de FAQ
+CREATE TABLE IF NOT EXISTS iamurel_faq (
+  id TEXT PRIMARY KEY,
+  question TEXT,
+  answer TEXT,
+  order_index INTEGER
+);
+
+-- 7. Tabela de Portfólio (Showcase)
+CREATE TABLE IF NOT EXISTS iamurel_showcase (
+  id TEXT PRIMARY KEY,
+  title TEXT,
+  description TEXT,
+  image_url TEXT,
+  type TEXT,
+  order_index INTEGER
+);
+
+-- 8. Tabela de Leads
+CREATE TABLE IF NOT EXISTS iamurel_leads (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT,
+  contact_info TEXT,
+  service_interest TEXT,
+  message TEXT,
+  status TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
+);
+`}
           </pre>
         </div>
       </div>
-
-      {/* Backup e Exportação */}
+\n      {/* Backup e Exportação */}
       <div className="p-8 bg-surface border border-border rounded-lg space-y-6">
         <div className="flex items-center gap-2 pb-4 border-b border-border">
           <Shield size={18} className="text-trust" />

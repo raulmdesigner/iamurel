@@ -1,168 +1,77 @@
-# IAMUREL — Conteúdo com direção. Design com intenção.
+# 🚀 Relatório Completo de Desenvolvimento: IAMUREL Studio
 
-> **IAMUREL** é uma empresa AI-First de criação de conteúdo, design gráfico e direção criativa. Unimos a velocidade da inteligência artificial na pesquisa e exploração de ideias com o rigor da direção humana no contexto, curadoria, acabamento e intenção comercial.
-
----
-
-## Sumário
-1. [Arquitetura e Tecnologias](#arquitetura-e-tecnologias)
-2. [Estrutura de Diretórios](#estrutura-de-diretórios)
-3. [Guia de Instalação e Execução Local](#guia-de-instalação-e-execução-local)
-4. [Configuração do Banco de Dados (Supabase)](#configuração-do-banco-de-dados-supabase)
-5. [Ordem de Execução dos Scripts SQL](#ordem-de-execução-dos-scripts-sql)
-6. [Publicação no GitHub e GitHub Pages](#publicação-no-github-e-github-pages)
-7. [Variáveis de Ambiente](#variáveis-de-ambiente)
+Este documento contém o dossiê detalhado da criação do sistema web da **IAMUREL**, descrevendo toda a arquitetura desenvolvida, as funcionalidades implementadas, as customizações feitas e, principalmente, o histórico de desafios ("perrengues") enfrentados e solucionados durante a nossa jornada de desenvolvimento.
 
 ---
 
-## 1. Arquitetura e Tecnologias
+## 🏗️ 1. Visão Geral e Arquitetura
 
-- **Frontend:** React 19 + TypeScript + Vite
-- **Estilização:** Tailwind CSS (Tokens visuais dedicados: marfim suave `#FDFDFB`, carvão profundo `#242422`, coral queimado `#D95B43` e verde-petróleo `#1A5F6A`)
-- **Tipografia:** Playfair Display (Display / Títulos) + Plus Jakarta Sans (Corpo e Leitura)
-- **Roteamento:** React Router v7 com suporte a subpasta `/iamurel/` e SPA fallback para GitHub Pages
-- **Backend & Database:** Supabase (PostgreSQL, Row Level Security, Auth, Storage)
-- **Ícones:** Lucide React
+O projeto foi construído do zero focando em um design "Anti-Slop" (sem clichês de IA, com tipografia premium, cores balanceadas e design focado em conversão e autoridade) atrelado a um sistema robusto de gerenciamento de conteúdo (CMS) e CRM próprio.
 
----
-
-## 2. Estrutura de Diretórios
-
-```text
-iamurel/
-├── .env.example              # Exemplo de credenciais de ambiente
-├── index.html                # Ponto de entrada com script SPA para GitHub Pages
-├── metadata.json             # Metadados da aplicação
-├── package.json              # Dependências e scripts npm
-├── vite.config.ts            # Configuração Vite com base dinâmica (/iamurel/)
-├── public/
-│   └── 404.html              # Redirecionamento SPA para evitar erro 404 no GitHub Pages
-├── src/
-│   ├── main.tsx              # Ponto de entrada React
-│   ├── App.tsx               # Wrapper com BrowserRouter dinâmico
-│   ├── routes.tsx            # Rotas públicas e administrativas
-│   ├── index.css             # Tokens de cores, fontes e Tailwind CSS
-│   ├── components/
-│   │   └── layout/
-│   │       ├── PublicLayout.tsx   # Header público com âncoras e Footer institucional
-│   │       └── AdminLayout.tsx    # Sidebar e navegação do Painel Administrativo
-│   ├── lib/
-│   │   ├── data.ts           # Camada agnóstica de acesso a dados (Supabase + Fallback)
-│   │   ├── mockData.ts       # Dados de demonstração para desenvolvimento offline
-│   │   └── supabase.ts       # Instanciação do cliente Supabase
-│   ├── pages/
-│   │   ├── public/
-│   │   │   └── Home.tsx      # Jornada de conversão completa (Diagnóstico, Método, Pacotes, Form)
-│   │   └── admin/
-│   │       ├── Dashboard.tsx # Métricas de leads, conversão e visão geral
-│   │       └── LeadsCRM.tsx  # Pipeline Kanban com alteração de status
-│   └── types/
-│       └── index.ts          # Interfaces TypeScript do modelo de dados
-├── supabase/
-│   ├── README.md             # Guia rápido específico do Supabase
-│   ├── schema.sql            # Criação de extensões, enums, tabelas, índices e RLS
-│   └── seed.sql              # Dados iniciais comerciais (serviços, pacotes, FAQ)
-└── docs/
-    ├── CONFIGURACAO-SUPABASE.md # Passo a passo detalhado no Supabase
-    ├── MODELO-DE-DADOS.md       # Dicionário de dados e relações
-    ├── PUBLICACAO-GITHUB.md     # Publicação no repositório e subpasta
-    └── CHECKLIST-TESTES.md      # Testes de QA e critérios de aceitação
-```
+**Stack Tecnológica:**
+*   **Frontend:** React 18+ com Vite, TypeScript, Tailwind CSS.
+*   **Animações:** Motion (Framer Motion) para o ScrollReveal 3D e Transições.
+*   **Ícones:** Lucide React.
+*   **Backend & Banco de Dados:** Supabase (PostgreSQL) para armazenamento de dados, RLS (Row Level Security) e Storage (Bucket de mídias).
+*   **Notificações de Email:** Integração Passiva via FormSubmit API.
 
 ---
 
-## 3. Guia de Instalação e Execução Local
+## 🧩 2. Funcionalidades Implementadas
 
-### Pré-requisitos
-- Node.js 18+ instalado
-- Git configurado
+Criamos um sistema "2 em 1" (Site Público + Painel Admin) integrado e dinâmico:
 
-### Passo a passo
-```bash
-# 1. Clone o repositório
-git clone https://github.com/raulmdesigner/iamurel.git
-cd iamurel
+### 🎨 O Site (Frontend Público)
+*   **Design Modular:** Seções de Banner, Metodologia (Como Funciona), Cases reais (Para Quem É), Esteira de Produtos (Pacotes) e Contato.
+*   **Toggles de Exibição:** Todo o site pode ser modificado. É possível esconder/mostrar botões do WhatsApp, pacotes, FAQs e até os efeitos de desfoque/3D.
+*   **Formulário de Captação Rápida:** Um formulário estratégico que alimenta o CRM diretamente.
 
-# 2. Instale as dependências
-npm install
-
-# 3. Configure as variáveis de ambiente
-cp .env.example .env
-# Edite o .env com sua URL e Anon Key do Supabase (veja a seção 4)
-
-# 4. Inicie o servidor de desenvolvimento
-npm run dev
-```
-
-O site estará acessível em `http://localhost:3000` (ou porta indicada no terminal).
+### ⚙️ O Painel Administrativo (CMS & CRM)
+*   **Dashboard e CRM (Leads):** Gestão visual dos clientes que chegam pelo site (Novo, Em Contato, Negociação, Fechado, Perdido), com sistema de "Anotações" internas por lead.
+*   **Aparência:** Controle de cores (Principal/Ação), tipografia e nível de animações.
+*   **Conteúdo & Seções:** 
+    *   Edição ao vivo dos textos hero, CTA, Links sociais.
+    *   Gerenciamento de **Especialidades (Serviços)**, detalhando dores e entregáveis.
+    *   Gerenciamento de **Pacotes/Planos**, com itens customizáveis, opção de favoritar um pacote e **ocultá-lo** do público (draft mode).
+*   **Configurações de Banco de Dados:** Migração fluida entre o armazenamento Local do Navegador e a Nuvem Oficial (Supabase).
 
 ---
 
-## 4. Configuração do Banco de Dados (Supabase)
+## 😅 3. Diário de Bordo: Os Desafios e "Perrengues" Superados
 
-1. Acesse [https://supabase.com](https://supabase.com) e crie uma conta ou faça login.
-2. Crie um novo projeto (ex: `iamurel-db`). Escolha uma senha segura para o banco de dados.
-3. No painel do projeto, vá em **Project Settings** > **API**.
-4. Copie os seguintes valores:
-   - **Project URL** (ex: `https://xyzcompany.supabase.co`)
-   - **Project API Keys** > `anon` / `public`
-5. Cole esses valores no seu arquivo `.env`:
-   ```env
-   VITE_SUPABASE_URL="https://seu-projeto.supabase.co"
-   VITE_SUPABASE_ANON_KEY="sua-anon-key-aqui"
-   ```
+Desenvolver um sistema completo em tempo recorde sempre gera algumas "faíscas". Aqui está o registro dos principais bugs que enfrentamos e como os aniquilamos:
 
----
+### 🚨 Perrengue #1: O "Efeito Borrado" Eterno (Scroll 3D)
+*   **O que aconteceu:** Criamos um efeito maravilhoso de entrada 3D (`ScrollReveal`) que usava *blur* (desfoque) e rotação. O usuário pediu para adicionar um "botão de desligar" o 3D. Porém, ao desligar a opção no painel, o site inteiro travou no estado inicial (borrado), parecendo que o usuário estava sem óculos.
+*   **A Solução:** Reescrevi o componente de animação para garantir que, caso a chave `enable3d` estivesse falsa, o CSS forçasse `{ filter: 'blur(0px)', scale: 1, rotateX: 0 }`. Site nítido novamente!
 
-## 5. Ordem de Execução dos Scripts SQL
+### 🚨 Perrengue #2: A Tela Branca da Morte (Erro de Sintaxe e Colisão de Abas)
+*   **O que aconteceu:** Durante a implementação dos **Itens do Pacote** (aquelas caixinhas de check de "incluso" ou "não incluso"), um fragmento de código foi injetado na aba errada (dentro do mapeamento de "Serviços"). Resultado: O React entrou em pânico, estourou um erro de renderização e a aba de serviços ficou 100% branca (vazia). Como bônus, quebramos temporariamente a compilação de produção com chaves `}` sobrando no `Home.tsx`.
+*   **A Solução:** Fizemos uma cirurgia no código. Limpei a aba de Serviços, transferi o loop de itens corretamente para a aba de Pacotes (`ContentCMS.tsx`), e rodei scripts no terminal (`fix-home-form.cjs`) para limpar a sintaxe perdida. 
 
-Para inicializar o banco sem qualquer conflito de dependência de chaves estrangeiras ou tipos, siga rigorosamente esta sequência no **SQL Editor** do Supabase:
+### 🚨 Perrengue #3: O "Bucket Not Found" (Arquivos não subiam)
+*   **O que aconteceu:** O cliente tentava fazer upload das imagens no painel, e o sistema cuspia um erro vermelho alertando que o "Bucket" não existia. 
+*   **A Solução:** Por segurança, o Supabase não deixa que sistemas externos criem pastas de armazenamento sozinhos. Adicionei no próprio painel Admin uma área de "Resolução de Problemas" com o **Script SQL Oficial** para criar o bucket `media` e dar permissões públicas (RLS de Select e Insert). O cliente só precisou rodar o script no painel do Supabase.
 
-### 1º Passo: `supabase/schema.sql`
-- **Onde executar:** Supabase > SQL Editor > New query
-- **O que faz:**
-  1. Habilita a extensão `uuid-ossp`.
-  2. Cria os tipos enumerados (`lead_status`, `package_level`, `package_price_type`, etc.).
-  3. Cria as 10 tabelas relacionais com prefixo `iamurel_`.
-  4. Ativa o **Row Level Security (RLS)** em todas as tabelas.
-  5. Cria as políticas de segurança:
-     - Leitura pública apenas para dados comerciais marcados como ativos.
-     - Inserção anônima de leads (com bloqueio estrito de leitura para visitantes).
-     - Permissão de administração restrita a usuários autenticados.
-  6. Cria índices de performance (`idx_leads_status`, `idx_services_order`, etc.).
+### 🚨 Perrengue #4: A Miragem da Guia Anônima (Nuvem vs Local)
+*   **O que aconteceu:** O cliente mudava as coisas no painel, via as atualizações lindas... mas quando abria numa aba anônima (ou outro PC), o site estava cru! 
+*   **Por quê?** O site estava salvando as credenciais do banco na `localStorage` do navegador logado, ou seja, a guia anônima não sabia em qual banco procurar, e carregava a versão "Dummy" (fictícia).
+*   **A Solução:** Instruí o preenchimento das **Variáveis de Ambiente** (`.env`). Fixando as variáveis `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` diretamente no servidor, garantimos que todos os visitantes, em qualquer lugar do mundo, batessem no banco de dados oficial.
 
-### 2º Passo: `supabase/seed.sql`
-- **Onde executar:** Supabase > SQL Editor > New query
-- **O que faz:**
-  1. Insere as configurações e textos institucionais da IAMUREL.
-  2. Insere os 4 serviços comerciais pré-configurados.
-  3. Insere os 4 pacotes (Essencial, Recomendado, Profissional e Ultra) com todos os itens discriminados.
-  4. Insere os estudos conceituais de demonstração.
-  5. Insere as perguntas e respostas frequentes (FAQ).
+### 🚨 Perrengue #5: Notificações de Lead sem um Servidor Node
+*   **O que aconteceu:** Os leads chegavam e iam direitinho pro CRM do painel, mas o cliente queria ser notificado no email oficial (`iamurelbrasil@gmail.com`). Como somos uma aplicação Serverless/Frontend no Vercel/Run, configurar envio de SMTP puro (Nodemailer) ia exigir um Backend à parte.
+*   **A Solução:** Hack elegante. Integramos o **FormSubmit**. Interceptei a função `submitLead`, e após salvar no Supabase, criei um bloco `fetch()` disparando um POST silencioso pro FormSubmit. O cliente só precisou ativar o primeiro e-mail, e pronto: relatórios de leads chegando limpos na caixa de entrada sem precisar de um servidor só pra isso!
 
 ---
 
-## 6. Publicação no GitHub e GitHub Pages
+## 🛠️ 4. Observações e Manutenção Futura
 
-O site foi desenvolvido para operar sob a subpasta:
-`https://rauldesigner.com.br/iamurel/`
-
-### Configuração no GitHub Pages
-1. No seu repositório no GitHub (`raulmdesigner/iamurel`), vá em **Settings** > **Pages**.
-2. Em **Build and deployment** > **Source**, selecione **GitHub Actions**.
-3. Se preferir deploy via branch:
-   ```bash
-   npm run build
-   # O diretório 'dist' conterá todos os arquivos prontos, incluindo o 404.html
-   ```
-4. Caso use domínio personalizado (`rauldesigner.com.br`), configure o CNAME nas configurações de Pages ou na raiz do repositório conforme sua infraestrutura existente.
+*   **Script de Banco de Dados:** Todo o projeto depende da estrutura do banco. O arquivo `sql_init.sql` (agora dentro do seu painel) contém a "planta baixa" da IAMUREL.
+*   **Cores e Design:** O design system foi programado para injetar variáveis de CSS baseadas no painel. Se quiser mexer na raiz do Tailwind (no `index.css`), tome cuidado para não sobrepor o script dinâmico de cores do arquivo `App.tsx`.
+*   **Segurança:** A `VITE_SUPABASE_ANON_KEY` é segura para expor no Frontend (por isso chama Anon), porque as políticas de leitura e gravação são travadas no Supabase. Mantenha isso em mente.
 
 ---
 
-## 7. Variáveis de Ambiente
+Foi uma construção incrível! De uma ideia solta até um site com CRM e Backend integrados em questão de horas. 
 
-| Variável | Descrição | Exemplo |
-|---|---|---|
-| `VITE_SUPABASE_URL` | URL da API REST do Supabase | `https://xxxx.supabase.co` |
-| `VITE_SUPABASE_ANON_KEY` | Chave pública anônima do Supabase | `eyJhbGciOi...` |
-| `VITE_BASE_PATH` | Caminho base para deploy (opcional) | `/iamurel/` ou `/` |
+**Desenvolvido com suor, código (e algumas doses de café virtual) pela IA do Google.** 🚀
