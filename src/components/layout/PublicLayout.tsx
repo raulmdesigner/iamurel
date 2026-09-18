@@ -1,3 +1,7 @@
+import { LoadError } from '../ui/LoadError';
+import { errorMessage } from '../../lib/errors';
+import { AppearanceContext, applyAppearance } from '../../lib/appearance';
+import { defaultAppearance } from '../../lib/mockData';
 import { useState, useEffect, useRef } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { dataLayer } from '../../lib/data';
@@ -6,6 +10,8 @@ import { X, FileText, ShieldCheck, Mail, ArrowUpRight, Menu, MessageCircle } fro
 import { IamurelLogo } from '../brand/IamurelBrand';
 
 export default function PublicLayout() {
+  const [loadError, setLoadError] = useState('');
+  const [appearance, setAppearance] = useState(defaultAppearance);
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [activeModal, setActiveModal] = useState<'terms' | 'privacy' | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,15 +33,18 @@ export default function PublicLayout() {
   };
 
   useEffect(() => {
-    dataLayer.getSettings().then(setSettings);
+    Promise.all([dataLayer.getSettings(), dataLayer.getAppearance()]).then(([settings, appearance]) => {
+      setSettings(settings); setAppearance(appearance); applyAppearance(appearance);
+    }).catch(error => setLoadError(errorMessage(error)));
   }, []);
 
   const whatsappLink = settings?.whatsapp_number
     ? `https://wa.me/${settings.whatsapp_number.replace(/\D/g, '')}?text=Ol%C3%A1%2C%20gostaria%20de%20conversar%20sobre%20o%20conte%C3%BAdo%20e%20design%20da%20minha%20marca%20com%20a%20IAMUREL.`
     : '#contato';
 
+  if (loadError) return <LoadError message={loadError} />;
   return (
-    <div className="min-h-screen flex flex-col font-body bg-bg text-text selection:bg-action selection:text-white">
+    <AppearanceContext.Provider value={appearance}><div className="min-h-screen flex flex-col font-body bg-bg text-text selection:bg-action selection:text-white">
       {/* 1. Header Compacto */}
       <header className="w-full border-b border-border bg-surface/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
@@ -77,7 +86,7 @@ export default function PublicLayout() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-border bg-surface px-6 py-5 space-y-4 text-sm font-semibold shadow-xl">
             <a
-              href="#servicos"
+              href="#como-funciona"
               onClick={() => setMobileMenuOpen(false)}
               className="block text-text hover:text-action py-1"
             >
@@ -149,10 +158,10 @@ export default function PublicLayout() {
             <div className="md:col-span-3 space-y-3">
               <p className="text-xs uppercase tracking-wider text-bg/50 font-bold mb-3">Navegação</p>
               <ul className="space-y-2 text-sm text-bg/80">
-                <li><a href="#servicos" className="hover:text-action transition-colors">Serviços & Categorias</a></li>
+                <li><a href="#como-funciona" className="hover:text-action transition-colors">Serviços & Categorias</a></li>
                 <li><a href="#portfolio" className="hover:text-action transition-colors">Portfólio por Aplicação</a></li>
                 <li><a href="#como-funciona" className="hover:text-action transition-colors">Como a IA e a Direção Atuam</a></li>
-                <li><a href="#planos" className="hover:text-action transition-colors">Opções Comerciais</a></li>
+                <li><a href="#pacotes" className="hover:text-action transition-colors">Opções Comerciais</a></li>
                 <li><a href="#faq" className="hover:text-action transition-colors">Perguntas Frequentes</a></li>
               </ul>
             </div>
@@ -283,6 +292,6 @@ export default function PublicLayout() {
           </div>
         </div>
       )}
-    </div>
+    </div></AppearanceContext.Provider>
   );
 }

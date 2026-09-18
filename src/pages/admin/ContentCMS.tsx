@@ -1,3 +1,5 @@
+import { LoadError } from '../../components/ui/LoadError';
+import { errorMessage } from '../../lib/errors';
 import React, { useState, useEffect } from 'react';
 import { dataLayer } from '../../lib/data';
 import { SiteSettings, Service, Package, FAQ } from '../../types';
@@ -10,6 +12,9 @@ export default function ContentCMS() {
   const [packages, setPackages] = useState<Package[]>([]);
   const [faqs, setFaqs] = useState<FAQ[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const [saveError, setSaveError] = useState('');
+  const [saving, setSaving] = useState(false);
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   useEffect(() => {
@@ -26,42 +31,41 @@ export default function ContentCMS() {
       setFaqs(fq);
       setLoading(false);
     }
-    load();
+    load().catch(error => { setLoadError(errorMessage(error)); setLoading(false); });
   }, []);
 
+  async function runSave(operation: () => Promise<{ success: boolean; error?: string }>) {
+    if (saving) return;
+    setSaving(true); setSaveError(''); setSavedSuccess(false);
+    try {
+      const result = await operation();
+      if (!result.success) throw new Error(result.error || 'Não foi possível salvar.');
+      triggerSuccess();
+    } catch (error) { setSaveError(errorMessage(error)); }
+    finally { setSaving(false); }
+  }
   async function handleSaveSettings(e: React.FormEvent) {
     e.preventDefault();
-    if (!settings) return;
-    await dataLayer.saveSettings(settings);
-    triggerSuccess();
+    if (settings) await runSave(() => dataLayer.saveSettings(settings));
   }
-
-  async function handleSaveServices() {
-    await dataLayer.saveServices(services);
-    triggerSuccess();
-  }
-
-  async function handleSavePackages() {
-    await dataLayer.savePackages(packages);
-    triggerSuccess();
-  }
-
-  async function handleSaveFaqs() {
-    await dataLayer.saveFaqs(faqs);
-    triggerSuccess();
-  }
+  const handleSaveServices = () => runSave(() => dataLayer.saveServices(services));
+  const handleSavePackages = () => runSave(() => dataLayer.savePackages(packages));
+  const handleSaveFaqs = () => runSave(() => dataLayer.saveFaqs(faqs));
 
   function triggerSuccess() {
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);
   }
 
+  if (loadError) return <LoadError message={loadError} />;
   if (loading || !settings) {
     return <div className="p-8 text-sm text-muted">Carregando gerenciador de conteúdo...</div>;
   }
 
   return (
     <div className="space-y-8 max-w-5xl">
+      {saveError && <p role="alert" className="p-4 bg-red-50 text-red-800 rounded">{saveError}</p>}
+      {saving && <p role="status">Salvando no Supabase...</p>}
       {/* Header com Abas e Confirmação de Salvamento */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border">
         <div>
@@ -182,11 +186,11 @@ export default function ContentCMS() {
 
           <div className="flex justify-end pt-4 border-t border-border">
             <button
-    type="submit"
+    type="submit" disabled={saving}
     className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
   >
-    {success ? <Check size={16} /> : <Save size={16} />}
-    <span>{success ? 'Salvo!' : 'Salvar Textos da Abertura'}</span>
+    {savedSuccess ? <Check size={16} /> : <Save size={16} />}
+    <span>{savedSuccess ? 'Salvo!' : 'Salvar Textos da Abertura'}</span>
   </button>
           </div>
         </form>
@@ -200,7 +204,7 @@ export default function ContentCMS() {
             <button
               onClick={() => {
                 const newSrv: Service = {
-                  id: 'srv-' + Date.now(),
+                  id: crypto.randomUUID(),
                   title: 'Novo Serviço Editorial',
                   problem_solved: 'Descreva a dor específica do cliente...',
                   deliverables: 'Liste as entregas práticas...',
@@ -355,7 +359,7 @@ export default function ContentCMS() {
 
           <div className="flex justify-end pt-4">
             <button
-              onClick={handleSaveServices}
+              onClick={handleSaveServices} disabled={saving}
               className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
             >
               <Save size={16} />
@@ -370,6 +374,11 @@ export default function ContentCMS() {
         <div className="space-y-6">
           <div className="flex justify-between items-center">
             <p className="text-sm text-muted">Gerencie os planos comerciais, quantidades e itens inclusos.</p>
+            <button type="button" className="px-4 py-2 bg-action text-white rounded text-xs font-bold" onClick={() => setPackages([...packages, {
+              id: crypto.randomUUID(), level: 'Novo pacote', commercial_role: '', description: '',
+              price: null, price_type: 'on_request', revisions: '', timeframe: '', is_highlighted: false,
+              order_index: packages.length, status: 'archived', items: [],
+            }])}>Adicionar pacote</button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -565,11 +574,11 @@ export default function ContentCMS() {
 
           <div className="flex justify-end pt-4">
             <button
-    onClick={handleSavePackages}
+    onClick={handleSavePackages} disabled={saving}
     className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
   >
-    {success ? <Check size={16} /> : <Save size={16} />}
-    <span>{success ? 'Salvo!' : 'Salvar Pacotes'}</span>
+    {savedSuccess ? <Check size={16} /> : <Save size={16} />}
+    <span>{savedSuccess ? 'Salvo!' : 'Salvar Pacotes'}</span>
   </button>
           </div>
         </div>
@@ -583,7 +592,7 @@ export default function ContentCMS() {
             <button
               onClick={() => {
                 const newFaq: FAQ = {
-                  id: 'faq-' + Date.now(),
+                  id: crypto.randomUUID(),
                   question: 'Nova Pergunta?',
                   answer: 'Resposta objetiva e clara...',
                   order_index: faqs.length + 1
@@ -635,7 +644,7 @@ export default function ContentCMS() {
 
           <div className="flex justify-end pt-4">
             <button
-              onClick={handleSaveFaqs}
+              onClick={handleSaveFaqs} disabled={saving}
               className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
             >
               <Save size={16} />
@@ -689,7 +698,7 @@ export default function ContentCMS() {
 
           <div className="flex justify-end pt-4 border-t border-border">
             <button
-              type="submit"
+              type="submit" disabled={saving}
               className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
             >
               <Save size={16} />

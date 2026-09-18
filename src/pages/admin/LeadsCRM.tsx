@@ -1,3 +1,5 @@
+import { LoadError } from '../../components/ui/LoadError';
+import { errorMessage } from '../../lib/errors';
 import React, { useEffect, useState } from 'react';
 import { dataLayer } from '../../lib/data';
 import { Lead, LeadStatus } from '../../types';
@@ -31,6 +33,7 @@ const STATUS_COLUMNS: { id: LeadStatus; label: string; badgeBg: string }[] = [
 export default function LeadsCRM() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
   const [viewMode, setViewMode] = useState<'kanban' | 'table'>('kanban');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
@@ -44,25 +47,27 @@ export default function LeadsCRM() {
   }
 
   useEffect(() => {
-    loadLeads();
+    loadLeads().catch(error => { setLoadError(errorMessage(error)); setLoading(false); });
   }, []);
 
   const handleStatusChange = async (leadId: string, newStatus: LeadStatus) => {
+    try { await dataLayer.updateLeadStatus(leadId, newStatus); }
+    catch (error) { alert(errorMessage(error)); return; }
     setLeads(prev => prev.map(l => (l.id === leadId ? { ...l, status: newStatus } : l)));
     if (selectedLead && selectedLead.id === leadId) {
       setSelectedLead(prev => (prev ? { ...prev, status: newStatus } : null));
     }
-    await dataLayer.updateLeadStatus(leadId, newStatus);
   };
 
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedLead || !newNote.trim()) return;
 
-    await dataLayer.addLeadNote(selectedLead.id, newNote.trim(), 'Gestor Comercial');
+    try { await dataLayer.addLeadNote(selectedLead.id, newNote.trim()); }
+    catch (error) { alert(errorMessage(error)); return; }
     setNewNote('');
     // Refresh leads
-    const updated = await dataLayer.getLeads();
+    const updated = await dataLayer.getLeads().catch(error => { setLoadError(errorMessage(error)); return []; });
     setLeads(updated);
     const refreshed = updated.find(l => l.id === selectedLead.id);
     if (refreshed) setSelectedLead(refreshed);
@@ -102,6 +107,7 @@ export default function LeadsCRM() {
     );
   });
 
+  if (loadError) return <LoadError message={loadError} />;
   if (loading) return <div className="p-8 text-sm text-muted">Carregando CRM de Leads...</div>;
 
   return (
@@ -402,3 +408,4 @@ export default function LeadsCRM() {
     </div>
   );
 }
+

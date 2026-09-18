@@ -1,3 +1,7 @@
+import { LoadError } from '../../components/ui/LoadError';
+import { errorMessage } from '../../lib/errors';
+import { useAppearance } from '../../lib/appearance';
+import type { Service } from '../../types';
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { dataLayer } from '../../lib/data';
@@ -33,7 +37,9 @@ import {
 export default function Home() {
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [faqs, setFaqs] = useState<FAQ[]>([]);
-  const [appearance, setAppearance] = useState<AppearanceSettings | null>(null);
+  const appearance = useAppearance();
+  const [services, setServices] = useState<Service[]>([]);
+  const [loadError, setLoadError] = useState('');
   const [packages, setPackages] = useState<Package[]>([]);
   const [cases, setCases] = useState<Showcase[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,19 +48,17 @@ export default function Home() {
   useEffect(() => {
     async function loadData() {
       try {
-        const [st, fq, pkgs, app, cses] = await Promise.all([
+        const [st, fq, pkgs, svcs] = await Promise.all([
           dataLayer.getSettings(),
           dataLayer.getFaq(),
           dataLayer.getPackages(),
-          dataLayer.getAppearance(),
-          dataLayer.getShowcases()
+          dataLayer.getServices()
         ]);
         setSettings(st);
         setFaqs(fq);
         setPackages(pkgs);
-        setAppearance(app);
-        setCases(cses);
-      } finally {
+        setServices(svcs);
+      } catch (error) { setLoadError(errorMessage(error)); } finally {
         setLoading(false);
       }
     }
@@ -73,6 +77,7 @@ export default function Home() {
     ? `https://wa.me/${settings.whatsapp_number.replace(/\D/g, '')}?text=Ol%C3%A1%2C%20gostaria%20de%20conversar%20sobre%20o%20conte%C3%BAdo%20e%20design%20da%20minha%20marca%20com%20a%20IAMUREL.`
     : '#contato';
 
+  if (loadError) return <LoadError message={loadError} />;
   if (loading) {
     return (
       <div className="max-w-7xl mx-auto px-6 py-24 space-y-8 animate-pulse">
@@ -89,12 +94,12 @@ export default function Home() {
       <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 px-6 bg-bg overflow-hidden border-b border-border">
         <div className="max-w-7xl mx-auto space-y-12">
           <ScrollReveal direction="up" delay={0.1}><div className="max-w-4xl mx-auto space-y-8 flex flex-col items-center text-center">
-            <RotatingWordHero />
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-text tracking-tight leading-tight">{settings?.hero_title}</h1>
               
             
 
             <p className="text-base sm:text-lg text-muted leading-relaxed max-w-2xl font-normal">
-              A IAMUREL usa IA para acelerar a produção e direção humana para transformar contexto de negócio em peças claras, consistentes e prontas para circular.
+              {settings?.hero_subtitle}
             </p>
 
             <div className="pt-2 flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3.5">
@@ -102,7 +107,7 @@ export default function Home() {
                 href="#contato"
                 className="inline-flex items-center justify-center gap-2.5 bg-action hover:bg-action-hover text-white px-7 py-3.5 rounded-lg text-sm font-bold transition-all shadow-sm active:scale-[0.98] cursor-pointer"
               >
-                <span>Falar com a IAMUREL</span>
+                <span>{settings?.primary_cta_text}</span>
                 <ArrowRight size={17} />
               </a>
 
@@ -110,7 +115,7 @@ export default function Home() {
                 href="#portfolio"
                 className="inline-flex items-center justify-center gap-2 bg-surface hover:bg-surface-hover border border-border text-text px-6 py-3.5 rounded-lg text-sm font-semibold transition-all cursor-pointer"
               >
-                <span>Ver portfólio</span>
+                <span>{settings?.secondary_cta_text}</span>
               </a>
             </div>
 
@@ -131,7 +136,7 @@ export default function Home() {
       {appearance?.enable_text_banner !== false && <InfiniteMarquee />}
 
       {/* 3. PORTFÓLIO (ESTUDOS CONCRETOS) */}
-      <PortfolioCentralSection onSelectPlan={handleSelectPlan} />
+      {appearance?.enable_showcase !== false && <PortfolioCentralSection onSelectPlan={handleSelectPlan} />}
 
       {/* 4. SERVIÇOS (TRÊS CAMINHOS) */}
       {appearance?.enable_services !== false && (
@@ -153,27 +158,14 @@ export default function Home() {
           
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="space-y-4">
-              <span className="text-4xl font-display font-light text-muted/30">01</span>
-              <h3 className="text-xl font-bold font-display text-text">Pesquisa & Diagnóstico</h3>
-              <p className="text-sm text-muted">
-                Antes de qualquer layout, entendemos o mercado, os concorrentes e o objetivo do material.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <span className="text-4xl font-display font-light text-muted/30">02</span>
-              <h3 className="text-xl font-bold font-display text-text">Direção & Geração IA</h3>
-              <p className="text-sm text-muted">
-                Usamos ferramentas de IA para gerar múltiplos caminhos visuais e variações de copy rapidamente.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <span className="text-4xl font-display font-light text-muted/30">03</span>
-              <h3 className="text-xl font-bold font-display text-text">Lapidação & Entrega</h3>
-              <p className="text-sm text-muted">
-                O diretor de arte refina, aplica a identidade da sua marca e finaliza os arquivos para uso imediato.
-              </p>
-            </div>
+            {services.filter(service => service.status === 'active').map((service, index) => <article key={service.id} className="space-y-4">
+              <span className="text-4xl font-display text-muted/30">{String(index + 1).padStart(2, '0')}</span>
+              <h3 className="text-xl font-bold">{service.title}</h3>
+              <p className="text-sm text-muted">{service.problem_solved}</p>
+              <p className="text-sm">{service.deliverables}</p>
+              {service.timeframe && <p className="text-xs text-muted">Prazo: {service.timeframe}</p>}
+              {service.investment_range && <p className="text-sm font-bold">{service.investment_range}</p>}
+            </article>)}
           </div>
 
         </div>
@@ -271,7 +263,7 @@ export default function Home() {
                   <span className="text-[11px] text-muted">{pkg.timeframe}</span>
                 </div>
                 <ul className="space-y-2 text-xs text-text/90">
-                  {pkg.items?.sort((a, b) => a.order_index - b.order_index).map(item => (
+                  {pkg.items?.map(item => (
                     <li key={item.id} className={`flex items-start gap-2 ${item.is_included === false ? 'opacity-50 line-through' : ''}`}>
                       {item.is_included === false ? (
                         <XCircle size={14} className="text-muted shrink-0 mt-0.5" />
@@ -692,10 +684,11 @@ function QuickContactForm({
     const formData = new FormData(form);
 
     const leadPayload = {
+      consent: formData.get('consent') === 'on',
       name: formData.get('name') as string,
       business_name: formData.get('business_name') as string,
       phone: formData.get('phone') as string,
-      email: (formData.get('email') as string) || 'contato-direto@cliente.com',
+      email: (formData.get('email') as string) || '',
       need: (formData.get('need') as string) || selectedNeed || 'Alinhamento Geral',
       message: (formData.get('message') as string) || null,
       objective: 'Crescimento e Autoridade da Marca',
@@ -837,6 +830,7 @@ function QuickContactForm({
         ></textarea>
       </div>
 
+      <label className="flex items-start gap-2 text-xs"><input type="checkbox" name="consent" required /> Autorizo o uso dos dados informados para receber retorno sobre minha solicitação.</label>
       <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
         <button
           type="submit"

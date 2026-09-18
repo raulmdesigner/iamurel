@@ -1,3 +1,5 @@
+import { LoadError } from '../../components/ui/LoadError';
+import { errorMessage } from '../../lib/errors';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { dataLayer } from '../../lib/data';
@@ -18,15 +20,17 @@ import {
 export default function Dashboard() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
     async function load() {
       setLeads(await dataLayer.getLeads());
       setLoading(false);
     }
-    load();
+    load().catch(error => { setLoadError(errorMessage(error)); setLoading(false); });
   }, []);
 
+  if (loadError) return <LoadError message={loadError} />;
   if (loading) return <div className="p-8 text-sm text-muted">Carregando painel de controle...</div>;
 
   const newLeadsCount = leads.filter(l => l.status === 'novo').length;
@@ -53,7 +57,7 @@ export default function Dashboard() {
           </span>
 
           <Link
-            to="/admin/banco"
+            to="/admin/database"
             className="text-xs text-action hover:underline font-semibold flex items-center gap-1"
           >
             Gerenciar Banco <ArrowRight size={12} />
@@ -175,3 +179,4 @@ function StatCard({ title, value, icon: Icon, color = 'text-text' }: any) {
     </div>
   );
 }
+

@@ -1,3 +1,6 @@
+import { LoadError } from '../../components/ui/LoadError';
+import { errorMessage } from '../../lib/errors';
+import { defaultAppearance } from '../../lib/mockData';
 import React, { useState, useEffect } from 'react';
 import { dataLayer } from '../../lib/data';
 import { AppearanceSettings } from '../../types';
@@ -6,12 +9,15 @@ import { uploadMediaToSupabase, isSupabaseConfigured } from '../../lib/supabase'
 
 export default function AppearanceCMS() {
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [loadError, setLoadError] = useState('');
+  const [saveError, setSaveError] = useState('');
+  const [saving, setSaving] = useState(false);
   const [appearance, setAppearance] = useState<AppearanceSettings | null>(null);
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [uploadingField, setUploadingField] = useState<string | null>(null);
 
   useEffect(() => {
-    dataLayer.getAppearance().then(setAppearance);
+    dataLayer.getAppearance().then(setAppearance).catch(error => setLoadError(errorMessage(error)));
   }, []);
 
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>, field: keyof AppearanceSettings) {
@@ -39,7 +45,10 @@ export default function AppearanceCMS() {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     if (!appearance) return;
-    await dataLayer.saveAppearance(appearance);
+    setSaving(true); setSaveError(''); setSaveSuccess(false); setSavedSuccess(false);
+    const result = await dataLayer.saveAppearance(appearance);
+    setSaving(false);
+    if (!result.success) { setSaveError(result.error || 'Não foi possível salvar.'); return; }
     setSaveSuccess(true);
     setTimeout(() => setSaveSuccess(false), 3000);
     setSavedSuccess(true);
@@ -47,25 +56,15 @@ export default function AppearanceCMS() {
   }
 
   function handleReset() {
-    const defaultVals: AppearanceSettings = {
-      primary_color: '#242422',
-      action_color: '#D95B43',
-      bg_tone: 'cream',
-      border_style: 'minimal',
-      motion_level: 'balanced',
-      font_pairing: 'editorial',
-      hero_video_url: null,
-      hero_image_1_url: null,
-      hero_image_2_url: null,
-      hero_image_3_url: null,
-    };
-    setAppearance(defaultVals);
+    setAppearance({ ...defaultAppearance });
   }
 
-  if (!appearance) return null;
+  if (loadError) return <LoadError message={loadError} />;
+  if (!appearance) return <p>Carregando aparência...</p>;
 
   return (
     <div className="space-y-8 max-w-4xl">
+      {saveError && <p role="alert" className="p-4 bg-red-50 text-red-800">{saveError}</p>}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border">
         <div>
           <h2 className="text-2xl font-bold font-display text-text">Editor de Identidade & Aparência</h2>
@@ -321,7 +320,7 @@ export default function AppearanceCMS() {
 
           
           <button
-            type="submit"
+            type="submit" disabled={saving || !!uploadingField}
             className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
           >
             {saveSuccess ? <Check size={16} className="text-white" /> : <Save size={16} />}
@@ -333,3 +332,4 @@ export default function AppearanceCMS() {
     </div>
   );
 }
+

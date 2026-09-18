@@ -1,3 +1,4 @@
+import { useAppearance } from '../../lib/appearance';
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { dataLayer } from '../../lib/data';
@@ -12,12 +13,9 @@ interface ScrollRevealProps {
 }
 
 export function ScrollReveal({ children, delay = 0, direction = 'up', className = '' }: ScrollRevealProps) {
-  const [enable3d, setEnable3d] = useState(true);
-  useEffect(() => {
-    dataLayer.getAppearance().then(app => {
-      if (app.enable_3d === false) setEnable3d(false);
-    });
-  }, []);
+  const appearance = useAppearance();
+  const enable3d = appearance.enable_3d !== false;
+  if (!enable3d || appearance.motion_level === 'reduced') return <div className={className}>{children}</div>;
   const getInitialOffset = () => {
     switch (direction) {
       case 'up': return { y: 50, x: 0 };
@@ -48,3 +46,4 @@ export function ScrollReveal({ children, delay = 0, direction = 'up', className 
     </motion.div>
   );
 }
+

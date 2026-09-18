@@ -1,12 +1,12 @@
 import { SiteSettings, Service, Package, Lead, Showcase, FAQ, AppearanceSettings } from '../types';
 
 export const defaultAppearance: AppearanceSettings = {
-  primary_color: '#242422',
-  action_color: '#D95B43',
-  bg_tone: 'cream',
+  primary_color: '#14171A',
+  action_color: '#FF4A1C',
+  bg_tone: 'neutral_white',
   border_style: 'minimal',
   motion_level: 'balanced',
-  font_pairing: 'editorial',
+  font_pairing: 'contemporary',
   hero_video_url: null,
   hero_image_1_url: null,
   hero_image_2_url: null,
