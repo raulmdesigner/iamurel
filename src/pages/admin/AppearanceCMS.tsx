@@ -5,6 +5,7 @@ import { Palette, Check, Save, Sparkles, RefreshCw, UploadCloud, Loader2, Layers
 import { uploadMediaToSupabase, isSupabaseConfigured } from '../../lib/supabase';
 
 export default function AppearanceCMS() {
+  const [saveSuccess, setSaveSuccess] = useState(false);
   const [appearance, setAppearance] = useState<AppearanceSettings | null>(null);
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [uploadingField, setUploadingField] = useState<string | null>(null);
@@ -39,6 +40,8 @@ export default function AppearanceCMS() {
     e.preventDefault();
     if (!appearance) return;
     await dataLayer.saveAppearance(appearance);
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);
   }
@@ -275,13 +278,19 @@ export default function AppearanceCMS() {
               Ative ou desative seções específicas do site para ajustar a experiência.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { id: 'enable_3d', label: 'Efeito 3D Scroll Reveal', desc: 'Animações de entrada 3D nas seções' },
-              { id: 'enable_text_banner', label: 'Faixa de Texto Rotativa', desc: 'O banner de texto rodapé/meio' },
-              { id: 'enable_showcase', label: 'Seção de Portfólio (Casos)', desc: 'Demonstrações e estudos' },
-              { id: 'enable_faq', label: 'Seção de Perguntas Frequentes', desc: 'FAQ' },
+              { id: 'enable_3d', label: 'Efeito 3D Scroll', desc: 'Animações de entrada 3D' },
+              { id: 'enable_text_banner', label: 'Faixa de Texto', desc: 'Banner rotativo' },
+              { id: 'enable_showcase', label: 'Portfólio/Casos', desc: 'Demonstrações' },
+              { id: 'enable_services', label: 'Como Funciona', desc: 'Metodologia e serviços' },
+              { id: 'enable_clients', label: 'Para Quem É', desc: 'Exemplos reais' },
+              { id: 'enable_packages', label: 'Pacotes/Preços', desc: 'Sua esteira de serviços' },
+              { id: 'enable_faq', label: 'Perguntas (FAQ)', desc: 'Dúvidas frequentes' },
+              { id: 'enable_contact_form', label: 'Contato Final', desc: 'Rodapé de contato' },
             ].map((toggle) => (
+
               <div key={toggle.id} className="p-4 border border-border rounded-lg bg-surface flex items-start justify-between gap-4">
                 <div>
                   <span className="block text-sm font-bold text-text mb-0.5">{toggle.label}</span>
@@ -310,13 +319,15 @@ export default function AppearanceCMS() {
             <span>Restaurar Padrão IAMUREL</span>
           </button>
 
+          
           <button
             type="submit"
             className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
           >
-            <Save size={16} />
-            <span>Salvar & Aplicar Aparência</span>
+            {saveSuccess ? <Check size={16} className="text-white" /> : <Save size={16} />}
+            <span>{saveSuccess ? 'Salvo com Sucesso!' : 'Salvar & Aplicar Aparência'}</span>
           </button>
+
         </div>
       </form>
     </div>

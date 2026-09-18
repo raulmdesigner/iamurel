@@ -31,6 +31,10 @@ export interface AppearanceSettings {
   enable_text_banner?: boolean;
   enable_faq?: boolean;
   enable_showcase?: boolean;
+  enable_services?: boolean;
+  enable_clients?: boolean;
+  enable_packages?: boolean;
+  enable_contact_form?: boolean;
 }
 
 export interface Section {

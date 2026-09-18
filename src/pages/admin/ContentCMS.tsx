@@ -182,12 +182,12 @@ export default function ContentCMS() {
 
           <div className="flex justify-end pt-4 border-t border-border">
             <button
-              type="submit"
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
-            >
-              <Save size={16} />
-              <span>Salvar Textos da Abertura</span>
-            </button>
+    type="submit"
+    className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+  >
+    {success ? <Check size={16} /> : <Save size={16} />}
+    <span>{success ? 'Salvo!' : 'Salvar Textos da Abertura'}</span>
+  </button>
           </div>
         </form>
       )}
@@ -564,12 +564,12 @@ export default function ContentCMS() {
 
           <div className="flex justify-end pt-4">
             <button
-              onClick={handleSavePackages}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
-            >
-              <Save size={16} />
-              <span>Salvar Pacotes</span>
-            </button>
+    onClick={handleSavePackages}
+    className="inline-flex items-center gap-2 px-6 py-2.5 bg-action hover:bg-action-hover text-white rounded text-xs font-semibold shadow-sm transition-colors cursor-pointer"
+  >
+    {success ? <Check size={16} /> : <Save size={16} />}
+    <span>{success ? 'Salvo!' : 'Salvar Pacotes'}</span>
+  </button>
           </div>
         </div>
       )}

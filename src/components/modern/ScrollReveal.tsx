@@ -30,12 +30,12 @@ export function ScrollReveal({ children, delay = 0, direction = 'up', className 
 
   const initial = enable3d 
     ? { opacity: 0, filter: 'blur(10px)', scale: 0.98, rotateX: 10, ...getInitialOffset() }
-    : { opacity: 0, y: 30 };
+    : { opacity: 0, filter: 'blur(0px)', scale: 1, rotateX: 0, y: 30, x: 0 };
 
   return (
     <motion.div
       initial={initial}
-      whileInView={enable3d ? { opacity: 1, filter: 'blur(0px)', scale: 1, rotateX: 0, y: 0, x: 0 } : { opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, filter: 'blur(0px)', scale: 1, rotateX: 0, y: 0, x: 0 }}
       viewport={{ once: true, margin: "-10%" }}
       transition={{ 
         duration: 1.2, 

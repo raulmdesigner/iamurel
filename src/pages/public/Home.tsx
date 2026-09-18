@@ -134,6 +134,7 @@ export default function Home() {
       <PortfolioCentralSection onSelectPlan={handleSelectPlan} />
 
       {/* 4. SERVIÇOS (TRÊS CAMINHOS) */}
+      {appearance?.enable_services !== false && (
       <section id="como-funciona" className="py-16 md:py-24 px-6 bg-bg border-b border-border">
         <ScrollReveal>
           <div className="max-w-7xl mx-auto space-y-12">
@@ -178,7 +179,9 @@ export default function Home() {
         </div>
         </ScrollReveal>
       </section>
+      )}
       {/* 5. SEÇÃO "PARA QUEM É" (EXEMPLOS REAIS DE CLIENTES) */}
+      {appearance?.enable_clients !== false && (
       <section className="py-16 md:py-24 px-6 bg-surface border-b border-border">
         <ScrollReveal>
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -223,7 +226,9 @@ export default function Home() {
           </div>
         </ScrollReveal>
       </section>
+      )}
       {/* 6. SERVIÇOS (TRÊS CAMINHOS) */}
+      {appearance?.enable_packages !== false && (
       <section id="pacotes" className="py-16 md:py-24 px-6 bg-bg border-b border-border">
         <ScrollReveal>
           <div className="max-w-7xl mx-auto space-y-12">
@@ -291,6 +296,7 @@ export default function Home() {
         </div>
         </ScrollReveal>
       </section>
+      )}
 
       {appearance?.enable_faq !== false && (
       <div className="faq-wrapper">
@@ -314,6 +320,7 @@ export default function Home() {
       </div>
       )}
       {/* 8. CTA FINAL FORTE COM LOGO IAMUREL */}
+      {appearance?.enable_contact_form !== false && (
       <section className="py-20 md:py-28 px-6 bg-dark text-white relative overflow-hidden border-b border-border-dark">
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
           <div className="inline-flex flex-col items-center">
@@ -349,8 +356,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* FORMULÁRIO DE CONTATO DIRETO E OBJETIVO */}
+      {appearance?.enable_contact_form !== false && (
       <section id="contato" className="py-16 md:py-24 px-6 bg-bg">
         <ScrollReveal>
           <div className="max-w-3xl mx-auto">
@@ -375,6 +384,7 @@ export default function Home() {
         </div>
         </ScrollReveal>
       </section>
+      )}
     </div>
   );
 }
