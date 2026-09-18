@@ -9,17 +9,17 @@ interface FitCheckProps {
 
 export function FitCheck({ settings }: FitCheckProps) {
   const defaultIncluded = [
-    'Negócios com produto ou serviço validado e clientes reais',
-    'Quem valoriza acabamento visual autoral e se recusa a usar templates genéricos de Canva',
-    'Marcas que entendem que design eleva o valor percebido e permite cobrar mais',
-    'Empresas que conseguem participar do alinhamento inicial e aprovações com agilidade',
+    'Você possui um serviço, produto ou negócio real.',
+    'Está disposto a fornecer informações e aprovar materiais.',
+    'Precisa de direção, não apenas de templates.',
+    'Valoriza consistência visual e clareza.',
   ];
 
   const defaultExcluded = [
-    'Quem procura "artes avulsas de R$ 15" para preencher feed sem estratégia',
-    'Quem espera que posts e logos façam milagre de vendas sem um produto bom',
-    'Quem quer delegar 100% sem enviar informações básicas sobre o negócio',
-    'Projetos com promessas irreais de enriquecimento rápido, pirâmides ou cópias',
+    'Você quer somente uma arte isolada pelo menor preço.',
+    'Ainda não sabe o que vende ou para quem vende.',
+    'Espera que a IA substitua estratégia e revisão.',
+    'Precisa de publicação diária imediata sem processo de aprovação.',
   ];
 
   const includedList = settings.fit_included

@@ -51,9 +51,9 @@ export default function PublicLayout() {
   if (loadError) return <LoadError message={loadError} />;
   return (
     <AppearanceContext.Provider value={appearance}><div className="min-h-screen flex flex-col font-body bg-bg text-text selection:bg-action selection:text-white">
-      {/* 1. Header Compacto */}
+      {/* 1. Header Compacto e Enxuto */}
       <header className="w-full border-b border-border bg-surface/90 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-6 h-16 sm:h-18 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
             <IamurelLogo className="h-7 sm:h-8 text-text group-hover:text-action transition-colors" />
             <span className="hidden sm:inline-block text-[11px] uppercase tracking-wider text-muted border-l border-border pl-3 font-semibold">
@@ -61,19 +61,19 @@ export default function PublicLayout() {
             </span>
           </Link>
 
-          {/* Links Principais: Serviços, Portfólio, Como funciona, Pacotes */}
-          <nav className="hidden md:flex items-center gap-7 text-xs uppercase tracking-wider font-semibold text-text/80">
-            <a href="#como-comecar" className="hover:text-action transition-colors">Como Começar</a>
+          {/* Links Principais Exatos da Especificação: 4 itens */}
+          <nav className="hidden md:flex items-center gap-8 text-xs uppercase tracking-wider font-semibold text-text/80">
+            <a href="#como-funciona" className="hover:text-action transition-colors">Como funciona</a>
             <a href="#portfolio" className="hover:text-action transition-colors">Portfólio</a>
-            <a href="#como-funciona" className="hover:text-action transition-colors">Método</a>
-            <a href="#pacotes" className="hover:text-action transition-colors">Pacotes & Serviços</a>
+            <a href="#pacotes" className="hover:text-action transition-colors">Serviços</a>
+            <a href="#faq" className="hover:text-action transition-colors">FAQ</a>
           </nav>
 
           {/* Botão Primário Único */}
           <div className="flex items-center gap-3">
             <a
               href="#contato"
-              className="bg-action hover:bg-action-hover text-white px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all shadow-sm active:scale-[0.98]"
+              className="bg-action hover:bg-action-hover text-white px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all shadow-xs active:scale-[0.98]"
             >
               Falar com a IAMUREL
             </a>
@@ -82,49 +82,50 @@ export default function PublicLayout() {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 rounded-lg hover:bg-bg text-text transition-colors cursor-pointer"
-              aria-label="Abrir Menu"
+              aria-label={mobileMenuOpen ? "Fechar Menu" : "Abrir Menu"}
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
 
-        {/* Menu Mobile */}
+        {/* Menu Mobile com fechamento automático ao clicar */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-border bg-surface px-6 py-5 space-y-4 text-sm font-semibold shadow-xl">
+          <div className="md:hidden border-t border-border bg-surface px-6 py-5 space-y-4 text-sm font-semibold shadow-xl animate-fade-in">
             <a
-              href="#como-comecar"
+              href="#como-funciona"
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-text hover:text-action py-1"
+              className="block text-text hover:text-action py-1.5"
             >
-              Como Começar
+              Como funciona
             </a>
             <a
               href="#portfolio"
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-text hover:text-action py-1"
+              className="block text-text hover:text-action py-1.5"
             >
               Portfólio
             </a>
             <a
-              href="#como-funciona"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-text hover:text-action py-1"
-            >
-              Método
-            </a>
-            <a
               href="#pacotes"
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-text hover:text-action py-1"
+              className="block text-text hover:text-action py-1.5"
             >
-              Pacotes & Serviços
+              Serviços
+            </a>
+            <a
+              href="#faq"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-text hover:text-action py-1.5"
+            >
+              FAQ
             </a>
             <div className="pt-3 border-t border-border">
               <a
                 href="#contato"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block text-center py-3 bg-action text-white rounded-lg text-xs font-bold uppercase tracking-wider"
+                className="block text-center py-3 bg-action text-white rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm"
               >
                 Falar com a IAMUREL
               </a>
@@ -151,38 +152,39 @@ export default function PublicLayout() {
         </a>
       </div>
 
-      {/* 12. Footer com Contato, WhatsApp, LGPD e Termos */}
+      {/* 13. Rodapé Editorial em 3 Blocos */}
       <footer className="bg-dark text-bg/90 border-t border-border-dark pt-16 pb-12 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-border-dark/80">
-            {/* Coluna Marca & Propósito */}
+            {/* Bloco 1: Marca & Posicionamento */}
             <div className="md:col-span-5 space-y-4">
               <Link to="/" className="inline-block text-white group">
                 <IamurelLogo className="h-8 group-hover:opacity-90 transition-opacity" color="white" />
               </Link>
-              <p className="text-bg/70 text-sm leading-relaxed max-w-sm">
-                Conteúdo e identidade visual para negócios que precisam parecer tão bons quanto realmente são. Velocidade de inteligência artificial com direção criativa e acabamento 100% humanos.
+              <p className="text-bg/85 text-sm leading-relaxed max-w-sm">
+                Estúdio de comunicação visual e direção de conteúdo para marcas que buscam relevância, não volume.
               </p>
-              {settings?.company_info && (
-                <p className="text-xs text-bg/40">{settings.company_info}</p>
-              )}
+              <p className="text-xs text-bg/60 pt-1 font-mono">
+                Atendimento remoto em todo o Brasil.
+              </p>
             </div>
 
-            {/* Coluna Navegação Rápida */}
+            {/* Bloco 2: Navegação Essencial */}
             <div className="md:col-span-3 space-y-3">
-              <p className="text-xs uppercase tracking-wider text-bg/50 font-bold mb-3">Navegação</p>
-              <ul className="space-y-2 text-sm text-bg/80">
-                <li><a href="#como-funciona" className="hover:text-action transition-colors">Serviços & Categorias</a></li>
-                <li><a href="#portfolio" className="hover:text-action transition-colors">Portfólio por Aplicação</a></li>
-                <li><a href="#como-funciona" className="hover:text-action transition-colors">Como a IA e a Direção Atuam</a></li>
-                <li><a href="#pacotes" className="hover:text-action transition-colors">Opções Comerciais</a></li>
+              <p className="text-xs uppercase tracking-widest text-bg/50 font-bold mb-3">Navegação</p>
+              <ul className="space-y-2.5 text-sm text-bg/80">
+                <li><a href="#como-funciona" className="hover:text-action transition-colors">Rotas de Entrada</a></li>
+                <li><a href="#portfolio" className="hover:text-action transition-colors">Demonstrações</a></li>
+                <li><a href="#metodo" className="hover:text-action transition-colors">Método IA + Direção</a></li>
+                <li><a href="#processo" className="hover:text-action transition-colors">Processo de Contratação</a></li>
+                <li><a href="#operacao-mensal" className="hover:text-action transition-colors">Escopo Mensal</a></li>
                 <li><a href="#faq" className="hover:text-action transition-colors">Perguntas Frequentes</a></li>
               </ul>
             </div>
 
-            {/* Coluna Contato & Segurança Legal */}
+            {/* Bloco 3: Contato Direto & WhatsApp */}
             <div className="md:col-span-4 space-y-4">
-              <p className="text-xs uppercase tracking-wider text-bg/50 font-bold mb-3">Canais Diretos</p>
+              <p className="text-xs uppercase tracking-widest text-bg/50 font-bold mb-3">Atendimento Comercial</p>
               <div className="space-y-2.5 text-sm">
                 <a
                   href={`mailto:${settings?.contact_email || 'iamurelbrasil@gmail.com'}`}
@@ -198,7 +200,7 @@ export default function PublicLayout() {
                   className="inline-flex items-center gap-1.5 text-action font-semibold hover:underline"
                 >
                   <MessageCircle size={16} />
-                  <span>Conversar no WhatsApp Comercial</span>
+                  <span>WhatsApp Comercial Oficial</span>
                   <ArrowUpRight size={14} />
                 </a>
               </div>
@@ -227,11 +229,11 @@ export default function PublicLayout() {
               onPointerLeave={handlePointerUp}
               className="cursor-text select-none"
             >
-              IAMUREL™ {new Date().getFullYear()}. Todos os direitos reservados. Sem atalhos, sem AI slop.
+              IAMUREL™ {new Date().getFullYear()}. Todos os direitos reservados.
             </p>
             
             <div className="flex items-center gap-4">
-              <span>Conteúdo com direção. Design com intenção.</span>
+              <span className="italic">“Estúdio de comunicação visual e direção de conteúdo para marcas que buscam relevância, não volume.”</span>
             </div>
           </div>
         </div>

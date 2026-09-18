@@ -10,18 +10,18 @@ interface MonthlyContentTableProps {
 
 export function MonthlyContentTable({ settings, onSelectPlan }: MonthlyContentTableProps) {
   const defaultDeliverables = [
-    '12 a 20 peças finais mensais (carrosséis estruturados 4:5 e artes estáticas de alto impacto)',
-    'Copywriting persuasivo e redação completa de todas as legendas e textos de apoio',
-    'Direção de pautas, ganchos magnéticos e roteiros estruturados para gravação de Reels/Vídeos',
-    'Organização de pastas na nuvem com arquivos finais aprovados em altíssima resolução',
-    'Reunião mensal ou quinzenal de alinhamento e análise de performance',
+    'Carrosséis estratégicos 4:5 e artes estáticas de alto impacto',
+    'Copywriting e legendas prontas com direcionamento de tom de voz',
+    'Roteiros com ganchos magnéticos para gravação de Reels e vídeos curtos',
+    'Revisão estruturada de layout antes do fechamento do lote',
+    'Pastas compartilhadas em nuvem com arquivos finais organizados em altíssima resolução',
   ];
 
   const defaultNotIncluded = [
-    'Gravação e filmagem presencial com câmera no local da sua empresa',
-    'Investimento financeiro direto nas plataformas de anúncios (Meta Ads / Google Ads)',
-    'Gestão de comunidade e SAC (resposta a direct messages e comentários no Instagram)',
-    'Impressão gráfica física de materiais em papelaria ou gráficas locais',
+    'Captação e filmagem presencial com câmera no local da sua empresa',
+    'Gestão de tráfego pago e investimento em anúncios (Meta/Google Ads)',
+    'Resposta de mensagens diretas (DMs) e moderação de comentários',
+    'Edição complexa de vídeos longos (YouTube, podcasts ou documentários)',
   ];
 
   const deliverables = settings.monthly_deliverables
